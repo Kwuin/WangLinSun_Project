@@ -1,9 +1,17 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="24.0"
-    android:viewportHeight="24.0">
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Calendar body -->
     <path
-        android:fillColor="#FF000000"
-        android:pathData="M3,13h8L11,3L3,3v10zM3,21h8v-6L3,15v6zM13,21h8L21,11h-8v10zM13,3v6h8L21,3h-8z" />
+        android:fillColor="#FF5722"
+        android:pathData="M3,6h18v14H3V6z" />
+
+    <!-- Today marker -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M8,14h8v2H8V14zM12,10l3,3H9l3-3z"/>
+
 </vector>
