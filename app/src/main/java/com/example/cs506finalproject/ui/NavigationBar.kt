@@ -29,11 +29,10 @@ fun NavigationBar(modifier: Modifier = Modifier) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
         modifier = modifier
-            .requiredWidth(width = 360.dp)
+            .fillMaxWidth()
             .requiredHeight(height = 70.dp)
             .clip(shape = RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
             .background(color = Color(0xfff3edf7))
-            .padding(horizontal = 8.dp)
     ) {
         ActiveFalseStateEnabledLabeltrueBadgeNone(
             modifier = Modifier

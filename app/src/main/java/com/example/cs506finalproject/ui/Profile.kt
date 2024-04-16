@@ -24,11 +24,16 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun Profile() {
-        Column() {
+        Column(){
+
             TopSection()
             AccountSection()
             GeneralSection()
             AboutSection()
+            Spacer(modifier = Modifier.weight(1f))
+
+            NavigationBar()
+
         }
 
 }
@@ -295,7 +300,7 @@ fun AboutSection(){
             }
             Box(
                 Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .height(55.dp)
                     .background(color = Color(0xFFF3EDF7))
             ) {
