@@ -14,6 +14,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,7 +30,6 @@ android {
     }
 
     compileOptions {
-
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -47,6 +47,7 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
+
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -59,7 +60,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("androidx.customview:customview-poolingcontainer:1.0.0-alpha01")
-    val room_version = "2.5.2"
     implementation("androidx.compose.ui:ui:1.1.0-alpha06") // Replace with the desired Jetpack Compose UI version
     implementation("androidx.compose.material:material:1.1.0-alpha06") // Replace with the desired Jetpack Compose Material version
     implementation("androidx.activity:activity-compose:1.3.1") // Replace with the desired Activity Compose version
@@ -70,4 +70,6 @@ dependencies {
     implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
+    implementation("com.kizitonwose.calendar:compose:2.5.0")
+
 }
