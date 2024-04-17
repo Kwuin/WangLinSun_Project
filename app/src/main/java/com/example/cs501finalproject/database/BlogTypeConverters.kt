@@ -1,4 +1,4 @@
-package com.example.cs506finalproject.database
+package com.example.cs501finalproject.database
 
 import androidx.room.TypeConverter
 import java.util.Date

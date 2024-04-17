@@ -1,4 +1,4 @@
-package com.example.cs506finalproject
+package com.example.cs501finalproject
 
 
 import androidx.room.Entity

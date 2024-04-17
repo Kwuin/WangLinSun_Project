@@ -1,10 +1,10 @@
-package com.example.cs506finalproject.database
+package com.example.cs501finalproject.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.cs506finalproject.Blog
+import com.example.cs501finalproject.Blog
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 

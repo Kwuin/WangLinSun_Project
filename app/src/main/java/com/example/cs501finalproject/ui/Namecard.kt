@@ -1,4 +1,4 @@
-package com.example.cs506finalproject.ui
+package com.example.cs501finalproject.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

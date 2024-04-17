@@ -1,11 +1,11 @@
-package com.example.cs506finalproject.database
+package com.example.cs501finalproject.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.cs506finalproject.Blog
+import com.example.cs501finalproject.Blog
 
 @Database(entities = [Blog::class], version = 3)
 @TypeConverters(BlogTypeConverters::class)
