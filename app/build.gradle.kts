@@ -76,5 +76,5 @@ dependencies {
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
     implementation("com.kizitonwose.calendar:compose:2.5.0")
-
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 }

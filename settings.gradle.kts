@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CS506 final project"
+rootProject.name = "CS501 final project"
 include(":app")
