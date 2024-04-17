@@ -9,7 +9,11 @@ android {
     compileSdk = 34
 
     defaultConfig {
+<<<<<<< HEAD
         applicationId = "com.example.cs501finalproject"
+=======
+        applicationId = "com.example.cs506finalproject"
+>>>>>>> 08c4c7f65fa579523c4b7021d9f07261772dbb41
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -76,5 +80,9 @@ dependencies {
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
     implementation("com.kizitonwose.calendar:compose:2.5.0")
+<<<<<<< HEAD
     implementation("androidx.navigation:navigation-compose:2.7.7")
+=======
+
+>>>>>>> 08c4c7f65fa579523c4b7021d9f07261772dbb41
 }
