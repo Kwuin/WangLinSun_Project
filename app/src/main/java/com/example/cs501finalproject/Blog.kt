@@ -11,6 +11,6 @@ data class Blog(
     @PrimaryKey val id: UUID,
     val title: String,
     val date: Date,
-    val text: String = "",
+    var text: String = "",
     val photoFileName: String? = null
 )

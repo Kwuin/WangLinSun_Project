@@ -33,6 +33,7 @@ fun Profile(navController: NavController) {
         }
 
 }
+
 @Composable
 fun TopSection() {
         Box(

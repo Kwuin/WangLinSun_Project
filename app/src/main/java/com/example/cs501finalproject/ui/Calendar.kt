@@ -174,7 +174,7 @@ fun CalendarPage(navController: NavController){
             Box(Modifier.align(Alignment.CenterHorizontally) // Center-align this item
             ){
                 Button(onClick = {
-                    // Add your button click logic here
+
                 },
                     Modifier
                         .width(144.dp)
