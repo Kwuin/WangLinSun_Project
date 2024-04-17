@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import java.util.Date
 import java.util.UUID
 
 private const val DATABASE_NAME = "blog-database"
@@ -29,6 +30,7 @@ class BlogRepository private constructor(
 
     fun getBlogs(): Flow<List<Blog>> = database.blogDao().getBlogs()
 
+    suspend fun getBlogonDay(date: Date): Flow<List<Blog>> = database.blogDao().getBlogonDay(date)
     suspend fun getBlog(id: UUID): Blog = database.blogDao().getBlog(id)
 
     fun updateBlog(blog: Blog) {

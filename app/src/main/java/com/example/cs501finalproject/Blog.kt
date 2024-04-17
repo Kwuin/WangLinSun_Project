@@ -12,5 +12,7 @@ data class Blog(
     val title: String,
     val date: Date,
     val text: String = "",
-    val photoFileName: String? = null
+    val photoFileName: String? = null,
+    val location: String = "",
+    val emoji: String = ""
 )

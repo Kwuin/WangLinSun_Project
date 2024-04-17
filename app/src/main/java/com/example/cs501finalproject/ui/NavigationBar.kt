@@ -222,7 +222,8 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .requiredHeight(height = 70.dp)
-            .clip(shape = RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
+            //round corner setting
+            //.clip(shape = RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
             .background(color = Color(0xfff3edf7))
     ) {
         HomeNavigation(
