@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cs506finalproject"
+    namespace = "com.example.cs501finalproject"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.cs506finalproject"
+        applicationId = "com.example.cs501finalproject"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
