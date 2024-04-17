@@ -51,6 +51,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
@@ -69,7 +71,7 @@ import java.util.Locale
 
 
 @Composable
-fun CalendarPage(){
+fun CalendarPage(navController: NavController){
     val today = LocalDate.now()
     // Get the day of the month as an integer (e.g., 1, 2, 3, ..., 31)
     var dayClicked by remember { mutableStateOf(today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()))}
@@ -269,5 +271,5 @@ fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
 fun Checkcalendar() {
 //    GradientBackground()
 
-    CalendarPage()
+    CalendarPage(rememberNavController())
 }

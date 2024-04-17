@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cs506finalproject"
+    namespace = "com.example.cs501finalproject"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.cs506finalproject"
+        applicationId = "com.example.cs501finalproject"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -76,5 +76,5 @@ dependencies {
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
     implementation("com.kizitonwose.calendar:compose:2.5.0")
-
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 }
