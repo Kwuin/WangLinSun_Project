@@ -11,7 +11,7 @@ import java.util.UUID
 @Dao
 interface BlogDao {
     @Query("SELECT * FROM Blog")
-    fun getBlog(): Flow<List<Blog>>
+    fun getBlogs(): Flow<List<Blog>>
 
     @Query("SELECT * FROM blog WHERE id=(:id)")
     suspend fun getBlog(id: UUID): Blog
