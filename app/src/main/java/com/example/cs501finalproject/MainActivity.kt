@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.example.cs501finalproject.ui.CalendarPage
+import com.example.cs501finalproject.ui.HomePage
 import com.example.cs501finalproject.ui.MemoriesPage
 import com.example.cs501finalproject.ui.NavigationBar
 import com.example.cs501finalproject.ui.Profile
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     fun HomeScreen(navController: NavController) {
-        // Define what the Home screen looks like
+        HomePage(navController)
     }
 
     @Composable
