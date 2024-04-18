@@ -8,10 +8,11 @@ import java.util.UUID
 
 @Entity
 data class Blog(
-    @PrimaryKey val id: Int,
-    val title: String = "",
-    val date: LocalDate = LocalDate.now(),
-    var text: String = "",
+
+    @PrimaryKey val id: UUID,
+    val title: String,
+    val date: LocalDate,
+    val text: String = "",
     val photoFileName: String? = null,
     val location: String = "",
     val emoji: String = ""

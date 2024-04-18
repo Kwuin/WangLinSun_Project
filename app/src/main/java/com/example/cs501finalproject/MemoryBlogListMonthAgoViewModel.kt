@@ -1,25 +1,24 @@
 package com.example.cs501finalproject
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.UUID
+import java.time.LocalDate
 
-class BlogListViewModel : ViewModel() {
+class MemoryBlogListMonthAgoViewModel: ViewModel() {
+
     private val blogRepository = BlogRepository.get()
-
+    private val today = LocalDate.now()
     private val _blogs: MutableStateFlow<List<Blog>> = MutableStateFlow(emptyList())
-
     val blogs: StateFlow<List<Blog>>
         get() = _blogs.asStateFlow()
 
     init {
         viewModelScope.launch {
-            blogRepository.getBlogs().collect {
+            blogRepository.getBlogOnDay(today.minusMonths(1)).collect {
                 _blogs.value = it
             }
         }
@@ -28,8 +27,4 @@ class BlogListViewModel : ViewModel() {
     suspend fun addBlog(blog: Blog) {
         blogRepository.addBlog(blog)
     }
-    suspend fun getBlog(id: Int):Blog {
-        return blogRepository.getBlog(id)
-    }
-
 }
