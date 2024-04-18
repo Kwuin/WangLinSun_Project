@@ -52,7 +52,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.cs501finalproject.Blog
+import com.example.cs501finalproject.BlogDetailViewModel
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
@@ -68,7 +71,14 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
+import com.example.cs501finalproject.BlogListViewModel
+import kotlinx.coroutines.launch
 
+
+sealed class Screen(val route: String) {
+    object Calendar : Screen("Calendar")
+    object BlogDetail : Screen("BlogDetail")
+}
 
 @Composable
 fun CalendarPage(navController: NavController){
@@ -77,6 +87,9 @@ fun CalendarPage(navController: NavController){
     var dayClicked by remember { mutableStateOf(today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()))}
     var dateClicked by remember { mutableStateOf("${today.dayOfMonth}") }
     var monthClicked by remember { mutableStateOf(YearMonth.now().month.name) }
+
+
+    val coroutineScope = rememberCoroutineScope()
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -108,6 +121,7 @@ fun CalendarPage(navController: NavController){
                     modifier = Modifier
                         .padding(start = 20.dp, top = 0.dp)
                 )
+
 
 
             Divider(
@@ -174,6 +188,14 @@ fun CalendarPage(navController: NavController){
             Box(Modifier.align(Alignment.CenterHorizontally) // Center-align this item
             ){
                 Button(onClick = {
+                    val newBlog = Blog()
+                    val blogListViewModel = BlogListViewModel()
+                    coroutineScope.launch {
+                        blogListViewModel.addBlog(newBlog)
+                    }
+
+                    //TODO: add a navigation to open the new BlogDetail view to modify the contents
+
 
                 },
                     Modifier

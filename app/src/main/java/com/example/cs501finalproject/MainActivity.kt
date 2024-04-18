@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                 composable("calendar") { CalendarScreen(navController) }
                 composable("memories") { MemoriesScreen(navController) }
                 composable("settings") { SettingsScreen(navController) }
+                composable("blog"){BlogsScreen(navController)}
             }
         }
     }
@@ -67,5 +68,11 @@ class MainActivity : AppCompatActivity() {
     fun SettingsScreen(navController: NavController) {
         Profile(navController)
     }
+
+    @Composable
+    fun BlogsScreen(navController: NavController) {
+
+    }
+
 
 }

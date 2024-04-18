@@ -28,15 +28,17 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.fragment.app.viewModels
 import com.example.cs501finalproject.Blog
 import com.example.cs501finalproject.BlogDetailViewModel
 
 
+
 @Composable
-fun Blog(navController: NavController, blog: Blog) {
-    val blogDetailViewModel = BlogDetailViewModel(blog.id)
+fun BlogView(navController: NavController, blog: Blog) {
+
     Column(){
-        BlogTop()
+        BlogTop(blog)
         BlogBody()
         //NavigationBar(navController)
 
@@ -45,7 +47,8 @@ fun Blog(navController: NavController, blog: Blog) {
 }
 
 @Composable
-fun BlogTop() {
+fun BlogTop(blog: Blog) {
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -62,7 +65,9 @@ fun BlogTop() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            BackButton()
+            BackButton {
+
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -114,19 +119,26 @@ fun BlogBody(
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog) {
     var text by remember { mutableStateOf("Hello") }
-
+    val blogDetailViewModel = BlogDetailViewModel(blog.id)
     TextField(
         value = text,
         onValueChange = { text = it
-                        blog.text = it},
+                        blog.text = it
+            blogDetailViewModel.updateBlog { currentBlog ->
+                if (currentBlog.id == blog.id) {
+                    currentBlog.copy(text = it)
+                } else {
+                    currentBlog
+                }
+            }
+                        },
         label = { Text("Label") }
     )
 }
 
 
-
 @Preview
 @Composable
 fun PreviewBlog() {
-   Blog(rememberNavController())
+   BlogView(rememberNavController(), )
 }
