@@ -18,7 +18,7 @@ interface BlogDao {
     fun getBlogonDay(date: Date): Flow<List<Blog>>
 
     @Query("SELECT * FROM blog WHERE id=(:id)")
-    suspend fun getBlog(id: UUID): Blog
+    suspend fun getBlog(id: kotlin.Int): Blog
 
     @Update
     suspend fun updateBlog(blog: Blog)

@@ -1,12 +1,8 @@
 <resources>
-<<<<<<< HEAD
     <string name="app_name">cs501finalproject</string>
-=======
-    <string name="app_name">CS506 final project</string>
     <string name="title_home">Home</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_history">History</string>
     <string name="title_setting">Setting</string>
 
->>>>>>> 08c4c7f65fa579523c4b7021d9f07261772dbb41
 </resources>

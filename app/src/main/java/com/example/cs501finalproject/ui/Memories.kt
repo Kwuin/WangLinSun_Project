@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavController
 import com.example.cs501finalproject.Blog
 import com.example.cs501finalproject.R
+import java.util.UUID
 
 
 data class EventItem(

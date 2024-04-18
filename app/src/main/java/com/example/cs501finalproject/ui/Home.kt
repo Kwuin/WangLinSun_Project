@@ -28,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.R
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 
 @Composable
@@ -43,9 +44,11 @@ fun HomePage(navController: NavController) {
 }
 
 fun getSampleDataHome(): List<EventItem> {
+    val numericString = "1"
+    val uuid = UUID.nameUUIDFromBytes(numericString.toByteArray())
     return listOf(
-        EventItem(null, "2024/04/17", "New Zealand", "NZ holiday", R.drawable.blog_boulders, "\u2708"),
-        EventItem(null, "2024/04/16", "Boston", "Busy Day", R.drawable.blog_example, "\uD83D\uDCBB"),
+        EventItem(1, "2024/04/17", "New Zealand", "NZ holiday", R.drawable.blog_boulders, "\u2708"),
+        EventItem(2, "2024/04/16", "Boston", "Busy Day", R.drawable.blog_example, "\uD83D\uDCBB"),
         EventItem(null, "2024/04/13", "Australia", "Spring Break", R.drawable.blog_nature_window, "\uD83D\uDE0A"),
         EventItem(null, "2024/04/10", "New Zealand", "NZ holiday", R.drawable.blog_boulders, "\uD83D\uDE0A"),
         EventItem(null, "2024/04/01", "Boston", "Rainy", R.drawable.blog_example, "\u2614"),
@@ -215,6 +218,7 @@ fun HomeListCarousel(modifier: Modifier) {
 
 @Composable
 fun HomeListItem(item: EventItem) {
+//    navigation("blog/$item.id")
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically

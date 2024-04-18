@@ -2,28 +2,40 @@ package com.example.cs501finalproject
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import androidx.navigation.NavHost
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.cs501finalproject.ui.BlogView
 import com.example.cs501finalproject.ui.CalendarPage
 import com.example.cs501finalproject.ui.HomePage
 import com.example.cs501finalproject.ui.MemoriesPage
 import com.example.cs501finalproject.ui.NavigationBar
 import com.example.cs501finalproject.ui.Profile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import java.util.UUID
 
 
 class MainActivity : AppCompatActivity() {
 
+    private val coroutineScope: CoroutineScope = GlobalScope
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        BlogRepository.initialize(this)
         setContent {
+
             MainApp()
         }
     }
@@ -31,7 +43,6 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun MainApp() {
         val navController = rememberNavController()
-
         Scaffold(
             bottomBar = { NavigationBar(navController, Modifier) }
         ) { innerPadding ->
@@ -45,10 +56,19 @@ class MainActivity : AppCompatActivity() {
                 composable("calendar") { CalendarScreen(navController) }
                 composable("memories") { MemoriesScreen(navController) }
                 composable("settings") { SettingsScreen(navController) }
-                composable("blog"){BlogsScreen(navController)}
+                composable(
+                    "blog/{blogID}",
+                    arguments = listOf(navArgument("blogId") { type = NavType.IntType })
+                ) {backStackEntry ->
+                    val blogId = backStackEntry.arguments?.getInt("blogId") ?: -1  // Use -1 or another default value as a fallback
+
+                    // Pass the blogId to your BlogView
+                    BlogView(navController, blogId)
+                }
             }
         }
     }
+
 
     @Composable
     fun HomeScreen(navController: NavController) {
@@ -68,11 +88,6 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun SettingsScreen(navController: NavController) {
         Profile(navController)
-    }
-
-    @Composable
-    fun BlogsScreen(navController: NavController) {
-
     }
 
 
