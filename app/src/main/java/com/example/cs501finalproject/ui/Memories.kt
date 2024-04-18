@@ -1,6 +1,7 @@
 package com.example.cs501finalproject.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -12,12 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.cs501finalproject.Blog
 import com.example.cs501finalproject.R
 
 
@@ -53,12 +57,42 @@ fun MemoriesPage(navController: NavController){
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        MemoriesPictureCarousel(modifier = Modifier.weight(2f)) // Picture Carousel 占上 2/5
-        MemoriesListCarousel(modifier = Modifier.weight(3f)) // List Carousel 占下 3/5
-    }
+        MemoriesPictureCarousel(modifier = Modifier.weight(2.5f))
+        banner("A day ago")
+        MemoriesListCarousel(modifier = Modifier.weight(1f))
+        banner("A Week ago")
+        MemoriesListCarousel(modifier = Modifier.weight(1f))
+        banner("A Month ago")
+        MemoriesListCarousel(modifier = Modifier.weight(1f))
+        banner("A year ago")
+        MemoriesListCarousel(modifier = Modifier.weight(1f))}
+
 }
 
+@Composable
+fun banner(title: String){
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(20.dp)
+            .background(color = Color(0xFFD4CADC))
+        ,
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = title,
 
+            style = TextStyle(
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight(500),
+                color = Color(0xFF000000),
+                textAlign = TextAlign.Center,
+                letterSpacing = 0.1.sp,
+            )
+        )
+    }
+}
 @Composable
 fun MemoriesPictureCarousel(modifier: Modifier = Modifier) {
     LazyRow(
@@ -164,6 +198,38 @@ fun MemoryListItem(item: EventItem) {
     }
 }
 
+@Composable
+fun Memorylist(title: String, blogs: List<EventItem>){
+    Column(){
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(20.dp)
+                .background(color = Color(0xFFD4CADC))
+            ,
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = title,
+
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    lineHeight = 20.sp,
+                    fontWeight = FontWeight(500),
+                    color = Color(0xFF000000),
+                    textAlign = TextAlign.Center,
+                    letterSpacing = 0.1.sp,
+                )
+            )
+        }
+        LazyColumn(){
+            items(blogs){blog ->
+                MemoryListItem(item = blog)
+            }
+        }
+
+    }
+}
 
 @Preview
 @Composable
