@@ -6,10 +6,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class BlogListViewModel : ViewModel() {
+class HomeBlogListViewModel : ViewModel() {
     private val blogRepository = BlogRepository.get()
 
     private val _blogs: MutableStateFlow<List<Blog>> = MutableStateFlow(emptyList())
