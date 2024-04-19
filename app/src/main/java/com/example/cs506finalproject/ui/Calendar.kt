@@ -1,24 +1,41 @@
-package com.example.cs501finalproject.ui
+package com.example.cs506finalproject.ui
 
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import android.util.Log
+import androidx.compose.runtime.*
+import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.darkColors
+import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,48 +44,34 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.cs501finalproject.Blog
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
+import com.kizitonwose.calendar.core.OutDateStyle
+import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
+import com.kizitonwose.calendar.core.nextMonth
+import com.kizitonwose.calendar.core.previousMonth
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
-import com.example.cs501finalproject.HomeBlogListViewModel
-import kotlinx.coroutines.launch
-import java.util.UUID
-
-
-sealed class Screen(val route: String) {
-    object Calendar : Screen("Calendar")
-    object BlogDetail : Screen("BlogDetail")
-}
-
 
 
 @Composable
-fun CalendarPage(navController: NavController){
-
-
+fun CalendarPage(){
     val today = LocalDate.now()
     // Get the day of the month as an integer (e.g., 1, 2, 3, ..., 31)
-    var dayClicked by remember { mutableStateOf(today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()))}
-    var dateClicked by remember { mutableStateOf("${today.dayOfMonth}") }
-    var monthClicked by remember { mutableStateOf(YearMonth.now().month.name) }
-
-
-    val coroutineScope = rememberCoroutineScope()
+    var dateClicked by remember { mutableStateOf("${today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())}, ${YearMonth.now().month.name} ${today.dayOfMonth}") }
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -89,7 +92,7 @@ fun CalendarPage(navController: NavController){
                         .padding(start = 20.dp, top = 10.dp)
                 )
                 Text(
-                    text = "$dayClicked, $monthClicked $dateClicked",
+                    text = "$dateClicked",
                     style = androidx.compose.ui.text.TextStyle(
                         fontSize = 32.sp,
                         lineHeight = 40.sp,
@@ -100,7 +103,6 @@ fun CalendarPage(navController: NavController){
                     modifier = Modifier
                         .padding(start = 20.dp, top = 0.dp)
                 )
-
 
 
             Divider(
@@ -117,47 +119,7 @@ fun CalendarPage(navController: NavController){
                     .background(color = Color(0xFFF3EDF7))
                     .padding(start = 16.dp, top = 4.dp, end = 12.dp, bottom = 4.dp)){
             }
-
-
-            val currentMonth = remember { YearMonth.now() }
-            val startMonth = remember { currentMonth.minusMonths(100) } // Adjust as needed
-            val endMonth = remember { currentMonth.plusMonths(100) } // Adjust as needed
-            val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
-
-            var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
-            var selectedMonth by remember {
-                mutableStateOf<YearMonth>(YearMonth.now())
-            }
-            val state = rememberCalendarState(
-                startMonth = startMonth,
-                endMonth = endMonth,
-                firstVisibleMonth = currentMonth,
-                firstDayOfWeek = firstDayOfWeek
-            )
-
-            HorizontalCalendar(
-                state = state,
-                dayContent = {  day ->
-                    Day(day, isSelected = selectedDate == day.date) { day ->
-                        selectedDate = day.date
-                        dayClicked = "${selectedDate?.dayOfWeek?.getDisplayName(TextStyle.FULL, Locale.getDefault())}"
-                        monthClicked = day.date.month.name
-                        dateClicked = "${selectedDate?.dayOfMonth}"
-                    } },
-                monthHeader = { month ->
-                    val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
-                    selectedMonth = month.yearMonth
-                    MonthHeader(daysOfWeek = daysOfWeek, month.yearMonth.month.name, month.yearMonth.year)
-                }
-            )
-
-
-
-//    If you need a vertical calendar.
-//    VerticalCalendar(
-//        state = state,
-//        dayContent = { Day(it) }
-//    )
+            Calendar()
             Divider(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
@@ -168,23 +130,7 @@ fun CalendarPage(navController: NavController){
             Box(Modifier.align(Alignment.CenterHorizontally) // Center-align this item
             ){
                 Button(onClick = {
-                    val newBlog = Blog(
-                        title = "My new blog today",
-                        date = selectedDate!!,
-                        text = "",
-                        photoFileName = "",
-                        location = "",
-                        emoji = ""
-                    )
-                    val blogListViewModel = HomeBlogListViewModel()
-                    coroutineScope.launch {
-                        blogListViewModel.addBlog(newBlog)
-                        Log.d("Navigation", "new/${newBlog.id}")
-                        //val blog = blogListViewModel.getBlog(newBlog.id)
-                        navController.navigate("blog/${newBlog.id}")
-                    }
-
-
+                    // Add your button click logic here
                 },
                     Modifier
                         .width(144.dp)
@@ -194,6 +140,7 @@ fun CalendarPage(navController: NavController){
                         backgroundColor = Color(0xFFD29CEC), // Make button content area transparent
                     ),
                     shape = RoundedCornerShape(100.dp),
+
                     ){
                     Text(
                         text = "Add New Journal",
@@ -220,9 +167,41 @@ fun CalendarPage(navController: NavController){
 }
 
 
-
 @Composable
 fun Calendar() {
+    val currentMonth = remember { YearMonth.now() }
+    val startMonth = remember { currentMonth.minusMonths(100) } // Adjust as needed
+    val endMonth = remember { currentMonth.plusMonths(100) } // Adjust as needed
+    val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
+
+    var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+
+    val state = rememberCalendarState(
+        startMonth = startMonth,
+        endMonth = endMonth,
+        firstVisibleMonth = currentMonth,
+        firstDayOfWeek = firstDayOfWeek
+    )
+
+        HorizontalCalendar(
+            state = state,
+            dayContent = {  day ->
+                Day(day, isSelected = selectedDate == day.date) { day ->
+                    selectedDate = if (selectedDate == day.date) null else day.date
+                }
+            },
+            monthHeader = { month ->
+                val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
+                MonthHeader(daysOfWeek = daysOfWeek, month.yearMonth.month.name, month.yearMonth.year)        }
+        )
+
+    
+
+//    If you need a vertical calendar.
+//    VerticalCalendar(
+//        state = state,
+//        dayContent = { Day(it) }
+//    )
 }
 
 @Composable
@@ -261,7 +240,6 @@ fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
     Box(
         modifier = Modifier
             .aspectRatio(1f)
-            .background(color = if (isSelected) Color.Green else Color.Transparent)
             .clickable(
                 enabled = day.position == DayPosition.MonthDate,
                 onClick = { onClick(day) }
@@ -281,5 +259,5 @@ fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
 fun Checkcalendar() {
 //    GradientBackground()
 
-    CalendarPage(rememberNavController())
+    CalendarPage()
 }

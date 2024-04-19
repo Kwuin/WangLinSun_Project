@@ -7,11 +7,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class HomeBlogListViewModel : ViewModel() {
     private val blogRepository = BlogRepository.get()
 
     private val _blogs: MutableStateFlow<List<Blog>> = MutableStateFlow(emptyList())
+
     val blogs: StateFlow<List<Blog>>
         get() = _blogs.asStateFlow()
 
@@ -26,4 +28,8 @@ class HomeBlogListViewModel : ViewModel() {
     suspend fun addBlog(blog: Blog) {
         blogRepository.addBlog(blog)
     }
+    suspend fun getBlog(id: UUID):Blog {
+        return blogRepository.getBlog(id)
+    }
+
 }

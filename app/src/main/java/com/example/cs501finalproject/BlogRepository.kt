@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+
 import java.time.LocalDate
 import java.util.UUID
 
@@ -26,9 +27,12 @@ class BlogRepository private constructor(
             DATABASE_NAME
         )
         .addMigrations(migration_1_2, migration_2_3)
+        .fallbackToDestructiveMigration()
         .build()
 
     fun getBlogs(): Flow<List<Blog>> = database.blogDao().getBlogs()
+
+
 
     suspend fun getBlogOnDay(date: LocalDate): Flow<List<Blog>> = database.blogDao().getBlogOnDay(date)
     suspend fun getBlog(id: UUID): Blog = database.blogDao().getBlog(id)

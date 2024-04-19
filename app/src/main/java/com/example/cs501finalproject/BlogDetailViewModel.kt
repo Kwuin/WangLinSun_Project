@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
 
+
 class HomeBlogDetailViewModel(blogId: UUID) : ViewModel() {
     private val blogRepository = BlogRepository.get()
 
