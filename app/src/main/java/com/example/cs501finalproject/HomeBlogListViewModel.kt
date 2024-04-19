@@ -28,7 +28,7 @@ class HomeBlogListViewModel : ViewModel() {
     suspend fun addBlog(blog: Blog) {
         blogRepository.addBlog(blog)
     }
-    suspend fun getBlog(id: Int):Blog {
+    suspend fun getBlog(id: UUID):Blog {
         return blogRepository.getBlog(id)
     }
 

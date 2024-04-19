@@ -23,31 +23,43 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.cs501finalproject.Blog
-import com.example.cs501finalproject.BlogDetailViewModel
-import com.example.cs501finalproject.BlogListViewModel
+import com.example.cs501finalproject.HomeBlogDetailViewModel
+import com.example.cs501finalproject.HomeBlogListViewModel
 import java.util.UUID
 
 @Composable
-fun BlogView(navController: NavController, id: Int) {
-    val blogListViewModel = BlogListViewModel()
+fun BlogView(navController: NavController, id: UUID) {
+    val blogListViewModel = HomeBlogListViewModel()
     val factory = object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return BlogDetailViewModel(id) as T
+            return HomeBlogDetailViewModel(id) as T
         }
     }
-    lateinit var thisblog : Blog
+    val blogState = remember { mutableStateOf<Blog?>(null) }
+
     LaunchedEffect(id) {
-        thisblog = blogListViewModel.getBlog(id)
-        // Consider handling navigation differently, as navigating inside LaunchedEffect like this might not be ideal
+        blogState.value = blogListViewModel.getBlog(id)
     }
+
+    // Using the blog data to build the UI
+    blogState.value?.let { blog ->
+        Column(){
+            BlogTop(blog)
+            BlogBody(blog)
+//            //NavigationBar(navController)
+        }
+    }
+
+//    LaunchedEffect(id) {
+//        thisblog = blogListViewModel.getBlog(id)
+//        // Consider handling navigation differently, as navigating inside LaunchedEffect like this might not be ideal
+//
+//
+//
+//    }
     //val blog = blogListViewModel.getBlog(id)
 
-    Column(){
-        BlogTop(thisblog)
-        BlogBody(thisblog)
-        //NavigationBar(navController)
 
-    }
 
 }
 
@@ -127,7 +139,7 @@ fun BlogBody(blog: Blog
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog) {
     var text by remember { mutableStateOf("Hello") }
-    val blogDetailViewModel = BlogDetailViewModel(blog.id)
+    val blogDetailViewModel = HomeBlogDetailViewModel(blog.id)
     TextField(
         value = text,
         onValueChange = { text = it
@@ -145,13 +157,14 @@ fun SimpleFilledTextFieldSample(blog: Blog) {
 }
 
 
-@Preview
-@Composable
-fun PreviewBlog() {
-    val numericString = "1"
-    //val uuid = UUID.nameUUIDFromBytes(numericString.toByteArray())
-    BlogView(rememberNavController(), 1)
-}
+//@Preview
+//@Composable
+//fun PreviewBlog() {
+//    val numericString = "1"
+//    //val uuid = UUID.nameUUIDFromBytes(numericString.toByteArray())
+//
+//    BlogView(rememberNavController(), )
+//}
 
 //@Composable
 //fun BlogScreen(navController: NavController, blogId: UUID) {

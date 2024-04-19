@@ -9,10 +9,10 @@ import java.util.UUID
 @Entity
 data class Blog(
 
-    @PrimaryKey val id: UUID,
+    @PrimaryKey val id: UUID = UUID.randomUUID(),
     val title: String,
     val date: LocalDate,
-    val text: String = "",
+    var text: String = "",
     val photoFileName: String? = null,
     val location: String = "",
     val emoji: String = ""

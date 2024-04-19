@@ -1,6 +1,7 @@
 package com.example.cs501finalproject
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         BlogRepository.initialize(this)
+
         setContent {
 
             MainApp()
@@ -57,12 +59,14 @@ class MainActivity : AppCompatActivity() {
                 composable("memories") { MemoriesScreen(navController) }
                 composable("settings") { SettingsScreen(navController) }
                 composable(
-                    "blog/{blogID}",
-                    arguments = listOf(navArgument("blogId") { type = NavType.IntType })
+                    "blog/{blogId}",
+                    arguments = listOf(navArgument("blogId") { type = NavType.StringType })
                 ) {backStackEntry ->
-                    val blogId = backStackEntry.arguments?.getInt("blogId") ?: -1  // Use -1 or another default value as a fallback
 
+                    val blogIdString = backStackEntry.arguments?.getString("blogId") ?: "defaultBlogId"
+                    val blogId = UUID.fromString(blogIdString)
                     // Pass the blogId to your BlogView
+                    Log.d("Navigation Bar in", "new/${blogId}")
                     BlogView(navController, blogId)
                 }
             }

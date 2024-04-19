@@ -27,6 +27,7 @@ class BlogRepository private constructor(
             DATABASE_NAME
         )
         .addMigrations(migration_1_2, migration_2_3)
+        .fallbackToDestructiveMigration()
         .build()
 
     fun getBlogs(): Flow<List<Blog>> = database.blogDao().getBlogs()

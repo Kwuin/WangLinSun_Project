@@ -45,8 +45,9 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
-import com.example.cs501finalproject.BlogListViewModel
+import com.example.cs501finalproject.HomeBlogListViewModel
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 
 sealed class Screen(val route: String) {
@@ -168,7 +169,6 @@ fun CalendarPage(navController: NavController){
             ){
                 Button(onClick = {
                     val newBlog = Blog(
-                        id = 1,
                         title = "My new blog today",
                         date = selectedDate!!,
                         text = "",
@@ -176,11 +176,12 @@ fun CalendarPage(navController: NavController){
                         location = "",
                         emoji = ""
                     )
-                    val blogListViewModel = BlogListViewModel()
+                    val blogListViewModel = HomeBlogListViewModel()
                     coroutineScope.launch {
                         blogListViewModel.addBlog(newBlog)
-                        Log.d("Navigation", "Navigating to: blogDetail/${newBlog.id}")
-                        navController.navigate("blogDetail/${newBlog.id}")
+                        Log.d("Navigation", "new/${newBlog.id}")
+                        //val blog = blogListViewModel.getBlog(newBlog.id)
+                        navController.navigate("blog/${newBlog.id}")
                     }
 
 
@@ -193,7 +194,6 @@ fun CalendarPage(navController: NavController){
                         backgroundColor = Color(0xFFD29CEC), // Make button content area transparent
                     ),
                     shape = RoundedCornerShape(100.dp),
-
                     ){
                     Text(
                         text = "Add New Journal",
