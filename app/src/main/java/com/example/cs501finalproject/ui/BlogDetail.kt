@@ -44,7 +44,7 @@ fun BlogView(navController: NavController, id: UUID) {
     // Using the blog data to build the UI
     blogState.value?.let { blog ->
         Column(){
-            BlogTop(blog)
+            BlogTop(blog, navController)
             BlogBody(blog)
 //            //NavigationBar(navController)
         }
@@ -66,7 +66,7 @@ fun BlogView(navController: NavController, id: UUID) {
 
 
 @Composable
-fun BlogTop(blog: Blog) {
+fun BlogTop(blog: Blog, navController:NavController) {
 
     Box(
         modifier = Modifier
@@ -84,10 +84,7 @@ fun BlogTop(blog: Blog) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            BackButton {
-
-
-            }
+            BackButton(navController)
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -115,10 +112,9 @@ fun BlogTop(blog: Blog) {
 
 
 @Composable
-fun BackButton(onBackClicked: () -> Unit) {
+fun BackButton(navController: NavController) {
     IconButton(
-        onClick = { onBackClicked()
-        },
+        onClick = { navController.navigateUp() },
         modifier = Modifier.padding(start = 16.dp)
     ) {
         Icon(
