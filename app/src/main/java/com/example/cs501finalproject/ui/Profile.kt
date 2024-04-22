@@ -1,5 +1,6 @@
 package com.example.cs501finalproject.ui
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -8,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -17,66 +19,60 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.cs501finalproject.R
 
 @Composable
 fun Profile(navController: NavController) {
         Column(){
-
             TopSection()
             AccountSection()
-            GeneralSection()
+            GeneralSection(navController)
             AboutSection()
             Spacer(modifier = Modifier.weight(1f))
 
             //NavigationBar(navController)
-
         }
 
 }
 
 @Composable
 fun TopSection() {
-        Box(
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .requiredHeight(height = 130.dp)
+            .background(
+                brush = Brush.linearGradient(
+                    0f to Color(0xffe6d6f0),
+                    1f to Color(0xff9f88ae)))
+    ) {
+        Text(
+            text = stringResource(R.string.Settings_Settings),
+            // M3/title/large
+            style = TextStyle(
+                fontSize = 24.sp,
+                lineHeight = 30.sp,
+                fontWeight = FontWeight(400),
+                color = Color(0xFF000000),),
             modifier = Modifier
-                .fillMaxWidth()
-                .requiredHeight(height = 120.dp)
-                .background(
-                    brush = Brush.linearGradient(
-                        0f to Color(0xffe6d6f0),
-                        1f to Color(0xff9f88ae),
-                    )
-                )){
-            Text(
-                text = "Settings",
-
-                // M3/title/large
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    lineHeight = 28.sp,
-                    fontWeight = FontWeight(400),
-                    color = Color(0xFF1D1B20),
-                ),
-                modifier = Modifier
-                    .padding(horizontal = 36.dp, vertical = 25.dp)
-            )
-            Text(
-                text = "Welcome, Tom",
-
-                // M3/title/medium
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    fontWeight = FontWeight(500),
-                    color = Color(0xFF000000),
-                    letterSpacing = 0.15.sp,
-                ),
-                modifier = Modifier
-                    .padding(horizontal = 36.dp, vertical = 111.dp)
-            )
-        }
-
-
+                .padding(horizontal = 36.dp, vertical = 20.dp)
+        )
+        Text(
+            text = "Welcome, Tom",
+            // M3/title/medium
+            style = TextStyle(
+                fontSize = 16.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight(500),
+                color = Color(0xFF000000),
+                letterSpacing = 0.15.sp,),
+            modifier = Modifier
+                .padding(horizontal = 36.dp, vertical = 55.dp)
+        )
+    }
 }
+
+
 @Composable
 fun SettingItem(
     label: String,
@@ -96,6 +92,7 @@ fun SettingItem(
         )
     }
 }
+
 @Composable
 fun AccountSection() {
     Surface() {
@@ -104,12 +101,11 @@ fun AccountSection() {
                 Modifier
                     .fillMaxWidth()
                     .height(20.dp)
-                    .background(color = Color(0xFFD4CADC))
-                ,
+                    .background(color = Color(0xFFD4CADC)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Account",
+                    text = stringResource(R.string.Settings_Account),
 
                     // M3/label/large
                     style = TextStyle(
@@ -129,7 +125,7 @@ fun AccountSection() {
                     .background(color = Color(0xFFF3EDF7))
             ){
                 Text(
-                    text = "Profile",
+                    text = stringResource(R.string.Settings_Profile),
                     // M3/title/large
                     style = TextStyle(
                         fontSize = 22.sp,
@@ -148,7 +144,7 @@ fun AccountSection() {
                     .background(color = Color(0xFFF3EDF7))
             ){
                 Text(
-                    text = "Instagram Binding",
+                    text = stringResource(R.string.Settings_Instagram_Binding),
                     // M3/title/large
                     style = TextStyle(
                         fontSize = 22.sp,
@@ -164,7 +160,7 @@ fun AccountSection() {
     }
 }
 @Composable
-fun GeneralSection() {
+fun GeneralSection(navController: NavController) {
     Surface() {
         Column() {
             Box(
@@ -176,7 +172,7 @@ fun GeneralSection() {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "General",
+                    text = stringResource(R.string.Settings_General),
 
                     // M3/label/large
                     style = TextStyle(
@@ -194,9 +190,10 @@ fun GeneralSection() {
                     .fillMaxWidth()
                     .height(55.dp)
                     .background(color = Color(0xFFF3EDF7))
+                    .clickable { navController.navigate("settingsLanguage") }
             ){
                 Text(
-                    text = "Language",
+                    text = stringResource(R.string.Settings_Language),
                     // M3/title/large
                     style = TextStyle(
                         fontSize = 22.sp,
@@ -215,7 +212,7 @@ fun GeneralSection() {
                     .background(color = Color(0xFFF3EDF7))
             ){
                 Text(
-                    text = "Theme",
+                    text = stringResource(R.string.Settings_Theme),
                     // M3/title/large
                     style = TextStyle(
                         fontSize = 22.sp,
@@ -234,7 +231,7 @@ fun GeneralSection() {
                     .background(color = Color(0xFFF3EDF7))
             ){
                 Text(
-                    text = "Cloud Sync",
+                    text = stringResource(R.string.Settings_Cloud_Sync),
                     // M3/title/large
                     style = TextStyle(
                         fontSize = 22.sp,
@@ -253,7 +250,7 @@ fun GeneralSection() {
                     .background(color = Color(0xFFF3EDF7))
             ){
                 Text(
-                    text = "Notification",
+                    text = stringResource(R.string.Settings_Notification),
                     // M3/title/large
                     style = TextStyle(
                         fontSize = 22.sp,
@@ -282,7 +279,7 @@ fun AboutSection(){
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "About",
+                    text = stringResource(R.string.Settings_About),
 
                     // M3/label/large
                     style = TextStyle(
@@ -302,7 +299,7 @@ fun AboutSection(){
                     .background(color = Color(0xFFF3EDF7))
             ) {
                 Text(
-                    text = "About",
+                    text = stringResource(R.string.Settings_About),
                     // M3/title/large
                     style = TextStyle(
                         fontSize = 22.sp,

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="NavigationBar_Settings">הגדרות</string>
+    <string name="NavigationBar_Memories">זיכרונות</string>
+    <string name="NavigationBar_Calendar">לוח שנה</string>
+    <string name="NavigationBar_Home">בית</string>
+
+    <string name="Settings_Settings">הגדרות</string>
+    <string name="Settings_Account">חשבון</string>
+    <string name="Settings_General">כללי</string>
+    <string name="Settings_About">אודות</string>
+    <string name="Settings_Profile">פרופיל</string>
+    <string name="Settings_Instagram_Binding">קישור לאינסטגרם</string>
+    <string name="Settings_Language">שפה</string>
+    <string name="Settings_Theme">ערכת נושא</string>
+    <string name="Settings_Cloud_Sync">סינכרון ענן</string>
+    <string name="Settings_Notification">התראות</string>
+    <string name="Settings_SelectLanguage">בחר שפה</string>
+    <string name="Settings_Confirm">אשר</string>
+
+    <string name="Home_no_journal_today_create_one">אין יומן היום, ליצור אחד?</string>
+    <string name="Home_Date">תאריך</string>
+    <string name="Home_From">מ</string>
+    <string name="Home_To">אל</string>
+</resources>

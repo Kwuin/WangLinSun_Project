@@ -1,8 +1,27 @@
 <resources>
-    <string name="app_name">cs501finalproject</string>
-    <string name="title_home">Home</string>
-    <string name="title_calendar">Calendar</string>
-    <string name="title_history">History</string>
-    <string name="title_setting">Setting</string>
+    <string name="app_name" translatable="false">cs501finalproject</string>
+
+    <string name="NavigationBar_Settings">Settings</string>
+    <string name="NavigationBar_Memories">Memories</string>
+    <string name="NavigationBar_Calendar">Calendar</string>
+    <string name="NavigationBar_Home">Home</string>
+
+    <string name="Settings_Settings">Settings</string>
+    <string name="Settings_Account">Account</string>
+    <string name="Settings_General">General</string>
+    <string name="Settings_About">About</string>
+    <string name="Settings_Profile">Profile</string>
+    <string name="Settings_Instagram_Binding">Instagram Binding</string>
+    <string name="Settings_Language">Language</string>
+    <string name="Settings_Theme">Theme</string>
+    <string name="Settings_Cloud_Sync">Cloud Sync</string>
+    <string name="Settings_Notification">Notification</string>
+    <string name="Settings_SelectLanguage">Select Language</string>
+    <string name="Settings_Confirm">Confirm</string>
+
+    <string name="Home_no_journal_today_create_one">No journal today, create one?</string>
+    <string name="Home_Date">Date</string>
+    <string name="Home_From">From</string>
+    <string name="Home_To">To</string>
 
 </resources>
