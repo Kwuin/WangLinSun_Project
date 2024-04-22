@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="NavigationBar_Settings">设置</string>
+    <string name="NavigationBar_Memories">回忆</string>
+    <string name="NavigationBar_Calendar">日历</string>
+    <string name="NavigationBar_Home">首页</string>
+
+    <string name="Settings_Settings">设置</string>
+    <string name="Settings_Account">账户</string>
+    <string name="Settings_General">通用</string>
+    <string name="Settings_About">关于</string>
+    <string name="Settings_Profile">个人信息</string>
+    <string name="Settings_Instagram_Binding">Instagram 绑定</string>
+    <string name="Settings_Language">语言</string>
+    <string name="Settings_Theme">主题</string>
+    <string name="Settings_Cloud_Sync">云端同步</string>
+    <string name="Settings_Notification">通知</string>
+    <string name="Settings_SelectLanguage">选择语言</string>
+    <string name="Settings_Confirm">确认</string>
+
+    <string name="Home_no_journal_today_create_one">新建今天的第一份日志？</string>
+    <string name="Home_Date">日期</string>
+    <string name="Home_From">从</string>
+    <string name="Home_To">到</string>
+
+</resources>

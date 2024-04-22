@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -88,9 +89,9 @@ fun TopBanner() {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    "No journal today, create one?",
+                    stringResource(R.string.Home_no_journal_today_create_one),
                     color = Color.Black,
-                    fontSize = 16.sp
+                    fontSize = 15.sp
                 )
             }
             Text(
@@ -114,11 +115,11 @@ fun SearchFilter() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Text("From", modifier = Modifier.padding(end = 8.dp), color = Color.Black)
+        Text(stringResource(R.string.Home_From), modifier = Modifier.padding(end = 8.dp), color = Color.Black)
         OutlinedTextField(
             value = fromDate,
             onValueChange = { fromDate = it },
-            placeholder = { Text(text = "Date", color = Color.Gray)},
+            placeholder = { Text(text = stringResource(R.string.Home_Date), color = Color.Gray)},
             singleLine = true,
             modifier = Modifier
                 .width(120.dp)
@@ -133,11 +134,11 @@ fun SearchFilter() {
             )
         )
         Spacer(modifier = Modifier.width(16.dp))
-        Text("To", modifier = Modifier.padding(end = 8.dp), color = Color.Black)
+        Text(stringResource(R.string.Home_To), modifier = Modifier.padding(end = 8.dp), color = Color.Black)
         OutlinedTextField(
             value = toDate,
             onValueChange = { toDate = it },
-            placeholder = { Text(text = "Date", color = Color.Gray)},
+            placeholder = { Text(text = stringResource(R.string.Home_Date), color = Color.Gray)},
             singleLine = true,
             modifier = Modifier
                 .width(120.dp)
