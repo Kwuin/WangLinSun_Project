@@ -30,16 +30,20 @@ fun SettingsLanguagePage(navController: NavController, languageManager: Language
         when (currentLocale) {
             Locale.ENGLISH -> "English"
             Locale.SIMPLIFIED_CHINESE -> "中文 (Chinese)"
+            Locale.FRENCH -> "Français (French)"
+            Locale("es") -> "Español (Spanish)"
+            Locale("ru") -> "Русский (Russian)"
+            Locale("he", "IL") -> "עברית (Hebrew)"
             else -> "English"
         }
     )}
     val languages = listOf(
         "English",
         "中文 (Chinese)",
-//        "Français (France)",
-//        "Español (Spanish)",
-//        "Русский (Russian)",
-//        " (Hebrew)עבריתִִ"
+        "Français (French)",
+        "Español (Spanish)",
+        "Русский (Russian)",
+        "עברית (Hebrew)"
     )
 
     Scaffold(
@@ -55,8 +59,12 @@ fun SettingsLanguagePage(navController: NavController, languageManager: Language
                     Button(
                         onClick = {
                             val newLocale = when (selectedLanguage) {
-                                "English" -> Locale.ENGLISH
-                                "中文 (Chinese)" -> Locale.SIMPLIFIED_CHINESE
+                                "English" -> Locale("en", "US")
+                                "中文 (Chinese)" -> Locale("zh", "CN")
+                                "Français (French)" -> Locale("fr", "FR")
+                                "Español (Spanish)" -> Locale("es", "ES")
+                                "Русский (Russian)" -> Locale("ru", "RU")
+                                "עברית (Hebrew)" -> Locale("he", "IL")
                                 else -> Locale.getDefault()
                             }
                             languageManager.setLocale(context, newLocale)

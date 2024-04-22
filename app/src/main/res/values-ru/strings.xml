@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="NavigationBar_Settings">Настройки</string>
+    <string name="NavigationBar_Memories">Воспоминания</string>
+    <string name="NavigationBar_Calendar">Календарь</string>
+    <string name="NavigationBar_Home">Главная</string>
+
+    <string name="Settings_Settings">Настройки</string>
+    <string name="Settings_Account">Аккаунт</string>
+    <string name="Settings_General">Общие</string>
+    <string name="Settings_About">О приложении</string>
+    <string name="Settings_Profile">Профиль</string>
+    <string name="Settings_Instagram_Binding">Привязка Instagram</string>
+    <string name="Settings_Language">Язык</string>
+    <string name="Settings_Theme">Тема</string>
+    <string name="Settings_Cloud_Sync">Синхронизация с облаком</string>
+    <string name="Settings_Notification">Уведомления</string>
+    <string name="Settings_SelectLanguage">Выберите язык</string>
+    <string name="Settings_Confirm">Подтвердить</string>
+
+    <string name="Home_no_journal_today_create_one">Журналов сегодня нет, создать?</string>
+    <string name="Home_Date">Дата</string>
+    <string name="Home_From">От</string>
+    <string name="Home_To">До</string>
+</resources>

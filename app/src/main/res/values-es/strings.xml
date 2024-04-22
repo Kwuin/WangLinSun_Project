@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="NavigationBar_Settings">Configuraciones</string>
+    <string name="NavigationBar_Memories">Recuerdos</string>
+    <string name="NavigationBar_Calendar">Calendario</string>
+    <string name="NavigationBar_Home">Inicio</string>
+
+    <string name="Settings_Settings">Configuraciones</string>
+    <string name="Settings_Account">Cuenta</string>
+    <string name="Settings_General">General</string>
+    <string name="Settings_About">Acerca de</string>
+    <string name="Settings_Profile">Perfil</string>
+    <string name="Settings_Instagram_Binding">Vinculación de Instagram</string>
+    <string name="Settings_Language">Idioma</string>
+    <string name="Settings_Theme">Tema</string>
+    <string name="Settings_Cloud_Sync">Sincronización de la nube</string>
+    <string name="Settings_Notification">Notificaciones</string>
+    <string name="Settings_SelectLanguage">Seleccionar idioma</string>
+    <string name="Settings_Confirm">Confirmar</string>
+
+    <string name="Home_no_journal_today_create_one">No hay diario hoy, ¿crear uno?</string>
+    <string name="Home_Date">Fecha</string>
+    <string name="Home_From">Desde</string>
+    <string name="Home_To">Hasta</string>
+</resources>
