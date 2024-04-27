@@ -15,8 +15,14 @@
     <string name="Settings_Theme">Тема</string>
     <string name="Settings_Cloud_Sync">Синхронизация с облаком</string>
     <string name="Settings_Notification">Уведомления</string>
-    <string name="Settings_SelectLanguage">Выберите язык</string>
+
     <string name="Settings_Confirm">Подтвердить</string>
+    <string name="Settings_Language_SelectLanguage">Выберите язык</string>
+    <string name="Settings_Theme_SelectTheme">Выбрать тему</string>
+    <string name="Settings_Theme_Pink">Розовый</string>
+    <string name="Settings_Theme_Yellow">Жёлтый</string>
+    <string name="Settings_Theme_Green">Зелёный</string>
+    <string name="Settings_Theme_Blue">Синий</string>
     <string name="Settings_About_Description">Это приложение служит личным блогом и дневником, предназначенным для того, чтобы помочь пользователям фиксировать свои мысли и чувства в любой момент. Оно предлагает платформу, на которой пользователи могут легко документировать свои повседневные переживания, эмоции и взгляды. Кроме того, функция \'Воспоминания\' позволяет пользователям возвращаться и переживать свои прошлые опыты, что делает его ценным инструментом для размышлений и личностного роста.\n\nРазработчики приложения: Yida Wang, Jingkun Lin, Haoxuan Sun</string>
     <string name="Settings_About_Version">Версия 1.0.0</string>
 

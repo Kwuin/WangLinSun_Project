@@ -54,7 +54,7 @@ fun SettingsAboutPage(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewAboutPage() {
+fun PreviewSettingsAboutPage() {
     val navController = rememberNavController()
     SettingsAboutPage(navController)
 }

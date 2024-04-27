@@ -48,7 +48,7 @@ fun SettingsLanguagePage(navController: NavController, languageManager: Language
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.Settings_SelectLanguage)) },
+                title = { Text(stringResource(R.string.Settings_Language_SelectLanguage)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")

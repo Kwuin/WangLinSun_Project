@@ -210,6 +210,7 @@ fun GeneralSection(navController: NavController) {
                     .fillMaxWidth()
                     .height(55.dp)
                     .background(color = Color(0xFFF3EDF7))
+                    .clickable { navController.navigate("settingsTheme") }
             ){
                 Text(
                     text = stringResource(R.string.Settings_Theme),

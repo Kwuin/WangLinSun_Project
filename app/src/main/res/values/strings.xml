@@ -16,10 +16,17 @@
     <string name="Settings_Theme">Theme</string>
     <string name="Settings_Cloud_Sync">Cloud Sync</string>
     <string name="Settings_Notification">Notification</string>
-    <string name="Settings_SelectLanguage">Select Language</string>
+
     <string name="Settings_Confirm">Confirm</string>
+    <string name="Settings_Language_SelectLanguage">Select Language</string>
+    <string name="Settings_Theme_SelectTheme">Select Theme</string>
+    <string name="Settings_Theme_Pink">Pink</string>
+    <string name="Settings_Theme_Yellow">Yellow</string>
+    <string name="Settings_Theme_Green">Green</string>
+    <string name="Settings_Theme_Blue">Blue</string>
     <string name="Settings_About_Description">This application serves as a personal blog and journal, designed to help users capture their thoughts and feelings at any moment. It offers a platform where users can easily document their daily experiences, emotions, and insights. Additionally, the Memories feature enables users to revisit and relive their past experiences, making it a valuable tool for reflection and personal growth. \n\nApp Developer: Yida Wang, Jingkun Wang, Haoxuan Sun</string>
     <string name="Settings_About_Version">Version 1.0.0</string>
+
 
     <string name="Home_no_journal_today_create_one">No journal today, create one?</string>
     <string name="Home_Date">Date</string>
