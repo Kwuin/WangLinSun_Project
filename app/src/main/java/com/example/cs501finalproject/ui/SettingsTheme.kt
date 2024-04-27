@@ -2,6 +2,7 @@ package com.example.cs501finalproject.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -20,11 +21,13 @@ import com.example.cs501finalproject.R
 @Composable
 fun SettingsThemePage(navController: NavController) {
     var selectedThemeState by remember { mutableStateOf(currThemeState) }
+    val colors = getAppThemeColors(currThemeState)
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.Settings_Theme_SelectTheme)) },
+                backgroundColor = colors.primaryVariant,
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -35,9 +38,10 @@ fun SettingsThemePage(navController: NavController) {
                         onClick = {
                             currThemeState = selectedThemeState
 //                            navController.navigateUp()
-                        }
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryVariant)
                     ) {
-                        Text("Confirm")
+                        Text(stringResource(R.string.Settings_Confirm))
                     }
                 }
             )
@@ -61,10 +65,21 @@ fun SettingsThemePage(navController: NavController) {
 @Composable
 fun ThemeOption(themeType: ThemeState, modifier: Modifier, selectedThemeState: ThemeState, onThemeSelected: (ThemeState) -> Unit) {
     val colors = getAppThemeColors(themeType)
+    val interactionSource = remember { MutableInteractionSource() }
+    val themeName = when (themeType) {
+        ThemeState.Pink -> stringResource(R.string.Settings_Theme_Pink)
+        ThemeState.Yellow -> stringResource(R.string.Settings_Theme_Yellow)
+        ThemeState.Green -> stringResource(R.string.Settings_Theme_Green)
+        ThemeState.Blue -> stringResource(R.string.Settings_Theme_Blue)
+    }
     Row(
         modifier = modifier
             .padding(8.dp)
-            .clickable(onClick = { onThemeSelected(themeType) })
+            .clickable(
+                onClick = { onThemeSelected(themeType) },
+                interactionSource = interactionSource,
+                indication = null
+            )
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -76,13 +91,17 @@ fun ThemeOption(themeType: ThemeState, modifier: Modifier, selectedThemeState: T
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = themeType.name,
-                style = MaterialTheme.typography.subtitle1
+                text = themeName,
+                style = MaterialTheme.typography.h6
             )
         }
         RadioButton(
             selected = themeType == selectedThemeState,
-            onClick = { onThemeSelected(themeType) }
+            onClick = { onThemeSelected(themeType) },
+            colors = RadioButtonDefaults.colors(
+                selectedColor = colors.primaryVariant,
+            unselectedColor = colors.onSurface.copy(alpha = 0.6f)
+        )
         )
     }
 }
