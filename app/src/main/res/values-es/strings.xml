@@ -17,6 +17,10 @@
     <string name="Settings_Notification">Notificaciones</string>
     <string name="Settings_SelectLanguage">Seleccionar idioma</string>
     <string name="Settings_Confirm">Confirmar</string>
+    <string name="Settings_About_Description">Esta aplicación sirve como un blog personal y diario, diseñado para ayudar a los usuarios a capturar sus pensamientos y sentimientos en cualquier momento. Ofrece una plataforma donde los usuarios pueden documentar fácilmente sus experiencias diarias, emociones y percepciones. Además, la función \'Memorias\' permite a los usuarios revisitar y revivir sus experiencias pasadas, convirtiéndola en una herramienta valiosa para la reflexión y el crecimiento personal.\n\nDesarrolladores de la aplicación: Yida Wang, Jingkun Wang, Haoxuan Sun</string>
+    <string name="Settings_About_Version">Versión 1.0.0</string>
+
+
 
     <string name="Home_no_journal_today_create_one">No hay diario hoy, ¿crear uno?</string>
     <string name="Home_Date">Fecha</string>

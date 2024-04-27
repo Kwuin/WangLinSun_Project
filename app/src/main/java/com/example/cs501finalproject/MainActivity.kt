@@ -23,6 +23,7 @@ import com.example.cs501finalproject.ui.HomePage
 import com.example.cs501finalproject.ui.MemoriesPage
 import com.example.cs501finalproject.ui.NavigationBar
 import com.example.cs501finalproject.ui.Profile
+import com.example.cs501finalproject.ui.SettingsAboutPage
 import com.example.cs501finalproject.ui.SettingsLanguagePage
 import com.example.cs501finalproject.util.LanguageManager
 import kotlinx.coroutines.CoroutineScope
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                     val languageManager = remember { LanguageManager }
                     SettingsLanguageScreen(navController, languageManager)
                 }
+                composable("settingsAbout") { SettingsAboutScreen(navController) }
                 composable(
                     "blog/{blogId}",
                     arguments = listOf(navArgument("blogId") { type = NavType.StringType })
@@ -140,6 +142,11 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun SettingsLanguageScreen(navController: NavController, languageManager: LanguageManager) {
         SettingsLanguagePage(navController, languageManager)
+    }
+
+    @Composable
+    fun SettingsAboutScreen(navController: NavController) {
+        SettingsAboutPage(navController)
     }
 
 }

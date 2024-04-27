@@ -25,9 +25,9 @@ import com.example.cs501finalproject.R
 fun Profile(navController: NavController) {
         Column(){
             TopSection()
-            AccountSection()
+            AccountSection(navController)
             GeneralSection(navController)
-            AboutSection()
+            AboutSection(navController)
             Spacer(modifier = Modifier.weight(1f))
 
             //NavigationBar(navController)
@@ -94,7 +94,7 @@ fun SettingItem(
 }
 
 @Composable
-fun AccountSection() {
+fun AccountSection(navController: NavController) {
     Surface() {
         Column() {
             Box(
@@ -268,7 +268,7 @@ fun GeneralSection(navController: NavController) {
 }
 
 @Composable
-fun AboutSection(){
+fun AboutSection(navController: NavController){
     Surface() {
         Column() {
             Box(
@@ -297,6 +297,7 @@ fun AboutSection(){
                     .fillMaxWidth()
                     .height(55.dp)
                     .background(color = Color(0xFFF3EDF7))
+                    .clickable { navController.navigate("settingsAbout") }
             ) {
                 Text(
                     text = stringResource(R.string.Settings_About),
