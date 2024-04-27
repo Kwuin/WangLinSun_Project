@@ -19,7 +19,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.LanguageManager
-//import com.example.cs501finalproject.util.ResourceManager
 import java.util.Locale
 
 @Composable

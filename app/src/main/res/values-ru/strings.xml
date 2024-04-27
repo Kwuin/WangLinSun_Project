@@ -17,6 +17,8 @@
     <string name="Settings_Notification">Уведомления</string>
     <string name="Settings_SelectLanguage">Выберите язык</string>
     <string name="Settings_Confirm">Подтвердить</string>
+    <string name="Settings_About_Description">Это приложение служит личным блогом и дневником, предназначенным для того, чтобы помочь пользователям фиксировать свои мысли и чувства в любой момент. Оно предлагает платформу, на которой пользователи могут легко документировать свои повседневные переживания, эмоции и взгляды. Кроме того, функция \'Воспоминания\' позволяет пользователям возвращаться и переживать свои прошлые опыты, что делает его ценным инструментом для размышлений и личностного роста.\n\nРазработчики приложения: Yida Wang, Jingkun Lin, Haoxuan Sun</string>
+    <string name="Settings_About_Version">Версия 1.0.0</string>
 
     <string name="Home_no_journal_today_create_one">Журналов сегодня нет, создать?</string>
     <string name="Home_Date">Дата</string>
