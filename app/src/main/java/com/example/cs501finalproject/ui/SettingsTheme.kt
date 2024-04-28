@@ -27,7 +27,7 @@ fun SettingsThemePage(navController: NavController) {
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.Settings_Theme_SelectTheme)) },
-                backgroundColor = colors.primaryVariant,
+                backgroundColor = colors.secondary,
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -39,13 +39,14 @@ fun SettingsThemePage(navController: NavController) {
                             currThemeState = selectedThemeState
 //                            navController.navigateUp()
                         },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colors.primaryVariant)
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colors.secondaryVariant)
                     ) {
                         Text(stringResource(R.string.Settings_Confirm))
                     }
                 }
             )
-        }
+        },
+        backgroundColor = colors.background
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             val themes = ThemeState.values()
@@ -68,7 +69,7 @@ fun ThemeOption(themeType: ThemeState, modifier: Modifier, selectedThemeState: T
     val interactionSource = remember { MutableInteractionSource() }
     val themeName = when (themeType) {
         ThemeState.Pink -> stringResource(R.string.Settings_Theme_Pink)
-        ThemeState.Yellow -> stringResource(R.string.Settings_Theme_Yellow)
+        ThemeState.Amber -> stringResource(R.string.Settings_Theme_Amber)
         ThemeState.Green -> stringResource(R.string.Settings_Theme_Green)
         ThemeState.Blue -> stringResource(R.string.Settings_Theme_Blue)
     }
@@ -87,7 +88,7 @@ fun ThemeOption(themeType: ThemeState, modifier: Modifier, selectedThemeState: T
             modifier = Modifier
                 .weight(1f)
                 .height(200.dp)
-                .background(colors.primary, RoundedCornerShape(8.dp)),
+                .background(colors.secondary, RoundedCornerShape(8.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -99,7 +100,7 @@ fun ThemeOption(themeType: ThemeState, modifier: Modifier, selectedThemeState: T
             selected = themeType == selectedThemeState,
             onClick = { onThemeSelected(themeType) },
             colors = RadioButtonDefaults.colors(
-                selectedColor = colors.primaryVariant,
+                selectedColor = colors.secondaryVariant,
             unselectedColor = colors.onSurface.copy(alpha = 0.6f)
         )
         )
