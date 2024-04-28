@@ -23,302 +23,456 @@ import com.example.cs501finalproject.R
 
 @Composable
 fun Profile(navController: NavController) {
-        Column(){
-            TopSection()
-            AccountSection(navController)
-            GeneralSection(navController)
-            AboutSection(navController)
-            Spacer(modifier = Modifier.weight(1f))
+    val colors = getAppThemeColors(currThemeState)
 
-            //NavigationBar(navController)
-        }
+    Column(){
+        TopSection(colors)
+        AccountSection(navController, colors)
+        GeneralSection(navController, colors)
+        AboutSection(navController, colors)
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .background(colors.background)
+        )
+    }
 
 }
+//
+//@Composable
+//fun TopSection(colors: Colors) {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .requiredHeight(height = 130.dp)
+//            .background(
+//                brush = Brush.linearGradient(
+//                    0f to colors.primary,
+//                    1f to colors.secondary))
+//    ) {
+//        Text(
+//            text = stringResource(R.string.Settings_Settings),
+//            // M3/title/large
+//            style = TextStyle(
+//                fontSize = 24.sp,
+//                lineHeight = 30.sp,
+//                fontWeight = FontWeight(400),
+//                color = Color(0xFF000000),),
+//            modifier = Modifier
+//                .padding(horizontal = 36.dp, vertical = 20.dp)
+//        )
+//        Text(
+//            text = "Welcome, Tom",
+//            // M3/title/medium
+//            style = TextStyle(
+//                fontSize = 16.sp,
+//                lineHeight = 20.sp,
+//                fontWeight = FontWeight(500),
+//                color = Color(0xFF000000),
+//                letterSpacing = 0.15.sp,),
+//            modifier = Modifier
+//                .padding(horizontal = 36.dp, vertical = 55.dp)
+//        )
+//    }
+//}
+//
+//
+//@Composable
+//fun SettingItem(
+//    label: String,
+//    value: String,
+//    onValueChange: (String) -> Unit
+//) {
+//    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+//        Text(text = label, style = MaterialTheme.typography.subtitle1)
+//        Spacer(modifier = Modifier.height(8.dp))
+//        BasicTextField(
+//            value = TextFieldValue(value),
+//            onValueChange = { newValue ->
+//                onValueChange(newValue.text)
+//            },
+//            textStyle = MaterialTheme.typography.body1,
+//            modifier = Modifier.fillMaxWidth()
+//        )
+//    }
+//}
+//
+//@Composable
+//fun AccountSection(navController: NavController, colors: Colors) {
+//    Surface() {
+//        Column() {
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(20.dp)
+//                    .background(color = colors.primaryVariant),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Text(
+//                    text = stringResource(R.string.Settings_Account),
+//
+//                    // M3/label/large
+//                    style = TextStyle(
+//                        fontSize = 14.sp,
+//                        lineHeight = 20.sp,
+//                        fontWeight = FontWeight(500),
+//                        color = Color(0xFF000000),
+//                        textAlign = TextAlign.Center,
+//                        letterSpacing = 0.1.sp,
+//                    )
+//                )
+//            }
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(55.dp)
+//                    .background(color = colors.background)
+//            ){
+//                Text(
+//                    text = stringResource(R.string.Settings_Profile),
+//                    // M3/title/large
+//                    style = TextStyle(
+//                        fontSize = 22.sp,
+//                        lineHeight = 28.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                    ),
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp, vertical = 14.dp)
+//                )
+//            }
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(55.dp)
+//                    .background(color = colors.background)
+//            ){
+//                Text(
+//                    text = stringResource(R.string.Settings_Instagram_Binding),
+//                    // M3/title/large
+//                    style = TextStyle(
+//                        fontSize = 22.sp,
+//                        lineHeight = 28.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                    ),
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp, vertical = 14.dp)
+//                )
+//            }
+//        }
+//    }
+//}
+//@Composable
+//fun GeneralSection(navController: NavController, colors: Colors) {
+//    Surface() {
+//        Column() {
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(20.dp)
+//                    .background(color = colors.primaryVariant)
+//                ,
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Text(
+//                    text = stringResource(R.string.Settings_General),
+//
+//                    // M3/label/large
+//                    style = TextStyle(
+//                        fontSize = 14.sp,
+//                        lineHeight = 20.sp,
+//                        fontWeight = FontWeight(500),
+//                        color = Color(0xFF000000),
+//                        textAlign = TextAlign.Center,
+//                        letterSpacing = 0.1.sp,
+//                    )
+//                )
+//            }
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(55.dp)
+//                    .background(color = colors.background)
+//                    .clickable { navController.navigate("settingsLanguage") }
+//            ){
+//                Text(
+//                    text = stringResource(R.string.Settings_Language),
+//                    // M3/title/large
+//                    style = TextStyle(
+//                        fontSize = 22.sp,
+//                        lineHeight = 28.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                    ),
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp, vertical = 14.dp)
+//                )
+//            }
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(55.dp)
+//                    .background(color = colors.background)
+//                    .clickable { navController.navigate("settingsTheme") }
+//            ){
+//                Text(
+//                    text = stringResource(R.string.Settings_Theme),
+//                    // M3/title/large
+//                    style = TextStyle(
+//                        fontSize = 22.sp,
+//                        lineHeight = 28.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                    ),
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp, vertical = 14.dp)
+//                )
+//            }
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(55.dp)
+//                    .background(color = colors.background)
+//            ){
+//                Text(
+//                    text = stringResource(R.string.Settings_Cloud_Sync),
+//                    // M3/title/large
+//                    style = TextStyle(
+//                        fontSize = 22.sp,
+//                        lineHeight = 28.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                    ),
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp, vertical = 14.dp)
+//                )
+//            }
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(55.dp)
+//                    .background(color = colors.background)
+//            ){
+//                Text(
+//                    text = stringResource(R.string.Settings_Notification),
+//                    // M3/title/large
+//                    style = TextStyle(
+//                        fontSize = 22.sp,
+//                        lineHeight = 28.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                    ),
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp, vertical = 14.dp)
+//                )
+//            }
+//        }
+//
+//    }
+//}
+//
+//@Composable
+//fun AboutSection(navController: NavController, colors: Colors){
+//    Surface() {
+//        Column() {
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(20.dp)
+//                    .background(color = colors.primaryVariant),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Text(
+//                    text = stringResource(R.string.Settings_About),
+//
+//                    // M3/label/large
+//                    style = TextStyle(
+//                        fontSize = 14.sp,
+//                        lineHeight = 20.sp,
+//                        fontWeight = FontWeight(500),
+//                        color = Color(0xFF000000),
+//                        textAlign = TextAlign.Center,
+//                        letterSpacing = 0.1.sp,
+//                    )
+//                )
+//            }
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(55.dp)
+//                    .background(color = colors.background)
+//                    .clickable { navController.navigate("settingsAbout") }
+//            ) {
+//                Text(
+//                    text = stringResource(R.string.Settings_About),
+//                    // M3/title/large
+//                    style = TextStyle(
+//                        fontSize = 22.sp,
+//                        lineHeight = 28.sp,
+//                        fontWeight = FontWeight(400),
+//                        color = Color(0xFF000000),
+//                    ),
+//                    modifier = Modifier
+//                        .padding(horizontal = 20.dp, vertical = 14.dp)
+//                )
+//            }
+//        }
+//    }
+//}
+//
+//@Preview
+//@Composable
+//fun PreviewProfileSettingsPage() {
+//    Profile(rememberNavController())
+//}
+
 
 @Composable
-fun TopSection() {
+fun TopSection(colors: Colors) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .requiredHeight(height = 130.dp)
+            .requiredHeight(130.dp)
             .background(
                 brush = Brush.linearGradient(
-                    0f to Color(0xffe6d6f0),
-                    1f to Color(0xff9f88ae)))
+                    0f to colors.primary,
+                    1f to colors.secondaryVariant))
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(id = R.string.Settings_Settings),
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Welcome, Tom",  // Assume the name is hardcoded, or could be fetched from a ViewModel
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                )
+            )
+        }
+    }
+}
+
+@Composable
+fun AccountSection(navController: NavController, colors: Colors) {
+    Column {
+        SectionHeader(title = R.string.Settings_Account, colors = colors)
+
+        // Profile
+        SectionItem(navController, colors, R.string.Settings_Profile)
+
+        // Divider Line
+        Divider(color = Color.Gray.copy(alpha = 0.4f), thickness = 1.dp)
+
+        // Instagram Binding
+        SectionItem(navController, colors, R.string.Settings_Instagram_Binding)
+    }
+}
+
+@Composable
+fun GeneralSection(navController: NavController, colors: Colors) {
+    Surface {
+        Column {
+            // General Section Header
+            SectionHeader(title = R.string.Settings_General, colors = colors)
+
+            // Language
+            SectionItem(navController, colors, R.string.Settings_Language, "settingsLanguage")
+
+            // Divider Line
+            Divider(color = Color.Gray.copy(alpha = 0.4f), thickness = 1.dp)
+
+            // Theme
+            SectionItem(navController, colors, R.string.Settings_Theme, "settingsTheme")
+
+            // Divider Line
+            Divider(color = Color.Gray.copy(alpha = 0.4f), thickness = 1.dp)
+
+            // Cloud Sync
+            SectionItem(navController, colors, R.string.Settings_Cloud_Sync)
+
+            // Divider Line
+            Divider(color = Color.Gray.copy(alpha = 0.4f), thickness = 1.dp)
+
+            // Notification
+            SectionItem(navController, colors, R.string.Settings_Notification)
+        }
+    }
+}
+
+@Composable
+fun AboutSection(navController: NavController, colors: Colors) {
+    Surface {
+        Column {
+            // About Section Header
+            SectionHeader(title = R.string.Settings_About, colors = colors)
+
+            // About Info
+            SectionItem(navController, colors, R.string.Settings_About, "settingsAbout")
+
+            // Divider Line
+            Divider(color = Color.Gray.copy(alpha = 0.4f), thickness = 1.dp)
+        }
+    }
+}
+
+@Composable
+fun SectionHeader(title: Int, colors: Colors) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(20.dp)
+            .background(color = colors.secondary),
+        contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(R.string.Settings_Settings),
-            // M3/title/large
+            text = stringResource(id = title),
             style = TextStyle(
-                fontSize = 24.sp,
-                lineHeight = 30.sp,
-                fontWeight = FontWeight(400),
-                color = Color(0xFF000000),),
-            modifier = Modifier
-                .padding(horizontal = 36.dp, vertical = 20.dp)
-        )
-        Text(
-            text = "Welcome, Tom",
-            // M3/title/medium
-            style = TextStyle(
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 lineHeight = 20.sp,
                 fontWeight = FontWeight(500),
-                color = Color(0xFF000000),
-                letterSpacing = 0.15.sp,),
-            modifier = Modifier
-                .padding(horizontal = 36.dp, vertical = 55.dp)
-        )
-    }
-}
-
-
-@Composable
-fun SettingItem(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit
-) {
-    Column(modifier = Modifier.padding(vertical = 8.dp)) {
-        Text(text = label, style = MaterialTheme.typography.subtitle1)
-        Spacer(modifier = Modifier.height(8.dp))
-        BasicTextField(
-            value = TextFieldValue(value),
-            onValueChange = { newValue ->
-                onValueChange(newValue.text)
-            },
-            textStyle = MaterialTheme.typography.body1,
-            modifier = Modifier.fillMaxWidth()
+                textAlign = TextAlign.Center,
+                letterSpacing = 0.1.sp,
+            )
         )
     }
 }
 
 @Composable
-fun AccountSection(navController: NavController) {
-    Surface() {
-        Column() {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(20.dp)
-                    .background(color = Color(0xFFD4CADC)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.Settings_Account),
-
-                    // M3/label/large
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight(500),
-                        color = Color(0xFF000000),
-                        textAlign = TextAlign.Center,
-                        letterSpacing = 0.1.sp,
-                    )
-                )
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(55.dp)
-                    .background(color = Color(0xFFF3EDF7))
-            ){
-                Text(
-                    text = stringResource(R.string.Settings_Profile),
-                    // M3/title/large
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 14.dp)
-                )
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(55.dp)
-                    .background(color = Color(0xFFF3EDF7))
-            ){
-                Text(
-                    text = stringResource(R.string.Settings_Instagram_Binding),
-                    // M3/title/large
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 14.dp)
-                )
-            }
+fun SectionItem(navController: NavController, colors: Colors, labelResourceId: Int, navigationRoute: String? = null) {
+    Column {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(55.dp)
+                .background(color = colors.background)
+                .clickable(enabled = navigationRoute != null) {
+                    navigationRoute?.let { navController.navigate(it) }
+                }
+        ) {
+            Text(
+                text = stringResource(id = labelResourceId),
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    lineHeight = 28.sp,
+                    fontWeight = FontWeight(400)
+                ),
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 15.dp)
+            )
         }
     }
 }
-@Composable
-fun GeneralSection(navController: NavController) {
-    Surface() {
-        Column() {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(20.dp)
-                    .background(color = Color(0xFFD4CADC))
-                ,
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.Settings_General),
 
-                    // M3/label/large
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight(500),
-                        color = Color(0xFF000000),
-                        textAlign = TextAlign.Center,
-                        letterSpacing = 0.1.sp,
-                    )
-                )
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(55.dp)
-                    .background(color = Color(0xFFF3EDF7))
-                    .clickable { navController.navigate("settingsLanguage") }
-            ){
-                Text(
-                    text = stringResource(R.string.Settings_Language),
-                    // M3/title/large
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 14.dp)
-                )
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(55.dp)
-                    .background(color = Color(0xFFF3EDF7))
-            ){
-                Text(
-                    text = stringResource(R.string.Settings_Theme),
-                    // M3/title/large
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 14.dp)
-                )
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(55.dp)
-                    .background(color = Color(0xFFF3EDF7))
-            ){
-                Text(
-                    text = stringResource(R.string.Settings_Cloud_Sync),
-                    // M3/title/large
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 14.dp)
-                )
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(55.dp)
-                    .background(color = Color(0xFFF3EDF7))
-            ){
-                Text(
-                    text = stringResource(R.string.Settings_Notification),
-                    // M3/title/large
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 14.dp)
-                )
-            }
-        }
-
-    }
-}
-
-@Composable
-fun AboutSection(navController: NavController){
-    Surface() {
-        Column() {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(20.dp)
-                    .background(color = Color(0xFFD4CADC)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.Settings_About),
-
-                    // M3/label/large
-                    style = TextStyle(
-                        fontSize = 14.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight(500),
-                        color = Color(0xFF000000),
-                        textAlign = TextAlign.Center,
-                        letterSpacing = 0.1.sp,
-                    )
-                )
-            }
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(55.dp)
-                    .background(color = Color(0xFFF3EDF7))
-                    .clickable { navController.navigate("settingsAbout") }
-            ) {
-                Text(
-                    text = stringResource(R.string.Settings_About),
-                    // M3/title/large
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        lineHeight = 28.sp,
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF000000),
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 14.dp)
-                )
-            }
-        }
-    }
-}
 
 @Preview
 @Composable
 fun PreviewProfileSettingsPage() {
-//    GradientBackground()
     Profile(rememberNavController())
 }

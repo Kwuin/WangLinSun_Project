@@ -23,6 +23,7 @@ import java.util.Locale
 
 @Composable
 fun SettingsLanguagePage(navController: NavController, languageManager: LanguageManager) {
+    val colors = getAppThemeColors(currThemeState)
     val context = LocalContext.current
     val currentLocale = languageManager.getCurrentLocale()
     var selectedLanguage by remember { mutableStateOf(
@@ -48,7 +49,8 @@ fun SettingsLanguagePage(navController: NavController, languageManager: Language
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.Settings_SelectLanguage)) },
+                title = { Text(stringResource(R.string.Settings_Language_SelectLanguage)) },
+                backgroundColor = colors.secondary,
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -68,14 +70,15 @@ fun SettingsLanguagePage(navController: NavController, languageManager: Language
                             }
                             languageManager.setLocale(context, newLocale)
                             //navController.navigateUp()
-
-                        }
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colors.secondaryVariant)
                     ) {
                         Text(stringResource(R.string.Settings_Confirm))
                     }
                 }
             )
-        }
+        },
+        backgroundColor = colors.background
     ) {
         Column(
             modifier = Modifier

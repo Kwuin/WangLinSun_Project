@@ -17,17 +17,23 @@ import com.example.cs501finalproject.R
 
 @Composable
 fun SettingsAboutPage(navController: NavController) {
+    // Fetching current theme colors
+    val colors = getAppThemeColors(currThemeState)
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.Settings_About)) },
+                backgroundColor = colors.secondary,
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
-        }
+        },
+        // Setting background color
+        backgroundColor = colors.background
     ) {
         Column(
             modifier = Modifier
@@ -38,7 +44,7 @@ fun SettingsAboutPage(navController: NavController) {
         ) {
             Text(
                 text = stringResource(R.string.Settings_About_Version),
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Divider()
@@ -54,7 +60,7 @@ fun SettingsAboutPage(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewAboutPage() {
+fun PreviewSettingsAboutPage() {
     val navController = rememberNavController()
     SettingsAboutPage(navController)
 }
