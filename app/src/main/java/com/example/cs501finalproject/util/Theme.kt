@@ -1,10 +1,7 @@
-package com.example.cs501finalproject.ui
+package com.example.cs501finalproject.util
 
 import androidx.compose.material.Colors
 import androidx.compose.material.lightColors
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 
 // Material Design : Color System11
@@ -12,9 +9,6 @@ import androidx.compose.ui.graphics.Color
 
 // Four themes
 enum class ThemeState { Pink, Amber, Green, Blue}
-
-// default theme: pink
-var currThemeState by mutableStateOf(ThemeState.Amber)
 
 fun getAppThemeColors(theme: ThemeState): Colors = when (theme) {
     ThemeState.Pink -> PinkThemeColors
@@ -27,9 +21,9 @@ val exampleThemeColors = lightColors(
     primary = Color(0xFF6200EE), // navigationBar normal;
     primaryVariant = Color(0xFF3700B3), // navigationBar selected;
     secondary = Color(0xFF03DAC6), // topBar;
-    secondaryVariant = Color(0xFF018786), // top bar button;
+    secondaryVariant = Color(0xFF018786), // top bar button; system bar(statusBar, navigationBar)
     background = Color(0xFFFFFFFF), // background for pages;
-    surface = Color(0xFFFFFFFF), // background for card; menu
+    surface = Color(0xFFFFFFFF), // background for card;
     error = Color(0xFFB00020),
     onPrimary = Color(0xFF000000),
     onSecondary = Color(0xFF000000),
