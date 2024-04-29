@@ -17,11 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.R
+import com.example.cs501finalproject.util.ThemeManager
+import com.example.cs501finalproject.util.ThemeManager.currentTheme
+import com.example.cs501finalproject.util.ThemeState
 
 @Composable
 fun SettingsThemePage(navController: NavController) {
-    var selectedThemeState by remember { mutableStateOf(currThemeState) }
-    val colors = getAppThemeColors(currThemeState)
+    var selectedThemeState by remember { mutableStateOf(currentTheme) }
+    val colors = ThemeManager.getAppThemeColors()
 
     Scaffold(
         topBar = {
@@ -36,7 +39,8 @@ fun SettingsThemePage(navController: NavController) {
                 actions = {
                     Button(
                         onClick = {
-                            currThemeState = selectedThemeState
+                            // Update the current theme
+                            ThemeManager.onThemeChanged(selectedThemeState)
 //                            navController.navigateUp()
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colors.secondaryVariant)
@@ -65,14 +69,14 @@ fun SettingsThemePage(navController: NavController) {
 
 @Composable
 fun ThemeOption(themeType: ThemeState, modifier: Modifier, selectedThemeState: ThemeState, onThemeSelected: (ThemeState) -> Unit) {
-    val colors = getAppThemeColors(themeType)
+    val optionColors = ThemeManager.getThemeColors(themeType)
     val interactionSource = remember { MutableInteractionSource() }
-    val themeName = when (themeType) {
-        ThemeState.Pink -> stringResource(R.string.Settings_Theme_Pink)
-        ThemeState.Amber -> stringResource(R.string.Settings_Theme_Amber)
-        ThemeState.Green -> stringResource(R.string.Settings_Theme_Green)
-        ThemeState.Blue -> stringResource(R.string.Settings_Theme_Blue)
-    }
+    val themeName = stringResource(id = when (themeType) {
+        ThemeState.Pink -> R.string.Settings_Theme_Pink
+        ThemeState.Amber -> R.string.Settings_Theme_Amber
+        ThemeState.Green -> R.string.Settings_Theme_Green
+        ThemeState.Blue -> R.string.Settings_Theme_Blue
+    })
     Row(
         modifier = modifier
             .padding(8.dp)
@@ -88,7 +92,7 @@ fun ThemeOption(themeType: ThemeState, modifier: Modifier, selectedThemeState: T
             modifier = Modifier
                 .weight(1f)
                 .height(200.dp)
-                .background(colors.secondary, RoundedCornerShape(8.dp)),
+                .background(optionColors.secondary, RoundedCornerShape(10.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -100,9 +104,9 @@ fun ThemeOption(themeType: ThemeState, modifier: Modifier, selectedThemeState: T
             selected = themeType == selectedThemeState,
             onClick = { onThemeSelected(themeType) },
             colors = RadioButtonDefaults.colors(
-                selectedColor = colors.secondaryVariant,
-            unselectedColor = colors.onSurface.copy(alpha = 0.6f)
-        )
+                selectedColor = optionColors.secondaryVariant,
+                unselectedColor = optionColors.onSurface.copy(alpha = 0.6f)
+            )
         )
     }
 }

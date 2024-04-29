@@ -3,14 +3,13 @@ package com.example.cs501finalproject
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,6 +26,7 @@ import com.example.cs501finalproject.ui.SettingsAboutPage
 import com.example.cs501finalproject.ui.SettingsLanguagePage
 import com.example.cs501finalproject.ui.SettingsThemePage
 import com.example.cs501finalproject.util.LanguageManager
+import com.example.cs501finalproject.util.ThemeManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import java.util.UUID
@@ -45,6 +45,12 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             MainApp(languageManager)
+        }
+
+        updateSystemBarsColor()
+        // Set the listener for theme changes
+        ThemeManager.addThemeChangeListener {
+            updateSystemBarsColor()
         }
     }
 
@@ -85,42 +91,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    @Composable
-//    fun MainApp() {
-//        val navController = rememberNavController()
-//        Scaffold(
-//            bottomBar = { NavigationBar(navController, Modifier) }
-//        ) { innerPadding ->
-//            // 设置 NavHost 与 NavController，并应用由 Scaffold 提供的内边距
-//            NavHost(
-//                navController = navController,
-//                startDestination = "home",
-//                modifier = Modifier.padding(innerPadding)  // 应用内边距确保 NavHost 不与底部栏重叠
-//            ) {
-//                composable("home") { HomeScreen(navController) }
-//                composable("calendar") { CalendarScreen(navController) }
-//                composable("memories") { MemoriesScreen(navController) }
-//                composable("settings") { SettingsScreen(navController) }
-//                composable("settingsLanguage") {
-//                    val languageManager = remember { LanguageManager }
-//                    SettingsLanguageScreen(navController, languageManager)
-//                }
-//                composable(
-//                    "blog/{blogId}",
-//                    arguments = listOf(navArgument("blogId") { type = NavType.StringType })
-//                ) {backStackEntry ->
-//
-//                    val blogIdString = backStackEntry.arguments?.getString("blogId") ?: "defaultBlogId"
-//                    val blogId = UUID.fromString(blogIdString)
-//                    // Pass the blogId to your BlogView
-//                    Log.d("Navigation Bar in", "new/${blogId}")
-//                    BlogView(navController, blogId)
-//                }
-//            }
-//        }
-//    }
-
-
     @Composable
     fun HomeScreen(navController: NavController) {
         HomePage(navController)
@@ -154,6 +124,12 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun SettingsAboutScreen(navController: NavController) {
         SettingsAboutPage(navController)
+    }
+
+    private fun updateSystemBarsColor() {
+        val colors = ThemeManager.getAppThemeColors()
+        window.statusBarColor = colors.secondary.toArgb()
+        window.navigationBarColor = colors.secondary.toArgb()
     }
 
 }

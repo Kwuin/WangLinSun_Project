@@ -14,11 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.R
+import com.example.cs501finalproject.util.ThemeManager
 
 @Composable
 fun SettingsAboutPage(navController: NavController) {
     // Fetching current theme colors
-    val colors = getAppThemeColors(currThemeState)
+    val colors = ThemeManager.getAppThemeColors()
 
     Scaffold(
         topBar = {

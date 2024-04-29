@@ -14,17 +14,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.LanguageManager
+import com.example.cs501finalproject.util.ThemeManager
 
 @Composable
 fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, languageManager: LanguageManager) {
-    val colorTheme = getAppThemeColors(currThemeState)
+    val colors = ThemeManager.getAppThemeColors()
+    val currentLocale by rememberUpdatedState(newValue = languageManager.getCurrentLocale())
+    LaunchedEffect(currentLocale) { }
     val selectedTab = remember { mutableStateOf(0) }
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
@@ -33,13 +34,12 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
             .requiredHeight(height = 70.dp)
             //round corner setting
             //.clip(shape = RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
-//            .background(color = Color(0xfff3edf7))
-            .background(color = colorTheme.primary)
+            .background(color = colors.primary)
     ) {
         HomeNavigation(
             modifier = Modifier.weight(weight = 0.25f),
             selected = selectedTab.value == 0,
-            colorTheme = colorTheme,
+            colorTheme = colors,
             onClick = {
                 selectedTab.value = 0
                 navController.navigate("home")
@@ -48,7 +48,7 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
         CalendarNavigation(
             modifier = Modifier.weight(weight = 0.25f),
             selected = selectedTab.value == 1,
-            colorTheme = colorTheme,
+            colorTheme = colors,
             onClick = {
                 selectedTab.value = 1
                 navController.navigate("calendar")
@@ -56,7 +56,7 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
         MemoriesNavigation(
             modifier = Modifier.weight(weight = 0.25f),
             selected = selectedTab.value == 2,
-            colorTheme = colorTheme,
+            colorTheme = colors,
             onClick = {
                 selectedTab.value = 2
                 navController.navigate("memories")
@@ -64,7 +64,7 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
         SettingsNavigation(
             modifier = Modifier.weight(weight = 0.25f),
             selected = selectedTab.value == 3,
-            colorTheme = colorTheme,
+            colorTheme = colors,
             onClick = {
                 selectedTab.value = 3
                 navController.navigate("settings")
@@ -101,7 +101,7 @@ fun NavigationItem(modifier: Modifier, isSelected: Boolean, onClick: () -> Unit,
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .background(if (isSelected) colorTheme.primaryVariant else Color.Transparent)
-            .padding(top = 6.dp, bottom = 6.dp)
+            .padding(top = 6.dp, bottom = 8.dp )
     ) {
         Row(
             horizontalArrangement = Arrangement.Center,
