@@ -23,8 +23,13 @@
     <string name="Settings_Theme_Amber">Янтарь</string>
     <string name="Settings_Theme_Green">Зелёный</string>
     <string name="Settings_Theme_Blue">Синий</string>
+    <string name="Settings_Notifications_NotificationSetting">Настройки уведомлений</string>
+    <string name="Settings_Notifications_EnableNotifications">Включить уведомления</string>
+    <string name="Settings_Notifications_NotificationTime">Время уведомления: %1$s</string>
+    <string name="Settings_Notifications_ChangeTime">Изменить время</string>
     <string name="Settings_About_Description">Это приложение служит личным блогом и дневником, предназначенным для того, чтобы помочь пользователям фиксировать свои мысли и чувства в любой момент. Оно предлагает платформу, на которой пользователи могут легко документировать свои повседневные переживания, эмоции и взгляды. Кроме того, функция \'Воспоминания\' позволяет пользователям возвращаться и переживать свои прошлые опыты, что делает его ценным инструментом для размышлений и личностного роста.\n\nРазработчики приложения: Yida Wang, Jingkun Lin, Haoxuan Sun</string>
     <string name="Settings_About_Version">Версия 1.0.0</string>
+
 
     <string name="Home_no_journal_today_create_one">Журналов сегодня нет, создать?</string>
     <string name="Home_Date">Дата</string>
