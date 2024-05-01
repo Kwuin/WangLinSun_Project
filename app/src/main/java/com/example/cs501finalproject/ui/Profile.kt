@@ -116,7 +116,7 @@ fun GeneralSection(navController: NavController, colors: Colors) {
             Divider(color = Color.Gray.copy(alpha = 0.4f), thickness = 1.dp)
 
             // Notification
-            SectionItem(navController, colors, R.string.Settings_Notification)
+            SectionItem(navController, colors, R.string.Settings_Notification, "settingsNotifications")
         }
     }
 }

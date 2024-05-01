@@ -24,6 +24,7 @@ import com.example.cs501finalproject.ui.NavigationBar
 import com.example.cs501finalproject.ui.Profile
 import com.example.cs501finalproject.ui.SettingsAboutPage
 import com.example.cs501finalproject.ui.SettingsLanguagePage
+import com.example.cs501finalproject.ui.SettingsNotificationsPage
 import com.example.cs501finalproject.ui.SettingsThemePage
 import com.example.cs501finalproject.util.LanguageManager
 import com.example.cs501finalproject.util.ThemeManager
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                     SettingsLanguageScreen(navController, languageManager)
                 }
                 composable("settingsTheme") { SettingsThemeScreen(navController) }
+                composable("settingsNotifications") { SettingsNotificationsScreen(navController) }
                 composable("settingsAbout") { SettingsAboutScreen(navController) }
                 composable(
                     "blog/{blogId}",
@@ -119,6 +121,11 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun SettingsThemeScreen(navController: NavController) {
         SettingsThemePage(navController)
+    }
+
+    @Composable
+    fun SettingsNotificationsScreen(navController: NavController) {
+        SettingsNotificationsPage(navController)
     }
 
     @Composable
