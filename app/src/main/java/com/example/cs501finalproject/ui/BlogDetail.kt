@@ -134,7 +134,7 @@ fun BlogBody(blog: Blog
 }
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog) {
-    var text by remember { mutableStateOf("Hello") }
+    var text by remember { mutableStateOf(blog.text) }
     val blogDetailViewModel = HomeBlogDetailViewModel(blog.id)
     TextField(
         value = text,

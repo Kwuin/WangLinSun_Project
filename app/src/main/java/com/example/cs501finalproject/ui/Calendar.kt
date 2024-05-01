@@ -2,11 +2,13 @@ package com.example.cs501finalproject.ui
 
 import androidx.compose.material.*
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,11 +16,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,9 +51,11 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
-import com.example.cs501finalproject.HomeBlogListViewModel
+import com.example.cs501finalproject.CalenderBlogListViewModel
 import kotlinx.coroutines.launch
 import java.util.UUID
+import com.google.android.material.snackbar.Snackbar
+
 
 
 sealed class Screen(val route: String) {
@@ -69,6 +77,8 @@ fun CalendarPage(navController: NavController){
 
 
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -168,23 +178,25 @@ fun CalendarPage(navController: NavController){
             Box(Modifier.align(Alignment.CenterHorizontally) // Center-align this item
             ){
                 Button(onClick = {
-                    val newBlog = Blog(
-                        title = "My new blog today",
-                        date = selectedDate!!,
-                        text = "",
-                        photoFileName = "",
-                        location = "",
-                        emoji = ""
-                    )
-                    val blogListViewModel = HomeBlogListViewModel()
-                    coroutineScope.launch {
-                        blogListViewModel.addBlog(newBlog)
-                        Log.d("Navigation", "new/${newBlog.id}")
-                        //val blog = blogListViewModel.getBlog(newBlog.id)
-                        navController.navigate("blog/${newBlog.id}")
+                    if (selectedDate == null){
+                        Toast.makeText(context, "You haven't selected a date!", Toast.LENGTH_LONG).show()
+                    }else {
+                        val newBlog = Blog(
+                            title = "My new blog today",
+                            date = selectedDate!!,
+                            text = "",
+                            photoFileName = "",
+                            location = "",
+                            emoji = ""
+                        )
+                        val blogListViewModel = CalenderBlogListViewModel(selectedDate!!)
+                        coroutineScope.launch {
+                            blogListViewModel.addBlog(newBlog)
+                            Log.d("Navigation", "new/${newBlog.id}")
+                            //val blog = blogListViewModel.getBlog(newBlog.id)
+                            navController.navigate("blog/${newBlog.id}")
+                        }
                     }
-
-
                 },
                     Modifier
                         .width(144.dp)
@@ -214,6 +226,26 @@ fun CalendarPage(navController: NavController){
                 color = Color.LightGray,
                 thickness = 2.dp
             )
+            val calenderBlogListViewModel = selectedDate?.let { CalenderBlogListViewModel(it) }
+            val blogs = calenderBlogListViewModel?.blogs?.collectAsState(initial = emptyList())
+
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.weight(3f)
+            ) {
+                 if (calenderBlogListViewModel != null) {
+                     if (blogs != null) {
+                         items(blogs.value) { blog ->
+                             CalendarBlogListItem(blog){
+                                 navController.navigate("blog/${blog.id}")
+                             }
+                         }
+                     }
+                }
+            }
+
+
 
         }
     }
@@ -283,3 +315,55 @@ fun Checkcalendar() {
 
     CalendarPage(rememberNavController())
 }
+
+
+@Composable
+fun CalendarBlogListItem(item: Blog, onClick: () -> Unit) {
+
+//    navigation("blog/$item.id")
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(8.dp)
+        ,
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        // 时间和地点信息区 (左侧 3/10)
+        Column(
+            modifier = Modifier.weight(3f)
+            ,
+            ) {
+            Text(
+                text = item.date.toString(),
+                fontSize = 16.sp,
+                modifier = Modifier.padding(bottom = 4.dp),
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = item.location,
+                fontSize = 14.sp,
+                color = Color.Gray,
+                textAlign = TextAlign.Center
+            )
+        }
+        // 博客标题 (中间 6/10)
+        Text(
+            text = item.title,
+            fontSize = 16.sp,
+            modifier = Modifier
+                .weight(6f)
+                .padding(horizontal = 8.dp),
+            textAlign = TextAlign.Start
+        )
+        // 表情符号 (右侧 1/10)
+        Text(
+            text = item.emoji,
+            fontSize = 24.sp,
+            modifier = Modifier.weight(1f),
+            textAlign = TextAlign.Center
+        )
+    }
+}
+

@@ -3,6 +3,7 @@ package com.example.cs501finalproject.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -219,14 +220,19 @@ fun HomeListCarousel(modifier: Modifier) {
 
 @Composable
 fun HomeListItem(item: EventItem) {
+
 //    navigation("blog/$item.id")
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+        ,
         verticalAlignment = Alignment.CenterVertically
+
     ) {
         // 时间和地点信息区 (左侧 3/10)
         Column(
-            modifier = Modifier.weight(3f),
+            modifier = Modifier.weight(3f)
+                ,
+
         ) {
             Text(
                 text = item.date,
