@@ -15,8 +15,16 @@
     <string name="Settings_Theme">主题</string>
     <string name="Settings_Cloud_Sync">云端同步</string>
     <string name="Settings_Notification">通知</string>
-    <string name="Settings_SelectLanguage">选择语言</string>
+
     <string name="Settings_Confirm">确认</string>
+    <string name="Settings_Language_SelectLanguage">选择语言</string>
+    <string name="Settings_Theme_SelectTheme">选择主题</string>
+    <string name="Settings_Theme_Pink">粉色</string>
+    <string name="Settings_Theme_Amber">琥珀色</string>
+    <string name="Settings_Theme_Green">绿色</string>
+    <string name="Settings_Theme_Blue">蓝色</string>
+    <string name="Settings_About_Description">这款应用程序是个人博客工具，旨在帮助用户随时捕捉他们的想法和情感。此软件提供了一个平台，用户可以轻松记录他们的日常经历、情绪和见解。此外，\'回忆\' 功能使用户能够重温并体验他们的过去经历，使其成为反思和个人成长的宝贵工具。\n\n应用开发者: Yida Wang, Jingkun Wang, Haoxuan Sun</string>
+    <string name="Settings_About_Version">版本 1.0.0</string>
 
     <string name="Home_no_journal_today_create_one">新建今天的第一份日志？</string>
     <string name="Home_Date">日期</string>

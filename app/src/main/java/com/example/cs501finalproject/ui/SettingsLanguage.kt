@@ -1,6 +1,5 @@
 package com.example.cs501finalproject.ui
 
-import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -11,19 +10,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.LanguageManager
-//import com.example.cs501finalproject.util.ResourceManager
+import com.example.cs501finalproject.util.ThemeManager
 import java.util.Locale
 
 @Composable
 fun SettingsLanguagePage(navController: NavController, languageManager: LanguageManager) {
+    val colors = ThemeManager.getAppThemeColors()
     val context = LocalContext.current
     val currentLocale = languageManager.getCurrentLocale()
     var selectedLanguage by remember { mutableStateOf(
@@ -49,7 +46,8 @@ fun SettingsLanguagePage(navController: NavController, languageManager: Language
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.Settings_SelectLanguage)) },
+                title = { Text(stringResource(R.string.Settings_Language_SelectLanguage)) },
+                backgroundColor = colors.secondary,
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -69,14 +67,15 @@ fun SettingsLanguagePage(navController: NavController, languageManager: Language
                             }
                             languageManager.setLocale(context, newLocale)
                             //navController.navigateUp()
-
-                        }
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colors.secondaryVariant)
                     ) {
                         Text(stringResource(R.string.Settings_Confirm))
                     }
                 }
             )
-        }
+        },
+        backgroundColor = colors.background
     ) {
         Column(
             modifier = Modifier

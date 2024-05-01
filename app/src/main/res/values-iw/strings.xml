@@ -15,8 +15,19 @@
     <string name="Settings_Theme">ערכת נושא</string>
     <string name="Settings_Cloud_Sync">סינכרון ענן</string>
     <string name="Settings_Notification">התראות</string>
-    <string name="Settings_SelectLanguage">בחר שפה</string>
+
     <string name="Settings_Confirm">אשר</string>
+    <string name="Settings_Language_SelectLanguage">בחר שפה</string>
+    <string name="Settings_Theme_SelectTheme">בחר ערכת נושא</string>
+    <string name="Settings_Theme_Pink">ורוד</string>
+    <string name="Settings_Theme_Amber">ענבר</string>
+    <string name="Settings_Theme_Green">ירוק</string>
+    <string name="Settings_Theme_Blue">כחול</string>
+    <string name="Settings_About_Description">היישום הזה משמש כבלוג אישי ויומן, עם מטרה לעזור למשתמשים לתעד את מחשבותיהם ורגשותיהם בכל רגע. הוא מציע פלטפורמה שבה משתמשים יכולים לתעד בקלות את חוויותיהם היומיומיות, רגשות ותובנות. כמו כן, התכונה \'זיכרונות\' מאפשרת למשתמשים לבקר ולחוות מחדש את חוויותיהם העבר, הופכת אותה לכלי יקר ערך להתבוננות ולגדילה אישית.\n\nמפתחי האפליקציה: Yida Wang, Jingkun Wang, Haoxuan Sun</string>
+    <string name="Settings_About_Version">גרסה 1.0.0</string>
+
+
+
 
     <string name="Home_no_journal_today_create_one">אין יומן היום, ליצור אחד?</string>
     <string name="Home_Date">תאריך</string>

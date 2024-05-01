@@ -14,17 +14,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.LanguageManager
+import com.example.cs501finalproject.util.ThemeManager
 
 @Composable
 fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, languageManager: LanguageManager) {
-    val currentLocale = languageManager.getCurrentLocale()
+    val colors = ThemeManager.getAppThemeColors()
+    val currentLocale by rememberUpdatedState(newValue = languageManager.getCurrentLocale())
+    LaunchedEffect(currentLocale) { }
     val selectedTab = remember { mutableStateOf(0) }
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start),
@@ -33,18 +34,21 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
             .requiredHeight(height = 70.dp)
             //round corner setting
             //.clip(shape = RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
-            .background(color = Color(0xfff3edf7))
+            .background(color = colors.primary)
     ) {
         HomeNavigation(
             modifier = Modifier.weight(weight = 0.25f),
             selected = selectedTab.value == 0,
+            colorTheme = colors,
             onClick = {
                 selectedTab.value = 0
                 navController.navigate("home")
-            })
+            }
+        )
         CalendarNavigation(
             modifier = Modifier.weight(weight = 0.25f),
             selected = selectedTab.value == 1,
+            colorTheme = colors,
             onClick = {
                 selectedTab.value = 1
                 navController.navigate("calendar")
@@ -52,6 +56,7 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
         MemoriesNavigation(
             modifier = Modifier.weight(weight = 0.25f),
             selected = selectedTab.value == 2,
+            colorTheme = colors,
             onClick = {
                 selectedTab.value = 2
                 navController.navigate("memories")
@@ -59,6 +64,7 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
         SettingsNavigation(
             modifier = Modifier.weight(weight = 0.25f),
             selected = selectedTab.value == 3,
+            colorTheme = colors,
             onClick = {
                 selectedTab.value = 3
                 navController.navigate("settings")
@@ -67,39 +73,35 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
 }
 
 @Composable
-fun HomeNavigation(modifier: Modifier = Modifier, selected: Boolean, onClick: () -> Unit) {
-    NavigationItem(modifier, selected, onClick, R.drawable.ic_home,
-        stringResource(R.string.NavigationBar_Home))
+fun HomeNavigation(modifier: Modifier = Modifier, selected: Boolean, colorTheme: Colors, onClick: () -> Unit) {
+    NavigationItem(modifier, selected, onClick, R.drawable.ic_home, stringResource(R.string.NavigationBar_Home), colorTheme)
 }
 
 @Composable
-fun CalendarNavigation(modifier: Modifier = Modifier, selected: Boolean, onClick: () -> Unit) {
-    NavigationItem(modifier, selected, onClick, R.drawable.ic_calendar,
-        stringResource(R.string.NavigationBar_Calendar))
+fun CalendarNavigation(modifier: Modifier = Modifier, selected: Boolean, colorTheme: Colors, onClick: () -> Unit) {
+    NavigationItem(modifier, selected, onClick, R.drawable.ic_calendar, stringResource(R.string.NavigationBar_Calendar), colorTheme)
 }
 
 @Composable
-fun MemoriesNavigation(modifier: Modifier = Modifier, selected: Boolean, onClick: () -> Unit) {
-    NavigationItem(modifier, selected, onClick, R.drawable.ic_memories,
-        stringResource(R.string.NavigationBar_Memories))
+fun MemoriesNavigation(modifier: Modifier = Modifier, selected: Boolean, colorTheme: Colors, onClick: () -> Unit) {
+    NavigationItem(modifier, selected, onClick, R.drawable.ic_memories, stringResource(R.string.NavigationBar_Memories), colorTheme)
 }
 
 @Composable
-fun SettingsNavigation(modifier: Modifier = Modifier, selected: Boolean, onClick: () -> Unit) {
-    NavigationItem(modifier, selected, onClick, R.drawable.ic_settings,
-        stringResource(R.string.NavigationBar_Settings))
+fun SettingsNavigation(modifier: Modifier = Modifier, selected: Boolean, colorTheme: Colors, onClick: () -> Unit) {
+    NavigationItem(modifier, selected, onClick, R.drawable.ic_settings, stringResource(R.string.NavigationBar_Settings), colorTheme)
 }
 
 @Composable
-fun NavigationItem(modifier: Modifier, isSelected: Boolean, onClick: () -> Unit, iconId: Int, title: String) {
+fun NavigationItem(modifier: Modifier, isSelected: Boolean, onClick: () -> Unit, iconId: Int, title: String, colorTheme: Colors) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .background(if (isSelected) Color(0xFFE8DEF8) else Color.Transparent)
-            .padding(top = 6.dp, bottom = 6.dp)
+            .background(if (isSelected) colorTheme.primaryVariant else Color.Transparent)
+            .padding(top = 6.dp, bottom = 8.dp )
     ) {
         Row(
             horizontalArrangement = Arrangement.Center,
