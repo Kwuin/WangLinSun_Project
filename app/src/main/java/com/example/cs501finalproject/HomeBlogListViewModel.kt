@@ -11,9 +11,21 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
 
-class HomeBlogListViewModel(startDate: LocalDate, endDate: LocalDate) : ViewModel() {
+class HomeBlogListViewModel() : ViewModel() {
     private val blogRepository = BlogRepository.get()
+    private val _startDate = MutableStateFlow(LocalDate.now().withDayOfYear(1))
+    private val _endDate = MutableStateFlow(LocalDate.now())
 
+    val startDate: StateFlow<LocalDate> = _startDate
+    val endDate: StateFlow<LocalDate> = _endDate
+
+    fun updateStartDate(date: LocalDate) {
+        _startDate.value = date
+    }
+
+    fun updateEndDate(date: LocalDate) {
+        _endDate.value = date
+    }
     private val _blogs: MutableStateFlow<List<Blog>> = MutableStateFlow(emptyList())
 
     val blogs: StateFlow<List<Blog>>
@@ -21,7 +33,7 @@ class HomeBlogListViewModel(startDate: LocalDate, endDate: LocalDate) : ViewMode
 
     init {
         viewModelScope.launch {
-            blogRepository.getBlogOnTimeWindow(startDate, endDate).collect {
+            blogRepository.getBlogOnTimeWindow(startDate.value, endDate.value).collect {
                 _blogs.value = it
             }
         }
@@ -29,13 +41,5 @@ class HomeBlogListViewModel(startDate: LocalDate, endDate: LocalDate) : ViewMode
 
     suspend fun addBlog(blog: Blog) {
         blogRepository.addBlog(blog)
-    }
-}
-class HomeBlogListViewModelFactory(
-    private val startDate: LocalDate,
-    private val endDate: LocalDate
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return HomeBlogListViewModel(startDate, endDate) as T
     }
 }
