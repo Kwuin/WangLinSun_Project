@@ -47,6 +47,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.graphics.asImageBitmap
 import android.net.Uri
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import com.example.cs501finalproject.R
 import java.io.InputStream
@@ -126,7 +127,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ImagePickerAndUploader()
+
                 Spacer(modifier = Modifier.width(16.dp))
                 Icon(
                     imageVector = Icons.Default.Share,
@@ -164,6 +165,7 @@ fun BackButton(navController: NavController) {
 fun BlogBody(blog: Blog
 ) {
     SimpleFilledTextFieldSample(blog, Modifier)
+    ImagePickerAndDisplay()
 }
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
@@ -208,44 +210,42 @@ fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
 
 
 @Composable
-fun ImagePickerAndUploader() {
+fun ImagePickerAndDisplay() {
+    val imageUri = remember { mutableStateOf<Uri?>(null) }
+    ImagePickerButton(imageUri)
+    DisplaySelectedImage(imageUri.value)
+}
+
+@Composable
+fun ImagePickerButton(imageUri: MutableState<Uri?>) {
     val context = LocalContext.current
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-    val imagePickerLauncher = rememberLauncherForActivityResult(
+    val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            imageUri = uri
-        }
+        onResult = { uri: Uri? -> imageUri.value = uri }
     )
 
-    // Icon button to trigger image picker
-    IconShapedButton(
-        iconPainter = painterResource(id = R.drawable.ic_camera),  // Ensure you have 'icon_image' in your drawables
-        onClick = { imagePickerLauncher.launch("image/*") }
-    )
+    Button(onClick = { launcher.launch("image/*") }) {
+        Text("Pick Image")
+    }
+}
 
-    // Display the selected image
-    imageUri?.let { uri ->
-        val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+@Composable
+fun DisplaySelectedImage(uri: Uri?) {
+    val context = LocalContext.current
+    uri?.let {
+        val inputStream: InputStream? = context.contentResolver.openInputStream(it)
         val bitmap = inputStream?.use { android.graphics.BitmapFactory.decodeStream(it).asImageBitmap() }
-        bitmap?.let {
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Displaying the image at a different position or size
             Image(
-                bitmap = it,
+                bitmap = bitmap ?: throw IllegalStateException("Couldn't decode the Bitmap."),
                 contentDescription = "Selected Image",
-                modifier = androidx.compose.ui.Modifier.size(200.dp)  // Adjust size as necessary
+                modifier = Modifier.size(200.dp).align(Alignment.Center),
+                contentScale = ContentScale.Fit
             )
         }
     }
 }
 
 
-@Composable
-fun IconShapedButton(iconPainter: Painter, onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        Icon(
-            painter = iconPainter,
-            contentDescription = "Select Image",
-            modifier = androidx.compose.ui.Modifier.size(50.dp)  // Set the size of the icon
-        )
-    }
-}
