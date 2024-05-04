@@ -26,4 +26,6 @@ interface BlogDao {
 
     @Insert
     suspend fun addBlog(blog: Blog)
+    @Query("SELECT * FROM Blog WHERE date>=(:startDate) and date<=(:endDate)")
+    fun getBlogOnTimeWindow(startDate: LocalDate, endDate: LocalDate): Flow<List<Blog>>
 }
