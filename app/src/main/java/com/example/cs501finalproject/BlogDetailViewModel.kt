@@ -1,5 +1,6 @@
 package com.example.cs501finalproject
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -24,14 +25,16 @@ class HomeBlogDetailViewModel(blogId: UUID) : ViewModel() {
     }
 
     fun updateBlog(onUpdate: (Blog) -> Blog) {
+        Log.d("updateBlog in view model", "onupdate")
         _blog.update { oldBlog ->
             oldBlog?.let { onUpdate(it) }
         }
+        blog.value?.let { blogRepository.updateBlog(it) }
     }
 
     override fun onCleared() {
         super.onCleared()
-        blog.value?.let { blogRepository.updateBlog(it) }
+        Log.d("updateBlog in view model", "updated")
     }
 }
 
