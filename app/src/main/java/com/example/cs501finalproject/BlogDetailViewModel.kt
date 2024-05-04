@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 
-class HomeBlogDetailViewModel(blogId: UUID) : ViewModel() {
+class BlogDetailViewModel(blogId: UUID) : ViewModel() {
     private val blogRepository = BlogRepository.get()
 
     private val _blog: MutableStateFlow<Blog?> = MutableStateFlow(null)
@@ -42,6 +42,7 @@ class BlogDetailViewModelFactory(
     private val blogId: UUID
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return HomeBlogDetailViewModel(blogId) as T
+        return BlogDetailViewModel(blogId) as T
     }
 }
+
