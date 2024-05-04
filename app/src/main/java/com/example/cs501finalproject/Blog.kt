@@ -10,11 +10,11 @@ import java.util.UUID
 data class Blog(
 
     @PrimaryKey val id: UUID = UUID.randomUUID(),
-    val title: String,
+    var title: String,
     val date: LocalDate,
     var text: String = "",
-    val photoFileName: String? = null,
+    var photoFileName: String? = null,
     val location: String = "",
-    val emoji: String = ""
+    var emoji: String = ""
 )
 
