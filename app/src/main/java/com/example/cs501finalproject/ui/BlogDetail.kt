@@ -33,8 +33,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cs501finalproject.Blog
 import com.example.cs501finalproject.BlogDetailViewModelFactory
-import com.example.cs501finalproject.HomeBlogDetailViewModel
-import com.example.cs501finalproject.HomeBlogListViewModel
+import com.example.cs501finalproject.BlogListViewModel
+import com.example.cs501finalproject.BlogDetailViewModel
 import java.util.UUID
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
@@ -54,12 +54,7 @@ import java.io.InputStream
 
 @Composable
 fun BlogView(navController: NavController, id: UUID) {
-    val blogListViewModel = HomeBlogListViewModel()
-    val factory = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return HomeBlogDetailViewModel(id) as T
-        }
-    }
+    val blogListViewModel = BlogListViewModel()
     val blogState = remember { mutableStateOf<Blog?>(null) }
 
     LaunchedEffect(id) {
@@ -88,11 +83,9 @@ fun BlogView(navController: NavController, id: UUID) {
 
 }
 
-
-
 @Composable
 fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
-    val blogDetailViewModel : HomeBlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
+    val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
     var text by remember { mutableStateOf(blog.title) }
     Box(
         modifier = Modifier
@@ -170,7 +163,7 @@ fun BlogBody(blog: Blog
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
     var text by remember { mutableStateOf(blog.text) }
-    val blogDetailViewModel : HomeBlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
+    val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
     TextField(
         modifier = modifier.fillMaxWidth().background(Color.Transparent),
         value = text,
