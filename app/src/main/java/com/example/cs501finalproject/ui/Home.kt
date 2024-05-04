@@ -49,7 +49,8 @@ fun getSampleDataHome(): List<EventItem> {
     val numericString = "1"
     val uuid = UUID.nameUUIDFromBytes(numericString.toByteArray())
     return listOf(
-        EventItem(1, "2024/04/17", "New Zealand", "NZ holiday", R.drawable.blog_boulders, "\u2708"),
+        EventItem(1, "2024/04/17", "New Zealand", "NZ holiday",
+            R.drawable.ic_dashboard_black_24dp, "\u2708"),
         EventItem(2, "2024/04/16", "Boston", "Busy Day", R.drawable.blog_example, "\uD83D\uDCBB"),
         EventItem(null, "2024/04/13", "Australia", "Spring Break", R.drawable.blog_nature_window, "\uD83D\uDE0A"),
         EventItem(null, "2024/04/10", "New Zealand", "NZ holiday", R.drawable.blog_boulders, "\uD83D\uDE0A"),
