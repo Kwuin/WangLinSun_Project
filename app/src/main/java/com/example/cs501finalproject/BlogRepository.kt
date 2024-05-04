@@ -36,6 +36,7 @@ class BlogRepository private constructor(
 
     suspend fun getBlogOnDay(date: LocalDate): Flow<List<Blog>> = database.blogDao().getBlogOnDay(date)
     suspend fun getBlog(id: UUID): Blog = database.blogDao().getBlog(id)
+    suspend fun getBlogOnTimeWindow(startDate: LocalDate, endDate: LocalDate): Flow<List<Blog>> = database.blogDao().getBlogOnTimeWindow(startDate, endDate)
 
     fun updateBlog(blog: Blog) {
         coroutineScope.launch {
