@@ -176,17 +176,18 @@ fun showDatePickerDialog(isFromDate: Boolean, fromDate: String, toDate: String, 
             onDateRangeSelected(fromDateState.value, toDateState.value)
             // log the newly selected dates
             Log.d("SelectedDates", "From: ${fromDateState.value}, To: ${toDateState.value}")
+            val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+            val startDate = LocalDate.parse(fromDateState.value, formatter)
+            val endDate = LocalDate.parse(toDateState.value, formatter)
+            viewModel.updateStartDate(startDate)
+            viewModel.updateEndDate(endDate)
         },
         initialYear,
         initialMonth,
         initialDay
     )
     datePickerDialog.show()
-    val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-    val startDate = LocalDate.parse(fromDateState.value, formatter)
-    val endtDate = LocalDate.parse(toDateState.value, formatter)
-    viewModel.updateStartDate(startDate)
-    viewModel.updateEndDate(endtDate)
+
 }
 
 
