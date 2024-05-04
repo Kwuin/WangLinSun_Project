@@ -1,5 +1,8 @@
 package com.example.cs501finalproject.ui
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,10 +15,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -28,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.R
+import com.example.cs501finalproject.util.ThemeManager
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -35,11 +41,14 @@ import java.util.UUID
 
 @Composable
 fun HomePage(navController: NavController) {
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         TopBanner()
-        SearchFilter()
+        SearchFilter(onDateRangeSelected =
+            { fromDate, toDate -> /* Your logic here */ },
+            context = LocalContext.current,)
         HomePictureCarousel(modifier = Modifier.weight(2f))
         HomeListCarousel(modifier = Modifier.weight(3f))
     }
@@ -105,56 +114,73 @@ fun TopBanner() {
     }
 }
 
+
 @Composable
-fun SearchFilter() {
-    var fromDate by remember { mutableStateOf("2024/01/01") }
-    var toDate by remember { mutableStateOf("2024/04/18") }
+fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit, context: Context) {
+    val fromDateState = remember { mutableStateOf("2024/01/01") }
+    val toDateState = remember {
+        val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
+        mutableStateOf(currentDate)
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text(stringResource(R.string.Home_From), modifier = Modifier.padding(end = 8.dp), color = Color.Black)
-        OutlinedTextField(
-            value = fromDate,
-            onValueChange = { fromDate = it },
-            placeholder = { Text(text = stringResource(R.string.Home_Date), color = Color.Gray)},
-            singleLine = true,
+        Text("From", modifier = Modifier.padding(end = 8.dp), color = Color.Black)
+        Button(
+            onClick = { showDatePickerDialog(true, fromDateState.value, toDateState.value, onDateRangeSelected, context, fromDateState, toDateState) },
             modifier = Modifier
                 .width(120.dp)
-                .height(46.dp)
-                .border(1.dp, Color.Magenta, shape = RoundedCornerShape(4.dp)),
-            textStyle = TextStyle(color = Color.Black),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                focusedBorderColor = Color.Magenta,
-                unfocusedBorderColor = Color(0xFFD4CADC),
-                cursorColor = Color.Blue
-            )
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(stringResource(R.string.Home_To), modifier = Modifier.padding(end = 8.dp), color = Color.Black)
-        OutlinedTextField(
-            value = toDate,
-            onValueChange = { toDate = it },
-            placeholder = { Text(text = stringResource(R.string.Home_Date), color = Color.Gray)},
-            singleLine = true,
+                .height(46.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
+        ) {
+            Text(fromDateState.value, color = Color.Black)
+        }
+        Text("To", modifier = Modifier.padding(end = 8.dp), color = Color.Black)
+        Button(
+            onClick = { showDatePickerDialog(false, fromDateState.value, toDateState.value, onDateRangeSelected, context, fromDateState, toDateState) },
             modifier = Modifier
                 .width(120.dp)
-                .height(46.dp)
-                .border(1.dp, Color.Magenta, shape = RoundedCornerShape(4.dp)),
-            textStyle = TextStyle(color = Color.Black),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                focusedBorderColor = Color.Magenta,
-                unfocusedBorderColor = Color(0xFFD4CADC),
-                cursorColor = Color.Blue
-            )
-        )
+                .height(46.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
+        ) {
+            Text(toDateState.value, color = Color.Black)
+        }
     }
 }
+
+
+fun showDatePickerDialog(isFromDate: Boolean, fromDate: String, toDate: String, onDateRangeSelected: (fromDate: String, toDate: String) -> Unit, context: Context, fromDateState: MutableState<String>, toDateState: MutableState<String>) {
+    val selectedDate = if (isFromDate) fromDate else toDate
+    val initialYear = selectedDate.substring(0, 4).toInt()
+    val initialMonth = selectedDate.substring(5, 7).toInt() - 1
+    val initialDay = selectedDate.substring(8, 10).toInt()
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _, year, monthOfYear, dayOfMonth ->
+            val formattedDate = String.format("%04d/%02d/%02d", year, monthOfYear + 1, dayOfMonth)
+            if (isFromDate) {
+                fromDateState.value = formattedDate
+            } else {
+                toDateState.value = formattedDate
+            }
+            onDateRangeSelected(fromDateState.value, toDateState.value)
+            // log the newly selected dates
+            Log.d("SelectedDates", "From: ${fromDateState.value}, To: ${toDateState.value}")
+        },
+        initialYear,
+        initialMonth,
+        initialDay
+    )
+    datePickerDialog.show()
+}
+
+
 
 @Composable
 fun HomePictureCarousel(modifier: Modifier = Modifier) {
