@@ -37,14 +37,16 @@ import androidx.compose.ui.graphics.asImageBitmap
 import android.net.Uri
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import com.example.cs501finalproject.R
+import com.example.cs501finalproject.util.ImageViewModel
 import java.io.InputStream
 
 @Composable
 fun BlogView(navController: NavController, id: UUID) {
     val blogListViewModel = BlogListViewModel()
     val blogState = remember { mutableStateOf<Blog?>(null) }
-
+    val imageViewModel: ImageViewModel = viewModel()
     LaunchedEffect(id) {
         blogState.value = blogListViewModel.getBlog(id)
     }
@@ -74,6 +76,7 @@ fun BlogView(navController: NavController, id: UUID) {
 @Composable
 fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
+    val imageViewModel: ImageViewModel = viewModel()
     var text by remember { mutableStateOf(blog.title) }
     Box(
         modifier = Modifier
@@ -94,7 +97,9 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
             BackButton(navController)
             TextField(
                 value = text,
-                modifier = modifier.width(200.dp).background(Color.Transparent),
+                modifier = modifier
+                    .width(200.dp)
+                    .background(Color.Transparent),
                 onValueChange = { text = it
                     blog.title = it
                     blogDetailViewModel.updateBlog { currentBlog ->
@@ -108,7 +113,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
+                ImagePickerButton(imageViewModel)
                 Spacer(modifier = Modifier.width(16.dp))
                 Icon(
                     imageVector = Icons.Default.Share,
@@ -145,15 +150,19 @@ fun BackButton(navController: NavController) {
 @Composable
 fun BlogBody(blog: Blog
 ) {
+    val imageViewModel: ImageViewModel = viewModel()
     SimpleFilledTextFieldSample(blog, Modifier)
-    ImagePickerAndDisplay()
+
+    ImageDisplay(imageViewModel)
 }
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
     var text by remember { mutableStateOf(blog.text) }
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
     TextField(
-        modifier = modifier.fillMaxWidth().background(Color.Transparent),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color.Transparent),
         value = text,
         onValueChange = { text = it
             blog.text = it
@@ -188,45 +197,39 @@ fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
 //    }
 //
 //}
-
-
 @Composable
-fun ImagePickerAndDisplay() {
-    val imageUri = remember { mutableStateOf<Uri?>(null) }
-    ImagePickerButton(imageUri)
-    DisplaySelectedImage(imageUri.value)
-}
-
-@Composable
-fun ImagePickerButton(imageUri: MutableState<Uri?>) {
+fun ImagePickerButton(viewModel: ImageViewModel) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? -> imageUri.value = uri }
+        onResult = { uri: Uri? ->
+            viewModel.setImageUri(uri)
+        }
     )
 
     Button(onClick = { launcher.launch("image/*") }) {
-        Text("Pick Image")
+        Icon(
+            painter = painterResource(id = R.drawable.ic_camera),
+            contentDescription = "Select Image"
+        )
     }
 }
 
 @Composable
-fun DisplaySelectedImage(uri: Uri?) {
-    val context = LocalContext.current
+fun ImageDisplay(viewModel: ImageViewModel) {
+    val uri by viewModel.imageUri.collectAsState()
+
     uri?.let {
-        val inputStream: InputStream? = context.contentResolver.openInputStream(it)
+        val inputStream: InputStream? = LocalContext.current.contentResolver.openInputStream(it)
         val bitmap = inputStream?.use { android.graphics.BitmapFactory.decodeStream(it).asImageBitmap() }
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            // Displaying the image at a different position or size
-            Image(
-                bitmap = bitmap ?: throw IllegalStateException("Couldn't decode the Bitmap."),
-                contentDescription = "Selected Image",
-                modifier = Modifier.size(200.dp).align(Alignment.Center),
-                contentScale = ContentScale.Fit
-            )
-        }
+        Image(
+            bitmap = bitmap ?: throw IllegalStateException("Couldn't decode the Bitmap."),
+            contentDescription = "Selected Image",
+            modifier = Modifier.fillMaxWidth() // Adjust the display size as necessary
+        )
     }
 }
+
 
 
