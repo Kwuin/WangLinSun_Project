@@ -162,6 +162,7 @@ fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
     TextField(
         modifier = modifier
             .fillMaxWidth()
+            .height(300.dp)
             .background(Color.Transparent),
         value = text,
         onValueChange = { text = it
