@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
@@ -36,10 +38,13 @@ class HomeBlogListViewModel() : ViewModel() {
 
     init {
         viewModelScope.launch {
-            blogRepository.getBlogOnTimeWindow(startDate.value, endDate.value).collect {
-                _blogs.value = it
+            combine(_startDate, _endDate) { start, end ->
+                Pair(start, end)
+            }.distinctUntilChanged().collect { (start, end) ->
+                blogRepository.getBlogOnTimeWindow(start, end).collect {
+                    _blogs.value = it
+                }
             }
-            Log.d("HomeBlogListViewModel", "List updated")
         }
     }
 
