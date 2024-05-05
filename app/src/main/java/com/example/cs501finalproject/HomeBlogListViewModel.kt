@@ -38,9 +38,10 @@ class HomeBlogListViewModel() : ViewModel() {
 
     init {
         viewModelScope.launch {
-            combine(_startDate, _endDate) { start, end ->
+            combine(startDate, endDate) { start, end ->
                 Pair(start, end)
             }.distinctUntilChanged().collect { (start, end) ->
+                Log.d("HomeBlogListVM", "update list")
                 blogRepository.getBlogOnTimeWindow(start, end).collect {
                     _blogs.value = it
                 }
