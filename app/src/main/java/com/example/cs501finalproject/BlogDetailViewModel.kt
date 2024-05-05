@@ -26,10 +26,13 @@ class BlogDetailViewModel(blogId: UUID) : ViewModel() {
 
     fun updateBlog(onUpdate: (Blog) -> Blog) {
         Log.d("updateBlog in view model", "onupdate")
-        _blog.update { oldBlog ->
-            oldBlog?.let { onUpdate(it) }
+
+        viewModelScope.launch {
+            _blog.update { oldBlog ->
+                oldBlog?.let { onUpdate(it) }
+            }
+            blog.value?.let { blogRepository.updateBlog(it) }
         }
-        blog.value?.let { blogRepository.updateBlog(it) }
     }
 
     override fun onCleared() {

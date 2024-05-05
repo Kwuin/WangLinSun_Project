@@ -1,4 +1,7 @@
 package com.example.cs501finalproject.ui
+import android.Manifest
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -35,12 +38,21 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.graphics.asImageBitmap
 import android.net.Uri
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.core.net.toUri
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.ImageViewModel
+import java.io.FileNotFoundException
 import java.io.InputStream
+import android.graphics.Bitmap
+
+import androidx.compose.material.Button
+
+import java.io.File
+import java.io.FileOutputStream
 
 @Composable
 fun BlogView(navController: NavController, id: UUID) {
@@ -113,7 +125,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ImagePickerButton(imageViewModel)
+                ImagePickerButton(blogDetailViewModel, blog)
                 Spacer(modifier = Modifier.width(16.dp))
                 Icon(
                     imageVector = Icons.Default.Share,
@@ -151,15 +163,18 @@ fun BackButton(navController: NavController) {
 fun BlogBody(blog: Blog
 ) {
     val imageViewModel: ImageViewModel = viewModel()
+    val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
+
     SimpleFilledTextFieldSample(blog, Modifier)
 
-    ImageDisplay(imageViewModel)
+    ImageDisplay(blogDetailViewModel)
 }
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
-    var text by remember { mutableStateOf(blog.text) }
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
-    TextField(
+
+    var text by remember { mutableStateOf(blog.text) }
+      TextField(
         modifier = modifier
             .fillMaxWidth()
             .height(300.dp)
@@ -198,17 +213,23 @@ fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
 //    }
 //
 //}
+
+
 @Composable
-fun ImagePickerButton(viewModel: ImageViewModel) {
+fun ImagePickerButton(blogDetailViewModel: BlogDetailViewModel, blog:Blog) {
     val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(
+    val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
-            viewModel.setImageUri(uri)
+            uri?.let {
+                // Save the selected image to internal storage and update the blog object
+                val photoFile = saveImageToLocalFile(uri, context, "photo_${blog.id}.jpg")
+                blogDetailViewModel.updateBlog { blog -> blog.copy(photoFileName = photoFile?.absolutePath) }
+            }
         }
     )
 
-    Button(onClick = { launcher.launch("image/*") }) {
+    Button(onClick = { pickImageLauncher.launch("image/*") }) {
         Icon(
             painter = painterResource(id = R.drawable.ic_camera),
             contentDescription = "Select Image"
@@ -216,19 +237,30 @@ fun ImagePickerButton(viewModel: ImageViewModel) {
     }
 }
 
+fun saveImageToLocalFile(uri: Uri, context: Context, fileName: String): File? {
+    val inputStream = context.contentResolver.openInputStream(uri)
+    val bitmap = BitmapFactory.decodeStream(inputStream)
+    val outputFile = File(context.filesDir, fileName)
+    val fileOutputStream = FileOutputStream(outputFile)
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+    fileOutputStream.close()
+    return outputFile
+}
+
 @Composable
-fun ImageDisplay(viewModel: ImageViewModel) {
-    val uri by viewModel.imageUri.collectAsState()
+fun ImageDisplay(blogDetailViewModel: BlogDetailViewModel) {
+    val blog by blogDetailViewModel.blog.collectAsState()
 
-    uri?.let {
-        val inputStream: InputStream? = LocalContext.current.contentResolver.openInputStream(it)
-        val bitmap = inputStream?.use { android.graphics.BitmapFactory.decodeStream(it).asImageBitmap() }
-
-        Image(
-            bitmap = bitmap ?: throw IllegalStateException("Couldn't decode the Bitmap."),
-            contentDescription = "Selected Image",
-            modifier = Modifier.fillMaxWidth() // Adjust the display size as necessary
-        )
+    blog?.photoFileName?.let { fileName ->
+        val imageFile = File(fileName)
+        if (imageFile.exists()) {
+            val bitmap = BitmapFactory.decodeFile(fileName).asImageBitmap()
+            Image(
+                bitmap = bitmap,
+                contentDescription = "Selected Image",
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
