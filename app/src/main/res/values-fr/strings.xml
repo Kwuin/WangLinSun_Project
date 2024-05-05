@@ -27,7 +27,7 @@
     <string name="Settings_Notifications_EnableNotifications">Activer les notifications</string>
     <string name="Settings_Notifications_NotificationTime">Heure de notification: %1$s</string>
     <string name="Settings_Notifications_ChangeTime">Changer l\'heure</string>
-    <string name="Settings_About_Description">Cette application sert de blog personnel et de journal, conçue pour aider les utilisateurs à capturer leurs pensées et sentiments à tout moment. Elle offre une plateforme où les utilisateurs peuvent facilement documenter leurs expériences quotidiennes, émotions et réflexions. De plus, la fonctionnalité \'Souvenirs\' permet aux utilisateurs de revisiter et revivre leurs expériences passées, en faisant un outil précieux pour la réflexion et le développement personnel. \n\n Développeurs de l\'application : Yida Wang, Jingkun Wang, Haoxuan Sun</string>
+    <string name="Settings_About_Description">Cette application sert de blog personnel et de journal, conçue pour aider les utilisateurs à capturer leurs pensées et sentiments à tout moment. Elle offre une plateforme où les utilisateurs peuvent facilement documenter leurs expériences quotidiennes, émotions et réflexions. De plus, la fonctionnalité \'Souvenirs\' permet aux utilisateurs de revisiter et revivre leurs expériences passées, en faisant un outil précieux pour la réflexion et le développement personnel. \n\n Développeurs de l\'application : Yida Wang, Jingkun Lin, Haoxuan Sun</string>
     <string name="Settings_About_Version">Version 1.0.0</string>
 
 
