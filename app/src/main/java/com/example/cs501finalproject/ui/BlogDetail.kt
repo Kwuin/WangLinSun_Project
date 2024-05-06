@@ -48,8 +48,11 @@ import com.example.cs501finalproject.util.ImageViewModel
 import java.io.FileNotFoundException
 import java.io.InputStream
 import android.graphics.Bitmap
+import androidx.compose.foundation.text.KeyboardOptions
 
 import androidx.compose.material.Button
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 
 import java.io.File
 import java.io.FileOutputStream
@@ -127,11 +130,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
             ) {
                 ImagePickerButton(blogDetailViewModel, blog)
                 Spacer(modifier = Modifier.width(16.dp))
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = "Share",
-                    modifier = Modifier.size(24.dp)
-                )
+                EmojiTextField(blogDetailViewModel, blog)
                 Spacer(modifier = Modifier.width(16.dp))
                 Icon(
                     imageVector = Icons.Default.Settings,
@@ -265,4 +264,33 @@ fun ImageDisplay(blogDetailViewModel: BlogDetailViewModel) {
 }
 
 
+@Composable
+fun EmojiTextField(blogDetailViewModel: BlogDetailViewModel, blog: Blog) {
+    var text by remember { mutableStateOf("\uD83D\uDE04") }
+
+    TextField(
+        value = text,
+        onValueChange = { newValue ->
+            if (newValue.isEmpty() || isEmoji(newValue)) {
+                text = newValue
+            }
+            blogDetailViewModel.updateBlog { currentBlog ->
+                currentBlog.emoji = newValue
+                currentBlog.copy()
+            }
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences,
+            keyboardType = KeyboardType.Text,
+            autoCorrect = true
+        )
+    )
+}
+
+fun isEmoji(input: String): Boolean {
+    return input.all {
+        Character.getType(it).toByte() == Character.SURROGATE.toByte() ||
+                Character.getType(it).toByte() == Character.OTHER_SYMBOL.toByte()
+    }
+}
 
