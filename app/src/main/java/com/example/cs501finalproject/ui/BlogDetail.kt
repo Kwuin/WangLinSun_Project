@@ -115,6 +115,13 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
                 modifier = modifier
                     .width(200.dp)
                     .background(Color.Transparent),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent, // Transparent background
+                    cursorColor = Color.Black, // Customize the cursor color if needed
+                    focusedIndicatorColor = Color.Transparent, // Hide the indicator below the text field when focused
+                    unfocusedIndicatorColor = Color.Transparent, // Hide the indicator when not focused
+                    textColor = Color.Black // Adjust text color as needed
+                ),
                 onValueChange = { text = it
                     blog.title = it
                     blogDetailViewModel.updateBlog { currentBlog ->
@@ -179,6 +186,13 @@ fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
             .height(300.dp)
             .background(Color.Transparent),
         value = text,
+          colors = TextFieldDefaults.textFieldColors(
+              backgroundColor = Color.Transparent, // Transparent background
+              cursorColor = Color.Black, // Customize the cursor color if needed
+              focusedIndicatorColor = Color.Transparent, // Hide the indicator below the text field when focused
+              unfocusedIndicatorColor = Color.Transparent, // Hide the indicator when not focused
+              textColor = Color.Black // Adjust text color as needed
+        ),
         onValueChange = { text = it
             blog.text = it
             blogDetailViewModel.updateBlog { currentBlog ->
@@ -270,6 +284,13 @@ fun EmojiTextField(blogDetailViewModel: BlogDetailViewModel, blog: Blog) {
 
     TextField(
         value = text,
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = Color.Transparent, // Transparent background
+            cursorColor = Color.Black, // Customize the cursor color if needed
+            focusedIndicatorColor = Color.Transparent, // Hide the indicator below the text field when focused
+            unfocusedIndicatorColor = Color.Transparent, // Hide the indicator when not focused
+            textColor = Color.Black // Adjust text color as needed
+        ),
         onValueChange = { newValue ->
             if (newValue.isEmpty() || isEmoji(newValue)) {
                 text = newValue
