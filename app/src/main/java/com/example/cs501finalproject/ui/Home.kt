@@ -36,25 +36,27 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.BlogDetailViewModel
 import com.example.cs501finalproject.BlogDetailViewModelFactory
 import com.example.cs501finalproject.CalenderBlogListViewModel
+import com.example.cs501finalproject.DateViewModel
 import com.example.cs501finalproject.HomeBlogListViewModel
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.ThemeManager
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 
 @Composable
-fun HomePage(navController: NavController) {
-    val startDate = remember {mutableStateOf(LocalDate.now().withDayOfYear(1))}
-    val endDate = remember {mutableStateOf(LocalDate.now())}
+fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
+    val startDate = dateViewModel.startDate.collectAsState(initial = LocalDate.now().withDayOfYear(1))
+    val endDate =  dateViewModel.startDate.collectAsState(initial = LocalDate.now())
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         TopBanner()
         SearchFilter(onDateRangeSelected =
             { fromDate, toDate -> /* Your logic here */ },
-            context = LocalContext.current, startDate, endDate)
+            context = LocalContext.current, dateViewModel)
         HomePictureCarousel(modifier = Modifier.weight(2f))
         HomeListCarousel(navController, modifier = Modifier.weight(3f), startDate, endDate)
     }
@@ -123,14 +125,15 @@ fun TopBanner() {
 
 
 @Composable
-fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit, context: Context, startDate: MutableState<LocalDate>, endDate: MutableState<LocalDate>) {
+fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit, context: Context, dateViewModel: DateViewModel) {
+    val startDate = dateViewModel.startDate.collectAsState(initial = LocalDate.now().withDayOfYear(1))
+    val endDate =  dateViewModel.startDate.collectAsState(initial = LocalDate.now())
+
     val fromDateState = remember { mutableStateOf( startDate.value.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) )}
     val toDateState = remember {
         val currentDate = endDate.value.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
         mutableStateOf(currentDate)
     }
-
-
 
     Row(
         modifier = Modifier
@@ -141,7 +144,7 @@ fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit
     ) {
         Text("From", modifier = Modifier.padding(end = 8.dp), color = Color.Black)
         Button(
-            onClick = { showDatePickerDialog(true, fromDateState.value, toDateState.value, onDateRangeSelected, context, fromDateState, toDateState, startDate, endDate) },
+            onClick = { showDatePickerDialog(true, fromDateState.value, toDateState.value, onDateRangeSelected, context, fromDateState, toDateState, dateViewModel) },
             modifier = Modifier
                 .width(120.dp)
                 .height(46.dp),
@@ -151,7 +154,7 @@ fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit
         }
         Text("To", modifier = Modifier.padding(end = 8.dp), color = Color.Black)
         Button(
-            onClick = { showDatePickerDialog(false, fromDateState.value, toDateState.value, onDateRangeSelected, context, fromDateState, toDateState, startDate, endDate) },
+            onClick = { showDatePickerDialog(false, fromDateState.value, toDateState.value, onDateRangeSelected, context, fromDateState, toDateState, dateViewModel) },
             modifier = Modifier
                 .width(120.dp)
                 .height(46.dp),
@@ -163,7 +166,7 @@ fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit
 }
 
 
-fun showDatePickerDialog(isFromDate: Boolean, fromDate: String, toDate: String, onDateRangeSelected: (fromDate: String, toDate: String) -> Unit, context: Context, fromDateState: MutableState<String>, toDateState: MutableState<String>, startDate: MutableState<LocalDate>, endDate: MutableState<LocalDate>) {
+fun showDatePickerDialog(isFromDate: Boolean, fromDate: String, toDate: String, onDateRangeSelected: (fromDate: String, toDate: String) -> Unit, context: Context, fromDateState: MutableState<String>, toDateState: MutableState<String>, dateViewModel: DateViewModel) {
     val selectedDate = if (isFromDate) fromDate else toDate
     val initialYear = selectedDate.substring(0, 4).toInt()
     val initialMonth = selectedDate.substring(5, 7).toInt() - 1
@@ -182,8 +185,8 @@ fun showDatePickerDialog(isFromDate: Boolean, fromDate: String, toDate: String, 
             // log the newly selected dates
             Log.d("SelectedDates", "From: ${fromDateState.value}, To: ${toDateState.value}")
             val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            startDate.value = LocalDate.parse(fromDateState.value, formatter)
-            endDate.value = LocalDate.parse(toDateState.value, formatter)
+            dateViewModel.updateStartDate(LocalDate.parse(fromDateState.value, formatter))
+            dateViewModel.updateEndDate(LocalDate.parse(toDateState.value, formatter))
         },
         initialYear,
         initialMonth,
@@ -244,7 +247,7 @@ fun HomePictureItem(item: EventItem, modifier: Modifier) {
 }
 
 @Composable
-fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate: MutableState<LocalDate>, endDate: MutableState<LocalDate>) {
+fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate: State<LocalDate>, endDate: State<LocalDate>) {
     val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
     val blogs = homeBlogListViewModel.blogs.collectAsState(initial = emptyList())
 
@@ -313,5 +316,5 @@ fun HomeListItem(item: EventItem) {
 @Preview
 @Composable
 fun PreviewHomePage() {
-    HomePage(rememberNavController())
+    HomePage(rememberNavController(), DateViewModel())
 }
