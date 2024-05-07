@@ -48,8 +48,6 @@ import java.util.UUID
 
 @Composable
 fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
-    val startDate = dateViewModel.startDate.collectAsState(initial = LocalDate.now().withDayOfYear(1))
-    val endDate =  dateViewModel.startDate.collectAsState(initial = LocalDate.now())
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -58,7 +56,7 @@ fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
             { fromDate, toDate -> /* Your logic here */ },
             context = LocalContext.current, dateViewModel)
         HomePictureCarousel(modifier = Modifier.weight(2f))
-        HomeListCarousel(navController, modifier = Modifier.weight(3f), startDate, endDate)
+        HomeListCarousel(navController, modifier = Modifier.weight(3f), dateViewModel)
     }
 }
 
@@ -247,7 +245,9 @@ fun HomePictureItem(item: EventItem, modifier: Modifier) {
 }
 
 @Composable
-fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate: State<LocalDate>, endDate: State<LocalDate>) {
+fun HomeListCarousel(navController: NavController, modifier: Modifier, dateViewModel: DateViewModel) {
+    val startDate = dateViewModel.startDate.collectAsState(initial = LocalDate.now().withDayOfYear(1))
+    val endDate =  dateViewModel.startDate.collectAsState(initial = LocalDate.now())
     val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
     val blogs = homeBlogListViewModel.blogs.collectAsState(initial = emptyList())
 
@@ -265,53 +265,6 @@ fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate
 }
 
 
-@Composable
-fun HomeListItem(item: EventItem) {
-
-//    navigation("blog/$item.id")
-    Row(
-        modifier = Modifier.fillMaxWidth()
-        ,
-        verticalAlignment = Alignment.CenterVertically
-
-    ) {
-        // 时间和地点信息区 (左侧 3/10)
-        Column(
-            modifier = Modifier.weight(3f)
-                ,
-
-        ) {
-            Text(
-                text = item.date,
-                fontSize = 16.sp,
-                modifier = Modifier.padding(bottom = 4.dp),
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = item.location,
-                fontSize = 14.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center
-            )
-        }
-        // 博客标题 (中间 6/10)
-        Text(
-            text = item.title,
-            fontSize = 16.sp,
-            modifier = Modifier
-                .weight(6f)
-                .padding(horizontal = 8.dp),
-            textAlign = TextAlign.Start
-        )
-        // 表情符号 (右侧 1/10)
-        Text(
-            text = item.emoji,
-            fontSize = 24.sp,
-            modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center
-        )
-    }
-}
 
 @Preview
 @Composable
