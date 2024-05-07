@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
@@ -22,6 +23,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavController
 import com.example.cs501finalproject.Blog
+import com.example.cs501finalproject.HomeBlogListViewModel
+import com.example.cs501finalproject.MemoryBlogListDayAgoViewModel
+import com.example.cs501finalproject.MemoryBlogListMonthAgoViewModel
+import com.example.cs501finalproject.MemoryBlogListWeekAgoViewModel
+import com.example.cs501finalproject.MemoryBlogListYearAgoViewModel
 import com.example.cs501finalproject.R
 import java.util.UUID
 
@@ -46,30 +52,6 @@ fun getSampleData(): List<EventItem> {
         EventItem(null, "1 Year Ago", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614")
     )
 }
-fun getSampleDataDay(): List<EventItem> {
-    return listOf(
-        EventItem(null, "2024/04/17", "New Zealand", "NZ holiday", R.drawable.blog_example, "\uD83E\uDD29")
-    )
-}
-fun getSampleDataWeek(): List<EventItem> {
-    return listOf(
-        EventItem(null, "2024/04/11", "New Zealand", "NZ holiday", R.drawable.blog_boulders, "\uD83E\uDD29"),
-        EventItem(null, "2024/04/11", "New Zealand", "NZ holiday", R.drawable.blog_example, "\uD83D\uDCBB")
-    )
-}
-fun getSampleDataMonth(): List<EventItem> {
-    return listOf(
-        EventItem(null, "2024/03/18", "Australia", "Spring Break", R.drawable.blog_nature_window, "\u2708"),
-    )
-}
-fun getSampleDataYear(): List<EventItem> {
-    return listOf(
-        EventItem(null, "2023/04/18", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614"),
-        EventItem(null, "2023/04/18", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614"),
-        EventItem(null, "2023/04/18", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614")
-    )
-}
-
 
 @Composable
 fun MemoriesPage(navController: NavController){
@@ -78,13 +60,13 @@ fun MemoriesPage(navController: NavController){
     ) {
         MemoriesPictureCarousel(modifier = Modifier.weight(3f))
         Banner("A day Ago")
-        MemoriesListCarouselDay(modifier = Modifier.weight(1f))
+        MemoriesListCarouselDay(navController, modifier = Modifier.weight(1f))
         Banner("A Week Ago")
-        MemoriesListCarouselWeek(modifier = Modifier.weight(1f))
+        MemoriesListCarouselWeek(navController, modifier = Modifier.weight(1f))
         Banner("A Month Ago")
-        MemoriesListCarouselMonth(modifier = Modifier.weight(1f))
+        MemoriesListCarouselMonth(navController, modifier = Modifier.weight(1f))
         Banner("A Year Ago")
-        MemoriesListCarouselYear(modifier = Modifier.weight(1f))
+        MemoriesListCarouselYear(navController, modifier = Modifier.weight(1f))
     }
 }
 
@@ -161,128 +143,74 @@ fun MemoryPictureItem(item: EventItem, modifier: Modifier) {
 
 
 @Composable
-fun MemoriesListCarouselDay(modifier: Modifier) {
+fun MemoriesListCarouselDay(navController: NavController, modifier: Modifier) {
+    val blogListViewModel = MemoryBlogListDayAgoViewModel()
+    val blogs = blogListViewModel.blogs.collectAsState(initial = emptyList())
+
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
     ) {
-        items(getSampleDataDay()) { item ->
-            MemoryListItem(item)
+        items(blogs.value) { blog ->
+            CalendarBlogListItem(blog){
+                navController.navigate("blog/${blog.id}")
+            }
         }
     }
 }
 @Composable
-fun MemoriesListCarouselWeek(modifier: Modifier) {
+fun MemoriesListCarouselWeek(navController: NavController, modifier: Modifier) {
+    val blogListViewModel = MemoryBlogListWeekAgoViewModel()
+    val blogs = blogListViewModel.blogs.collectAsState(initial = emptyList())
+
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
     ) {
-        items(getSampleDataWeek()) { item ->
-            MemoryListItem(item)
+        items(blogs.value) { blog ->
+            CalendarBlogListItem(blog){
+                navController.navigate("blog/${blog.id}")
+            }
         }
     }
 }
 @Composable
-fun MemoriesListCarouselMonth(modifier: Modifier) {
+fun MemoriesListCarouselMonth(navController: NavController, modifier: Modifier) {
+    val blogListViewModel = MemoryBlogListMonthAgoViewModel()
+    val blogs = blogListViewModel.blogs.collectAsState(initial = emptyList())
+
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
     ) {
-        items(getSampleDataMonth()) { item ->
-            MemoryListItem(item)
+        items(blogs.value) { blog ->
+            CalendarBlogListItem(blog){
+                navController.navigate("blog/${blog.id}")
+            }
         }
     }
 }
 @Composable
-fun MemoriesListCarouselYear(modifier: Modifier) {
+fun MemoriesListCarouselYear(navController: NavController, modifier: Modifier) {
+    val blogListViewModel = MemoryBlogListYearAgoViewModel()
+    val blogs = blogListViewModel.blogs.collectAsState(initial = emptyList())
+
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
     ) {
-        items(getSampleDataYear()) { item ->
-            MemoryListItem(item)
+        items(blogs.value) { blog ->
+            CalendarBlogListItem(blog){
+                navController.navigate("blog/${blog.id}")
+            }
         }
     }
 }
 
-@Composable
-fun MemoryListItem(item: EventItem) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 时间和地点信息区 (左侧 3/10)
-        Column(
-            modifier = Modifier.weight(3f),
-        ) {
-            Text(
-                text = item.date,
-                fontSize = 16.sp,
-                modifier = Modifier.padding(bottom = 4.dp),
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = item.location,
-                fontSize = 14.sp,
-                color = Color.Gray,
-                textAlign = TextAlign.Center
-            )
-        }
-        // 博客标题 (中间 6/10)
-        Text(
-            text = item.title,
-            fontSize = 16.sp,
-            modifier = Modifier
-                .weight(6f)
-                .padding(horizontal = 8.dp),
-            textAlign = TextAlign.Start
-        )
-        // 表情符号 (右侧 1/10)
-        Text(
-            text = item.emoji,
-            fontSize = 24.sp,
-            modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-//@Composable
-//fun Memorylist(title: String, blogs: List<EventItem>){
-//    Column(){
-//        Box(
-//            Modifier
-//                .fillMaxWidth()
-//                .height(20.dp)
-//                .background(color = Color(0xFFD4CADC))
-//            ,
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Text(
-//                text = title,
-//
-//                style = TextStyle(
-//                    fontSize = 14.sp,
-//                    lineHeight = 20.sp,
-//                    fontWeight = FontWeight(500),
-//                    color = Color(0xFF000000),
-//                    textAlign = TextAlign.Center,
-//                    letterSpacing = 0.1.sp,
-//                )
-//            )
-//        }
-//        LazyColumn(){
-//            items(blogs){blog ->
-//                MemoryListItem(item = blog)
-//            }
-//        }
-//
-//    }
-//}
 
 @Preview
 @Composable
