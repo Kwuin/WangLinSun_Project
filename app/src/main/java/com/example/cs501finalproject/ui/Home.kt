@@ -48,6 +48,9 @@ import java.util.UUID
 
 @Composable
 fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
+    val startDate = dateViewModel.startDate.collectAsState(initial = LocalDate.now().withDayOfYear(1))
+    val endDate =  dateViewModel.startDate.collectAsState(initial = LocalDate.now())
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -56,7 +59,7 @@ fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
             { fromDate, toDate -> /* Your logic here */ },
             context = LocalContext.current, dateViewModel)
         HomePictureCarousel(modifier = Modifier.weight(2f))
-        HomeListCarousel(navController, modifier = Modifier.weight(3f), dateViewModel)
+        HomeListCarousel(navController, modifier = Modifier.weight(3f), startDate, endDate)
     }
 }
 
@@ -245,10 +248,8 @@ fun HomePictureItem(item: EventItem, modifier: Modifier) {
 }
 
 @Composable
-fun HomeListCarousel(navController: NavController, modifier: Modifier, dateViewModel: DateViewModel) {
-    val startDate = dateViewModel.startDate.collectAsState(initial = LocalDate.now().withDayOfYear(1))
-    val endDate =  dateViewModel.startDate.collectAsState(initial = LocalDate.now())
-    val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
+fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate: State<LocalDate>, endDate: State<LocalDate>) {
+     val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
     val blogs = homeBlogListViewModel.blogs.collectAsState(initial = emptyList())
 
     LazyColumn(
