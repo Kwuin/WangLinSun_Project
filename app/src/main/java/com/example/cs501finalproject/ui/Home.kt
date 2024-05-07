@@ -55,7 +55,7 @@ fun HomePage(navController: NavController) {
         SearchFilter(onDateRangeSelected =
             { fromDate, toDate -> /* Your logic here */ },
             context = LocalContext.current, startDate, endDate)
-        HomePictureCarousel(modifier = Modifier.weight(2f))
+        HomePictureCarousel(modifier = Modifier.weight(2f),startDate, endDate)
         HomeListCarousel(navController, modifier = Modifier.weight(3f), startDate, endDate)
     }
 }
@@ -131,7 +131,6 @@ fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit
     }
 
 
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -196,14 +195,19 @@ fun showDatePickerDialog(isFromDate: Boolean, fromDate: String, toDate: String, 
 
 
 @Composable
-fun HomePictureCarousel(modifier: Modifier = Modifier) {
+fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: MutableState<LocalDate>, endDate: MutableState<LocalDate>) {
+    val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
+    val blogs = homeBlogListViewModel.blogs.collectAsState(initial = emptyList())
+
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier.fillMaxHeight()
     ) {
-        items(getSampleDataHome()) { item ->
-            MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
+        items(blogs.value) { item ->
+            if (item.photoFileName != null) {
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
+            }
         }
     }
 }
