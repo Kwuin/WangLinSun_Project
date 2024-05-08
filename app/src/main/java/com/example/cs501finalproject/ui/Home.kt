@@ -49,7 +49,7 @@ import java.util.UUID
 @Composable
 fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
     val startDate = dateViewModel.startDate.collectAsState(initial = LocalDate.now().withDayOfYear(1))
-    val endDate =  dateViewModel.startDate.collectAsState(initial = LocalDate.now())
+    val endDate =  dateViewModel.endDate.collectAsState(initial = LocalDate.now())
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -57,7 +57,7 @@ fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
         TopBanner()
         SearchFilter(onDateRangeSelected =
             { fromDate, toDate -> /* Your logic here */ },
-            context = LocalContext.current, dateViewModel)
+            context = LocalContext.current, dateViewModel, startDate, endDate)
         HomePictureCarousel(modifier = Modifier.weight(2f))
         HomeListCarousel(navController, modifier = Modifier.weight(3f), startDate, endDate)
     }
@@ -126,9 +126,7 @@ fun TopBanner() {
 
 
 @Composable
-fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit, context: Context, dateViewModel: DateViewModel) {
-    val startDate = dateViewModel.startDate.collectAsState(initial = LocalDate.now().withDayOfYear(1))
-    val endDate =  dateViewModel.startDate.collectAsState(initial = LocalDate.now())
+fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit, context: Context, dateViewModel: DateViewModel, startDate: State<LocalDate>, endDate: State<LocalDate>) {
 
     val fromDateState = remember { mutableStateOf( startDate.value.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) )}
     val toDateState = remember {
@@ -151,7 +149,7 @@ fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit
                 .height(46.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
         ) {
-            Text(fromDateState.value, color = Color.Black)
+            Text(startDate.value.toString(), color = Color.Black)
         }
         Text("To", modifier = Modifier.padding(end = 8.dp), color = Color.Black)
         Button(
@@ -161,7 +159,7 @@ fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit
                 .height(46.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
         ) {
-            Text(toDateState.value, color = Color.Black)
+            Text(endDate.value.toString(), color = Color.Black)
         }
     }
 }
@@ -249,7 +247,8 @@ fun HomePictureItem(item: EventItem, modifier: Modifier) {
 
 @Composable
 fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate: State<LocalDate>, endDate: State<LocalDate>) {
-     val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
+    Log.d("HomeListCarousel", "HomeListCarousel is reached with startdate being ${startDate.value} and enddate being ${endDate.value}")
+    val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
     val blogs = homeBlogListViewModel.blogs.collectAsState(initial = emptyList())
 
     LazyColumn(
