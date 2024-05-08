@@ -1,5 +1,7 @@
 package com.example.cs501finalproject.ui
 
+import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,10 +11,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +35,7 @@ import com.example.cs501finalproject.MemoryBlogListMonthAgoViewModel
 import com.example.cs501finalproject.MemoryBlogListWeekAgoViewModel
 import com.example.cs501finalproject.MemoryBlogListYearAgoViewModel
 import com.example.cs501finalproject.R
+import java.io.File
 import java.util.UUID
 
 
@@ -95,36 +102,50 @@ fun Banner(title: String){
 
 @Composable
 fun MemoriesPictureCarousel(modifier: Modifier = Modifier) {
+
+
+    val memoryBlogListDayAgoViewModel = MemoryBlogListDayAgoViewModel()
+    val memoryBlogListWeekAgoViewModel = MemoryBlogListWeekAgoViewModel()
+    val memoryBlogListMonthAgoViewModel = MemoryBlogListMonthAgoViewModel()
+    val memoryBlogListYearAgoViewModel = MemoryBlogListYearAgoViewModel()
+    val dayAgoBlogs = memoryBlogListDayAgoViewModel.blogs.collectAsState(initial = emptyList()).value
+    val weekAgoBlogs = memoryBlogListWeekAgoViewModel.blogs.collectAsState(initial = emptyList()).value
+    val monthAgoBlogs = memoryBlogListMonthAgoViewModel.blogs.collectAsState(initial = emptyList()).value
+    val yearAgoBlogs = memoryBlogListYearAgoViewModel.blogs.collectAsState(initial = emptyList()).value
+
+    val blogs = memoryBlogListDayAgoViewModel.blogs.collectAsState(initial = emptyList())
+    val combinedBlogs = remember { mutableStateOf(listOf<Blog>()) }
+    LaunchedEffect(dayAgoBlogs, weekAgoBlogs, monthAgoBlogs, yearAgoBlogs) {
+        combinedBlogs.value = dayAgoBlogs + weekAgoBlogs + monthAgoBlogs + yearAgoBlogs
+    }
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier.fillMaxHeight()
     ) {
-        items(getSampleData()) { item ->
-            MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
+        items(combinedBlogs.value) { item ->
+            if (item.photoFileName != null){
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
+            }
         }
     }
 }
 
 @Composable
-fun MemoryPictureItem(item: EventItem, modifier: Modifier) {
+fun MemoryPictureItem(item: Blog, modifier: Modifier) {
+
     Card(
-        modifier = Modifier.width(200.dp),
+        modifier = Modifier.width(230.dp),
         elevation = 4.dp
     ) {
         Column {
-            Image(
-                painter = painterResource(id = item.imageId),
-                contentDescription = "Event Image",
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-            )
+
             Text(
-                text = item.date,
+                text = item.date.toString(),
                 fontSize = 16.sp,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(30.dp)
                     .padding(4.dp),
                 textAlign = TextAlign.Center
             )
@@ -134,9 +155,24 @@ fun MemoryPictureItem(item: EventItem, modifier: Modifier) {
                 color = Color.Gray,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(30.dp)
                     .padding(4.dp),
                 textAlign = TextAlign.Center
             )
+            item?.photoFileName?.let { fileName ->
+                val imageFile = File(fileName)
+                if (imageFile.exists()) {
+                    val bitmap = BitmapFactory.decodeFile(fileName).asImageBitmap()
+                    Image(
+                        bitmap = bitmap,
+                        contentDescription = "Selected Image",
+                        modifier = Modifier.fillMaxWidth()
+                            .height(150.dp)
+                    )
+                } else {
+                    Log.d("image File", "non exist")
+                }
+            }
         }
     }
 }
