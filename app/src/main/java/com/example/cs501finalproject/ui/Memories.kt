@@ -240,6 +240,7 @@ fun MemoriesListCarouselYear(navController: NavController, modifier: Modifier) {
         modifier = modifier
     ) {
         items(blogs.value) { blog ->
+
             CalendarBlogListItem(blog){
                 navController.navigate("blog/${blog.id}")
             }

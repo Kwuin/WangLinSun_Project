@@ -1,5 +1,7 @@
 package com.example.cs501finalproject
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -138,5 +140,20 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = colors.secondary.toArgb()
         window.navigationBarColor = colors.secondary.toArgb()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 123 && resultCode == Activity.RESULT_OK) {
+            val latitude = data?.getDoubleExtra("latitude", 0.0) ?: 0.0
+            val longitude = data?.getDoubleExtra("longitude", 0.0) ?: 0.0
+
+
+            // Do something with the location, e.g., update your ViewModel
+            //blogDetailViewModel.updateLocation(latitude, longitude)
+        }
+    }
+
+
 
 }
