@@ -160,6 +160,12 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
                         .clickable {
                             activity?.let {
                                 val intent = Intent(it, MapsActivity::class.java)
+                                intent.putExtra("last location", blog.location)
+                                Log.d("id before intent", blog.id.toString())
+                                intent.putExtra("date",blog.date.toString())
+                                intent.putExtra("blog_id", blog.id.toString())
+                                Log.d("last location",blog.location)
+
                                 it.startActivityForResult(intent, 123)  // Use a request code to identify your request
                             }
                         },
@@ -313,9 +319,7 @@ fun MapButton(blogDetailViewModel: BlogDetailViewModel, blog: Blog){
     val activity = context as? Activity  // Cast context to Activity
 
     val intent = Intent(activity, MapsActivity::class.java)
-    if (activity != null) {
-        activity.startActivityForResult(intent, 123)
-    } // Use a request code to identify your request
+    activity?.startActivityForResult(intent, 123) // Use a request code to identify your request
 
 
 }
