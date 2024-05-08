@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
@@ -31,6 +32,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.Blog
+import com.example.cs501finalproject.BlogListViewModel
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
@@ -52,6 +55,8 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 import com.example.cs501finalproject.CalenderBlogListViewModel
+import com.example.cs501finalproject.util.ThemeManager
+import com.example.cs501finalproject.util.getAppThemeColors
 import kotlinx.coroutines.launch
 import java.util.UUID
 import com.google.android.material.snackbar.Snackbar
@@ -134,7 +139,7 @@ fun CalendarPage(navController: NavController){
             val endMonth = remember { currentMonth.plusMonths(100) } // Adjust as needed
             val firstDayOfWeek = remember { firstDayOfWeekFromLocale() } // Available from the library
 
-            var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+            var selectedDate by remember { mutableStateOf<LocalDate?>(LocalDate.now()) }
             var selectedMonth by remember {
                 mutableStateOf<YearMonth>(YearMonth.now())
             }
@@ -290,10 +295,12 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
 }
 @Composable
 fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
+    val colors = ThemeManager.getAppThemeColors()
     Box(
         modifier = Modifier
+            .clip(CircleShape)
             .aspectRatio(1f)
-            .background(color = if (isSelected) Color.Green else Color.Transparent)
+            .background(color = if (isSelected) colors.primaryVariant else Color.Transparent)
             .clickable(
                 enabled = day.position == DayPosition.MonthDate,
                 onClick = { onClick(day) }
@@ -312,7 +319,6 @@ fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
 @Composable
 fun Checkcalendar() {
 //    GradientBackground()
-
     CalendarPage(rememberNavController())
 }
 
