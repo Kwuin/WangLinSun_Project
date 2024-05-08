@@ -198,7 +198,7 @@ fun showDatePickerDialog(isFromDate: Boolean, fromDate: String, toDate: String, 
 
 
 @Composable
-fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: MutableState<LocalDate>, endDate: MutableState<LocalDate>) {
+fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: State<LocalDate>, endDate: State<LocalDate>) {
     val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
     val blogs = homeBlogListViewModel.blogs.collectAsState(initial = emptyList())
 
