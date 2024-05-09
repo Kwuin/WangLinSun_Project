@@ -35,4 +35,14 @@
     <string name="Home_Date">Дата</string>
     <string name="Home_From">От</string>
     <string name="Home_To">До</string>
+    <string name="Home_welcome_back">Добро пожаловать обратно!</string>
+
+    <string name="Memories_a_day_ago">День назад</string>
+    <string name="Memories_a_week_ago">Неделю назад</string>
+    <string name="Memories_a_month_ago">Месяц назад</string>
+    <string name="Memories_a_year_ago">Год назад</string>
+    <string name="Navigation_Bar_Locations">Локации</string>
+    <string name="Calendar_date_selected">Дата выбрана</string>
+    <string name="Calendar_add">Добавить</string>
+
 </resources>

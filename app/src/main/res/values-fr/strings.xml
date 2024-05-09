@@ -35,4 +35,14 @@
     <string name="Home_Date">Date</string>
     <string name="Home_From">De</string>
     <string name="Home_To">À</string>
+    <string name="Home_welcome_back">Bienvenue de retour!</string>
+    <string name="Navigation_Bar_Locations">Emplacements</string>
+    <string name="Memories_a_day_ago">Il y a un jour</string>
+    <string name="Memories_a_week_ago">Il y a une semaine</string>
+    <string name="Memories_a_month_ago">Il y a un mois</string>
+    <string name="Memories_a_year_ago">Il y a un an</string>
+
+    <string name="Calendar_date_selected">Date sélectionnée</string>
+    <string name="Calendar_add">Ajouter</string>
+
 </resources>

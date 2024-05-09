@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -37,16 +36,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.Blog
 import com.example.cs501finalproject.BlogDateVIewModel
-import com.example.cs501finalproject.BlogListViewModel
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
@@ -58,12 +56,10 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 import com.example.cs501finalproject.CalenderBlogListViewModel
+import com.example.cs501finalproject.R
+import com.example.cs501finalproject.util.LanguageManager
 import com.example.cs501finalproject.util.ThemeManager
-import com.example.cs501finalproject.util.getAppThemeColors
 import kotlinx.coroutines.launch
-import java.util.UUID
-import com.google.android.material.snackbar.Snackbar
-
 
 
 sealed class Screen(val route: String) {
@@ -75,14 +71,18 @@ sealed class Screen(val route: String) {
 
 @Composable
 fun CalendarPage(navController: NavController){
+    val colors = ThemeManager.getAppThemeColors()
+    val locale = LanguageManager.getCurrentLocale()
 
 
     val today = LocalDate.now()
     // Get the day of the month as an integer (e.g., 1, 2, 3, ..., 31)
-    var dayClicked by remember { mutableStateOf(today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()))}
+    var dayClicked by remember { mutableStateOf(today.dayOfWeek.getDisplayName(TextStyle.FULL, locale))}
     var dateClicked by remember { mutableStateOf("${today.dayOfMonth}") }
-    var monthClicked by remember { mutableStateOf(YearMonth.now().month.name) }
-
+    val currentMonthYear = YearMonth.now()
+    var monthClicked by remember {
+        mutableStateOf(currentMonthYear.month.getDisplayName(TextStyle.FULL, locale))
+    }
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -90,17 +90,17 @@ fun CalendarPage(navController: NavController){
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
-        Column (Modifier.background(color = Color(0xFFF3EDF7)),
+        Column (Modifier.background(color = colors.background),
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
         ){
 
                 Text(
-                    text = "Date Selected",
+                    text = stringResource(R.string.Calendar_date_selected),
                     style = androidx.compose.ui.text.TextStyle(
                         fontSize = 14.sp,
                         lineHeight = 20.sp,
                         fontWeight = FontWeight(500),
-                        color = Color(0xFF49454F),
+                        color = colors.onBackground,
                         letterSpacing = 0.1.sp,
                     ),
                     modifier = Modifier
@@ -112,7 +112,7 @@ fun CalendarPage(navController: NavController){
                         fontSize = 32.sp,
                         lineHeight = 40.sp,
                         fontWeight = FontWeight(400),
-                        color = Color(0xFF49454F),
+                        color = colors.onBackground,
                         letterSpacing = 0.1.sp,
                     ),
                     modifier = Modifier
@@ -123,18 +123,18 @@ fun CalendarPage(navController: NavController){
 
             Divider(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 4.dp)
                     .fillMaxWidth(),
-                color = Color.LightGray,
+                color = colors.onBackground.copy(alpha = 0.1f),
                 thickness = 1.dp
             )
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(26.dp)
-                    .background(color = Color(0xFFF3EDF7))
-                    .padding(start = 16.dp, top = 4.dp, end = 12.dp, bottom = 4.dp)){
-            }
+//            Box(
+//                Modifier
+//                    .fillMaxWidth()
+//                    .height(26.dp)
+//                    .background(color = Color(0xFF8518CE))
+//                    .padding(start = 16.dp, top = 4.dp, end = 12.dp, bottom = 4.dp)){
+//            }
 
 
             val currentMonth = remember { YearMonth.now() }
@@ -158,14 +158,16 @@ fun CalendarPage(navController: NavController){
                 dayContent = {  day ->
                     Day(day, blogDateVIewModel, isSelected = selectedDate == day.date) { day ->
                         selectedDate = day.date
-                        dayClicked = "${selectedDate?.dayOfWeek?.getDisplayName(TextStyle.FULL, Locale.getDefault())}"
-                        monthClicked = day.date.month.name
+                        dayClicked = "${selectedDate?.dayOfWeek?.getDisplayName(TextStyle.FULL, locale)}"
+                        monthClicked = day.date.month.getDisplayName(TextStyle.FULL, locale)
                         dateClicked = "${selectedDate?.dayOfMonth}"
                     } },
                 monthHeader = { month ->
                     val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
                     selectedMonth = month.yearMonth
-                    MonthHeader(daysOfWeek = daysOfWeek, month.yearMonth.month.name, month.yearMonth.year)
+                    val localizedMonthName = getLocalizedMonthName(month.yearMonth, locale)
+//                    MonthHeader(daysOfWeek = daysOfWeek, month.yearMonth, month.yearMonth.year)
+                    MonthHeader(daysOfWeek = daysOfWeek, localizedMonthName, month.yearMonth.year)
                 }
             )
 
@@ -178,10 +180,10 @@ fun CalendarPage(navController: NavController){
 //    )
             Divider(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 0.dp)
                     .fillMaxWidth(),
-                color = Color.LightGray,
-                thickness = 3.dp
+                color = colors.onBackground.copy(alpha = 0.1f),
+                thickness = 1.dp
             )
             Box(Modifier.align(Alignment.CenterHorizontally) // Center-align this item
             ){
@@ -207,21 +209,21 @@ fun CalendarPage(navController: NavController){
                     }
                 },
                     Modifier
-                        .width(144.dp)
-                        .height(38.dp)
+                        .width(136.dp)
+                        .height(40.dp)
                     ,
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFFD29CEC), // Make button content area transparent
+                        backgroundColor = colors.secondary, // Make button content area transparent
                     ),
                     shape = RoundedCornerShape(100.dp),
                     ){
                     Text(
-                        text = "Add New Journal",
+                        text = stringResource(R.string.Calendar_add),
                         style = androidx.compose.ui.text.TextStyle(
-                            fontSize = 10.sp,
-                            lineHeight = 40.sp,
+                            fontSize = 20.sp,
+                            lineHeight = 50.sp,
                             fontWeight = FontWeight(400),
-                            color = Color(0xFF49454F),
+                            color = colors.onBackground,
                             letterSpacing = 0.1.sp,
                         )
                     )
@@ -229,10 +231,10 @@ fun CalendarPage(navController: NavController){
             }
             Divider(
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 4.dp)
                     .fillMaxWidth(),
-                color = Color.LightGray,
-                thickness = 2.dp
+                color = colors.onBackground.copy(alpha = 0.1f),
+                thickness = 1.dp
             )
             val calenderBlogListViewModel = selectedDate?.let { CalenderBlogListViewModel(it) }
             val blogs = calenderBlogListViewModel?.blogs?.collectAsState(initial = emptyList())
@@ -248,6 +250,7 @@ fun CalendarPage(navController: NavController){
                              CalendarBlogListItem(blog){
                                  navController.navigate("blog/${blog.id}")
                              }
+                             Divider(modifier = Modifier.fillMaxWidth(), alpha = 0.1f)
                          }
                      }
                 }
@@ -259,29 +262,33 @@ fun CalendarPage(navController: NavController){
     }
 }
 
-
-
-@Composable
-fun Calendar() {
+fun getLocalizedMonthName(yearMonth: YearMonth, locale: Locale): String {
+    val month = yearMonth.month.getDisplayName(TextStyle.FULL, locale)
+    return month
 }
+
 
 @Composable
 fun MonthHeader(daysOfWeek: List<DayOfWeek>, currentMonth: String, currentYear: Int) {
+    val locale = LanguageManager.getCurrentLocale()
     Column{
         Text(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             text = "$currentMonth $currentYear",
+//            style = MaterialTheme.typography.h6
         )
         Row(modifier = Modifier.fillMaxWidth()) {
-        for (dayOfWeek in daysOfWeek) {
-            Text(
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center,
-                text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-            )
+            for (dayOfWeek in daysOfWeek) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center,
+                    text = dayOfWeek.getDisplayName(TextStyle.SHORT, locale),
+//                    style = MaterialTheme.typography.body2
+                )
+            }
         }
-    }}
+    }
 }
 
 @Composable
@@ -321,7 +328,7 @@ fun Day(day: CalendarDay, blogDateVIewModel: BlogDateVIewModel, isSelected: Bool
                     .size(5.dp)
                     .clip(CircleShape)
                     .align(Alignment.CenterHorizontally) // Align horizontally
-                    .background(color = if (addressMap.value[day.date] == true)  colors.secondaryVariant else Color.Transparent)
+                    .background(color = if (addressMap.value[day.date] == true) colors.secondaryVariant else Color.Transparent)
             )
         }
     }
@@ -369,7 +376,7 @@ fun CalendarBlogListItem(item: Blog, onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        // 时间和地点信息区 (左侧 3/10)
+        // time and location
         Column(
             modifier = Modifier.weight(3f)
             ,
@@ -387,7 +394,7 @@ fun CalendarBlogListItem(item: Blog, onClick: () -> Unit) {
                 textAlign = TextAlign.Center
             )
         }
-        // 博客标题 (中间 6/10)
+        // Blog title
         Text(
             text = item.title,
             fontSize = 16.sp,
@@ -396,7 +403,7 @@ fun CalendarBlogListItem(item: Blog, onClick: () -> Unit) {
                 .padding(horizontal = 8.dp),
             textAlign = TextAlign.Start
         )
-        // 表情符号 (右侧 1/10)
+        // emoji
         Text(
             text = item.emoji,
             fontSize = 24.sp,

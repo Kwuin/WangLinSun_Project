@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.TextStyle
@@ -46,16 +48,18 @@ fun MemoriesPage(navController: NavController){
     val colors = ThemeManager.getAppThemeColors()
 
     Column(
-        modifier = Modifier.fillMaxSize().background(colors.background)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colors.background)
     ) {
-        MemoriesPictureCarousel(modifier = Modifier.weight(2.7f), colors = colors)
-        Banner("A day Ago", colors = colors)
+        MemoriesPictureCarousel(navController, modifier = Modifier.weight(2.7f), colors = colors)
+        Banner(stringResource(R.string.Memories_a_day_ago), colors = colors)
         MemoriesListCarouselDay(navController, modifier = Modifier.weight(1f), colors = colors)
-        Banner("A Week Ago", colors = colors)
+        Banner(stringResource(R.string.Memories_a_week_ago), colors = colors)
         MemoriesListCarouselWeek(navController, modifier = Modifier.weight(1f), colors = colors)
-        Banner("A Month Ago", colors = colors)
+        Banner(stringResource(R.string.Memories_a_month_ago), colors = colors)
         MemoriesListCarouselMonth(navController, modifier = Modifier.weight(1f), colors = colors)
-        Banner("A Year Ago", colors = colors)
+        Banner(stringResource(R.string.Memories_a_year_ago), colors = colors)
         MemoriesListCarouselYear(navController, modifier = Modifier.weight(1f), colors = colors)
     }
 }
@@ -84,7 +88,7 @@ fun Banner(title: String, colors: Colors){
 }
 
 @Composable
-fun MemoriesPictureCarousel(modifier: Modifier = Modifier, colors: Colors) {
+fun MemoriesPictureCarousel(navController: NavController, modifier: Modifier = Modifier, colors: Colors) {
     val memoryBlogListDayAgoViewModel = MemoryBlogListDayAgoViewModel()
     val memoryBlogListWeekAgoViewModel = MemoryBlogListWeekAgoViewModel()
     val memoryBlogListMonthAgoViewModel = MemoryBlogListMonthAgoViewModel()
@@ -102,20 +106,26 @@ fun MemoriesPictureCarousel(modifier: Modifier = Modifier, colors: Colors) {
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.fillMaxHeight().background(colors.background)
+        modifier = modifier
+            .fillMaxHeight()
+            .background(colors.background)
     ) {
         items(combinedBlogs.value) { item ->
             if (item.photoFileName != ""){
-                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors)
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors){
+                    navController.navigate("blog/${item.id}")
+                }
             }
         }
     }
 }
 
 @Composable
-fun MemoryPictureItem(item: Blog, modifier: Modifier, colors: Colors) {
+fun MemoryPictureItem(item: Blog, modifier: Modifier, colors: Colors, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.width(230.dp),
+        modifier = Modifier.width(230.dp)
+            .clickable(onClick = onClick)
+        ,
         elevation = 4.dp
     ) {
         Column (modifier = Modifier.background(colors.background)) {
@@ -145,7 +155,8 @@ fun MemoryPictureItem(item: Blog, modifier: Modifier, colors: Colors) {
                     Image(
                         bitmap = bitmap,
                         contentDescription = "Selected Image",
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .height(180.dp)
                     )
                 } else {
