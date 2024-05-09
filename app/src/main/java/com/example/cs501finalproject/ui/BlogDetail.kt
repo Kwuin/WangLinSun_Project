@@ -153,13 +153,19 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
                         .padding(6.dp)  // Add padding around the icon for easier touching
                         .width(50.dp)
                         .clickable {
-                            val addressList = geocoder.getFromLocationName(blog.location, 1)
-                            if (addressList != null && addressList.size > 0) {
-                                val address = addressList[0]
-                                val latLng = LatLng(address.latitude, address.longitude)
-                                viewModel.setLocation(latLng)
+                            if(blog.location != ""){
+                                val addressList = geocoder.getFromLocationName(blog.location, 1)
+                                if (addressList != null && addressList.size > 0) {
+                                    val address = addressList[0]
+                                    val latLng = LatLng(address.latitude, address.longitude)
+                                    viewModel.setLocation(latLng)
+                                    viewModel.setUUID(blog.id)
+                                }
+                            }else{
+                                viewModel.setLocation(LatLng(42.0,-71.0))
                                 viewModel.setUUID(blog.id)
                             }
+
                             navController.navigate("map",)
 
                             // Use a request code to identify your request

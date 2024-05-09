@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
+import androidx.compose.material.Colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,55 +36,37 @@ import com.example.cs501finalproject.MemoryBlogListMonthAgoViewModel
 import com.example.cs501finalproject.MemoryBlogListWeekAgoViewModel
 import com.example.cs501finalproject.MemoryBlogListYearAgoViewModel
 import com.example.cs501finalproject.R
+import com.example.cs501finalproject.util.ThemeManager
 import java.io.File
 import java.util.UUID
 
 
-data class EventItem(
-    val blogId: Int?,
-    val date: String,
-    val location: String,
-    val title: String,
-    val imageId: Int,
-    val emoji: String
-)
-
-fun getSampleData(): List<EventItem> {
-    return listOf(
-        EventItem(null, "Yesterday", "New Zealand", "NZ holiday", R.drawable.blog_example, "\uD83E\uDD29"),
-        EventItem(null, "1 Week Ago", "New Zealand", "NZ holiday", R.drawable.blog_boulders, "\uD83E\uDD29"),
-        EventItem(null, "1 Week Ago", "New Zealand", "NZ holiday", R.drawable.blog_example, "\uD83D\uDCBB"),
-        EventItem(null, "1 Month Ago", "Australia", "Spring Break", R.drawable.blog_nature_window, "\u2708"),
-        EventItem(null, "1 Year Ago", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614"),
-        EventItem(null, "1 Year Ago", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614"),
-        EventItem(null, "1 Year Ago", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614")
-    )
-}
-
 @Composable
 fun MemoriesPage(navController: NavController){
+    val colors = ThemeManager.getAppThemeColors()
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(colors.background)
     ) {
-        MemoriesPictureCarousel(modifier = Modifier.weight(3f))
-        Banner("A day Ago")
-        MemoriesListCarouselDay(navController, modifier = Modifier.weight(1f))
-        Banner("A Week Ago")
-        MemoriesListCarouselWeek(navController, modifier = Modifier.weight(1f))
-        Banner("A Month Ago")
-        MemoriesListCarouselMonth(navController, modifier = Modifier.weight(1f))
-        Banner("A Year Ago")
-        MemoriesListCarouselYear(navController, modifier = Modifier.weight(1f))
+        MemoriesPictureCarousel(modifier = Modifier.weight(2.7f), colors = colors)
+        Banner("A day Ago", colors = colors)
+        MemoriesListCarouselDay(navController, modifier = Modifier.weight(1f), colors = colors)
+        Banner("A Week Ago", colors = colors)
+        MemoriesListCarouselWeek(navController, modifier = Modifier.weight(1f), colors = colors)
+        Banner("A Month Ago", colors = colors)
+        MemoriesListCarouselMonth(navController, modifier = Modifier.weight(1f), colors = colors)
+        Banner("A Year Ago", colors = colors)
+        MemoriesListCarouselYear(navController, modifier = Modifier.weight(1f), colors = colors)
     }
 }
 
 @Composable
-fun Banner(title: String){
+fun Banner(title: String, colors: Colors){
     Box(
         Modifier
             .fillMaxWidth()
             .height(20.dp)
-            .background(color = Color(0xFFD4CADC)),
+            .background(color = colors.primaryVariant),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -101,9 +84,7 @@ fun Banner(title: String){
 }
 
 @Composable
-fun MemoriesPictureCarousel(modifier: Modifier = Modifier) {
-
-
+fun MemoriesPictureCarousel(modifier: Modifier = Modifier, colors: Colors) {
     val memoryBlogListDayAgoViewModel = MemoryBlogListDayAgoViewModel()
     val memoryBlogListWeekAgoViewModel = MemoryBlogListWeekAgoViewModel()
     val memoryBlogListMonthAgoViewModel = MemoryBlogListMonthAgoViewModel()
@@ -121,25 +102,23 @@ fun MemoriesPictureCarousel(modifier: Modifier = Modifier) {
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.fillMaxHeight()
+        modifier = modifier.fillMaxHeight().background(colors.background)
     ) {
         items(combinedBlogs.value) { item ->
-            if (item.photoFileName != null){
-                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
+            if (item.photoFileName != ""){
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors)
             }
         }
     }
 }
 
 @Composable
-fun MemoryPictureItem(item: Blog, modifier: Modifier) {
-
+fun MemoryPictureItem(item: Blog, modifier: Modifier, colors: Colors) {
     Card(
         modifier = Modifier.width(230.dp),
         elevation = 4.dp
     ) {
-        Column {
-
+        Column (modifier = Modifier.background(colors.background)) {
             Text(
                 text = item.date.toString(),
                 fontSize = 16.sp,
@@ -167,7 +146,7 @@ fun MemoryPictureItem(item: Blog, modifier: Modifier) {
                         bitmap = bitmap,
                         contentDescription = "Selected Image",
                         modifier = Modifier.fillMaxWidth()
-                            .height(150.dp)
+                            .height(180.dp)
                     )
                 } else {
                     Log.d("image File", "non exist")
@@ -179,71 +158,75 @@ fun MemoryPictureItem(item: Blog, modifier: Modifier) {
 
 
 @Composable
-fun MemoriesListCarouselDay(navController: NavController, modifier: Modifier) {
+fun MemoriesListCarouselDay(navController: NavController, modifier: Modifier, colors: Colors) {
     val blogListViewModel = MemoryBlogListDayAgoViewModel()
     val blogs = blogListViewModel.blogs.collectAsState(initial = emptyList())
 
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
+        modifier = modifier.background(colors.background)
     ) {
         items(blogs.value) { blog ->
             CalendarBlogListItem(blog){
                 navController.navigate("blog/${blog.id}")
             }
+            Divider(modifier = Modifier.fillMaxWidth(), alpha = 0.1f)
         }
     }
 }
 @Composable
-fun MemoriesListCarouselWeek(navController: NavController, modifier: Modifier) {
+fun MemoriesListCarouselWeek(navController: NavController, modifier: Modifier, colors: Colors) {
     val blogListViewModel = MemoryBlogListWeekAgoViewModel()
     val blogs = blogListViewModel.blogs.collectAsState(initial = emptyList())
 
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
+        modifier = modifier.background(colors.background)
     ) {
         items(blogs.value) { blog ->
             CalendarBlogListItem(blog){
                 navController.navigate("blog/${blog.id}")
             }
+            Divider(modifier = Modifier.fillMaxWidth(), alpha = 0.1f)
         }
     }
 }
 @Composable
-fun MemoriesListCarouselMonth(navController: NavController, modifier: Modifier) {
+fun MemoriesListCarouselMonth(navController: NavController, modifier: Modifier, colors: Colors) {
     val blogListViewModel = MemoryBlogListMonthAgoViewModel()
     val blogs = blogListViewModel.blogs.collectAsState(initial = emptyList())
 
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
+        modifier = modifier.background(colors.background)
     ) {
         items(blogs.value) { blog ->
             CalendarBlogListItem(blog){
                 navController.navigate("blog/${blog.id}")
             }
+            Divider(modifier = Modifier.fillMaxWidth(), alpha = 0.1f)
         }
     }
 }
 @Composable
-fun MemoriesListCarouselYear(navController: NavController, modifier: Modifier) {
+fun MemoriesListCarouselYear(navController: NavController, modifier: Modifier, colors: Colors) {
     val blogListViewModel = MemoryBlogListYearAgoViewModel()
     val blogs = blogListViewModel.blogs.collectAsState(initial = emptyList())
 
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
+        modifier = modifier.background(colors.background)
     ) {
         items(blogs.value) { blog ->
 
             CalendarBlogListItem(blog){
                 navController.navigate("blog/${blog.id}")
             }
+            Divider(modifier = Modifier.fillMaxWidth(), alpha = 0.1f)
         }
     }
 }

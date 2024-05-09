@@ -31,7 +31,7 @@ class BlogRepository private constructor(
         .build()
 
     fun getBlogs(): Flow<List<Blog>> = database.blogDao().getBlogs()
-
+    fun getDates(): Flow<List<LocalDate>> = database.blogDao().getDates()
 
 
     suspend fun getBlogOnDay(date: LocalDate): Flow<List<Blog>> = database.blogDao().getBlogOnDay(date)

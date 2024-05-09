@@ -4,6 +4,7 @@ import androidx.compose.material.Colors
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.cs501finalproject.R
 
 object ThemeManager {
     private val listeners = mutableSetOf<() -> Unit>()
@@ -33,5 +34,14 @@ object ThemeManager {
 
     fun removeThemeChangeListener(listener: () -> Unit) {
         listeners.remove(listener)
+    }
+
+    fun getDialogThemeId(): Int {
+        return when (currentTheme) {
+            ThemeState.Pink -> R.style.DatePickerDialogTheme_Pink
+            ThemeState.Amber -> R.style.DatePickerDialogTheme_Amber
+            ThemeState.Green -> R.style.DatePickerDialogTheme_Green
+            ThemeState.Blue -> R.style.DatePickerDialogTheme_Blue
+        }
     }
 }

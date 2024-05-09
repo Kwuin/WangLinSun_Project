@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
+
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -64,6 +64,8 @@ class MainActivity : AppCompatActivity() {
     @Composable
     fun MainApp(languageManager: LanguageManager) {
         val locationViewModel = LocationViewModel()
+
+        val dateViewModel = DateViewModel()
         val navController = rememberNavController()
         Scaffold(
             bottomBar = { NavigationBar(navController, Modifier, languageManager) }
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 startDestination = "home",
                 modifier = Modifier.padding(innerPadding)  // 应用内边距确保 NavHost 不与底部栏重叠
             ) {
-                composable("home") { HomeScreen(navController) }
+                composable("home") { HomeScreen(navController, dateViewModel) }
                 composable("calendar") { CalendarScreen(navController) }
                 composable("memories") { MemoriesScreen(navController) }
                 composable("settings") { SettingsScreen(navController) }
@@ -102,8 +104,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun HomeScreen(navController: NavController) {
-        HomePage(navController)
+    fun HomeScreen(navController: NavController, dateViewModel: DateViewModel) {
+        HomePage(navController,dateViewModel)
     }
 
     @Composable

@@ -15,6 +15,9 @@ interface BlogDao {
     @Query("SELECT * FROM Blog")
     fun getBlogs(): Flow<List<Blog>>
 
+    @Query("SELECT DISTINCT date FROM Blog")
+    fun getDates(): Flow<List<LocalDate>>
+
     @Query("SELECT * FROM Blog WHERE date=(:date)")
     fun getBlogOnDay(date: LocalDate): Flow<List<Blog>>
 
@@ -26,6 +29,6 @@ interface BlogDao {
 
     @Insert
     suspend fun addBlog(blog: Blog)
-    @Query("SELECT * FROM Blog WHERE date>=(:startDate) and date<=(:endDate)")
+    @Query("SELECT * FROM Blog WHERE date>=(:startDate) and date<=(:endDate) ORDER BY date DESC")
     fun getBlogOnTimeWindow(startDate: LocalDate, endDate: LocalDate): Flow<List<Blog>>
 }
