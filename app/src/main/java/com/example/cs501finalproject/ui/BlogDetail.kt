@@ -83,7 +83,7 @@ fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewMode
                 Button(
                     modifier = Modifier
                         .background(color = Color.Transparent)
-                        .align(Alignment.Center),
+                        .align(Alignment.TopCenter),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = colors.secondaryVariant,  // Background color of the button
                         contentColor = colors.onPrimary     // Color of the content (text/icon) inside the button
