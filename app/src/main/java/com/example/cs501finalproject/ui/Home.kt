@@ -176,7 +176,7 @@ fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: State<LocalDat
         modifier = modifier.fillMaxHeight().background(color = colors.primary),
     ) {
         items(blogs.value) { item ->
-            if (item.photoFileName != null) {
+            if (item.photoFileName != "") {
                 MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
             }
         }

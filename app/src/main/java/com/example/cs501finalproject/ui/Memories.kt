@@ -48,17 +48,7 @@ data class EventItem(
     val emoji: String
 )
 
-//fun getSampleData(): List<EventItem> {
-//    return listOf(
-//        EventItem(null, "Yesterday", "New Zealand", "NZ holiday", R.drawable.blog_example, "\uD83E\uDD29"),
-//        EventItem(null, "1 Week Ago", "New Zealand", "NZ holiday", R.drawable.blog_boulders, "\uD83E\uDD29"),
-//        EventItem(null, "1 Week Ago", "New Zealand", "NZ holiday", R.drawable.blog_example, "\uD83D\uDCBB"),
-//        EventItem(null, "1 Month Ago", "Australia", "Spring Break", R.drawable.blog_nature_window, "\u2708"),
-//        EventItem(null, "1 Year Ago", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614"),
-//        EventItem(null, "1 Year Ago", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614"),
-//        EventItem(null, "1 Year Ago", "Boston", "Rainy", R.drawable.blog_boulders, "\u2614")
-//    )
-//}
+
 
 @Composable
 fun MemoriesPage(navController: NavController){
@@ -124,7 +114,7 @@ fun MemoriesPictureCarousel(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxHeight()
     ) {
         items(combinedBlogs.value) { item ->
-            if (item.photoFileName != null){
+            if (item.photoFileName != ""){
                 MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
             }
         }
