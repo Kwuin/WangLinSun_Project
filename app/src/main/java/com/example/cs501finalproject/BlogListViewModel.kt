@@ -3,9 +3,13 @@ package com.example.cs501finalproject
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -31,5 +35,9 @@ class BlogListViewModel : ViewModel() {
     suspend fun getBlog(id: UUID):Blog {
         return blogRepository.getBlog(id)
     }
+
+    val locations: StateFlow<List<String>> = _blogs
+        .map { blogs -> blogs.map { it.location }.filter { it.isNotBlank() } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
 }
