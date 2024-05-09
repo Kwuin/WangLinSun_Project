@@ -164,7 +164,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
                                     viewModel.setUUID(blog.id)
                                 }
                             }else{
-                                viewModel.setInitLocation(LatLng(42.35003979464051, -71.10285459462476))
+                                viewModel.setInitLocation(LatLng(42.35, -71.10))
                                 viewModel.setUUID(blog.id)
                             }
 
