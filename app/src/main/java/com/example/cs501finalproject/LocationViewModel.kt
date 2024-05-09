@@ -14,9 +14,15 @@ class LocationViewModel : ViewModel() {
     val location: MutableStateFlow<LatLng> = _location
     private val _UUID = MutableStateFlow(java.util.UUID.randomUUID())
     val UUID: MutableStateFlow<UUID> = _UUID
+    private val _init_location = MutableStateFlow(LatLng(42.0, -71.0))
+    val init_location: MutableStateFlow<LatLng> = _init_location
 
     fun setLocation(location: LatLng) {
         _location.value = location
+    }
+
+    fun setInitLocation(location: LatLng) {
+        _init_location.value = location
     }
     fun setUUID(id: UUID) {
         _UUID.value = id
