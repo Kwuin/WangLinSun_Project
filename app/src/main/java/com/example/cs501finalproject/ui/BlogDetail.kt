@@ -80,9 +80,7 @@ fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewMode
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .padding(16.dp)
-                    .fillMaxSize()
                 ,
-
                 ) {
                 Box(
                     modifier = Modifier
