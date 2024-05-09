@@ -3,7 +3,21 @@ package com.example.cs501finalproject.ui
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,6 +31,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cs501finalproject.LocationViewModel
@@ -24,6 +41,7 @@ import com.example.cs501finalproject.Blog
 import com.example.cs501finalproject.BlogDetailViewModel
 import com.example.cs501finalproject.BlogDetailViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cs501finalproject.util.ThemeManager
 import kotlinx.coroutines.flow.asStateFlow
 
 @Composable
@@ -37,7 +55,7 @@ fun MapPage(navController: NavController, locationviewModel: LocationViewModel) 
     val address = addresses?.firstOrNull()?.getAddressLine(0) ?: "Unknown location"
     val id = locationviewModel.UUID.collectAsState()
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(id.value))
-
+    val colors = ThemeManager.getAppThemeColors()
 
 
 
@@ -61,24 +79,70 @@ fun MapPage(navController: NavController, locationviewModel: LocationViewModel) 
     })
 
     // Button to confirm the location
-    Button(
-        onClick = {
-            location.let {
-                locationviewModel.confirmLocation("Location confirmed with description")
-                locationviewModel.setLocation(it.value)
-                val newAddresses = geocoder.getFromLocation(it.value.latitude, it.value.longitude, 1)
-                val newAddress = addresses?.firstOrNull()?.getAddressLine(0) ?: "Unknown location"
+    Row(
+        verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+        ,
 
-
-                blogDetailViewModel.updateBlog { blog ->
-                    Log.d("update address", address)
-                    blog.copy(location = newAddress)
-                }
-                navController.popBackStack()
-            }
-        },
     ) {
-        Text("Confirm Location")
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(color = Color.Transparent)
+        ) {
+            Button(
+                modifier = Modifier
+                    .background(color = Color.Transparent)
+                    .align(Alignment.BottomCenter),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colors.secondaryVariant,  // Background color of the button
+                    contentColor = colors.onPrimary     // Color of the content (text/icon) inside the button
+                ),
+                onClick = {
+                    location.let {
+                        locationviewModel.confirmLocation("Location confirmed with description")
+                        locationviewModel.setLocation(it.value)
+                        val newAddresses =
+                            geocoder.getFromLocation(it.value.latitude, it.value.longitude, 1)
+                        val newAddress =
+                            addresses?.firstOrNull()?.getAddressLine(0) ?: "Unknown location"
+
+
+                        blogDetailViewModel.updateBlog { blog ->
+                            Log.d("update address", address)
+                            blog.copy(location = newAddress)
+                        }
+                        navController.popBackStack()
+                    }
+                },
+            ) {
+                Text("Confirm Location")
+            }
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(color = Color.Transparent)
+        ) {
+            Button(
+                modifier = Modifier
+                    .background(color = Color.Transparent)
+                    .align(Alignment.BottomCenter),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colors.secondaryVariant,  // Background color of the button
+                    contentColor = colors.onPrimary     // Color of the content (text/icon) inside the button
+                ),
+                onClick = {
+                    navController.popBackStack()
+                },
+            ) {
+                Text("Back")
+            }
+        }
     }
 }
 

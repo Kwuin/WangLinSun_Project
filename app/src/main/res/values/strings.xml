@@ -36,6 +36,8 @@
     <string name="Home_Date">Date</string>
     <string name="Home_From">From</string>
     <string name="Home_To">To</string>
+    <string name="Navigation_Bar_Locations">Locations</string>
+
     <string name="Home_welcome_back">Welcome back!</string>
 
     <string name="Memories_a_day_ago">A day Ago</string>

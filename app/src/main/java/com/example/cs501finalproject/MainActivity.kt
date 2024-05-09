@@ -1,7 +1,12 @@
 package com.example.cs501finalproject
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -9,10 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -35,7 +42,9 @@ import com.example.cs501finalproject.util.LanguageManager
 import com.example.cs501finalproject.util.ThemeManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import java.util.Objects
 import java.util.UUID
+import kotlin.math.sqrt
 
 
 class MainActivity : AppCompatActivity() {
@@ -64,10 +73,24 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     fun MainApp(languageManager: LanguageManager) {
+
         val locationViewModel = LocationViewModel()
 
         val dateViewModel = DateViewModel()
         val navController = rememberNavController()
+        val context = LocalContext.current
+        val shakeDetector = remember {
+            ShakeDetector(context) {
+                navController.navigate("atlas")
+            }
+        }
+        DisposableEffect(context) {
+            shakeDetector.start()
+            onDispose {
+                shakeDetector.stop()
+            }
+        }
+
         Scaffold(
             bottomBar = { NavigationBar(navController, Modifier, languageManager) }
         ) { innerPadding ->

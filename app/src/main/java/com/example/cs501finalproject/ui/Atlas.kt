@@ -27,6 +27,7 @@ import com.example.cs501finalproject.BlogDetailViewModel
 import com.example.cs501finalproject.BlogDetailViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cs501finalproject.BlogListViewModel
+import com.google.android.gms.maps.model.LatLngBounds
 import kotlinx.coroutines.flow.asStateFlow
 
 @Composable
@@ -42,15 +43,22 @@ fun AtlasPage(navController: NavController) {
     AtlasViewComposable(modifier = Modifier,
 
         onMapReady = { googleMap ->
+            var boundsBuilder = LatLngBounds.builder()
+
             locations.value.forEach{location ->
                 val addressList = geocoder.getFromLocationName(location, 1)
                 if (addressList != null && addressList.size > 0) {
                     val address = addressList[0]
                     val latLng = LatLng(address.latitude, address.longitude)
+                    boundsBuilder = boundsBuilder.include(latLng)
                     googleMap.addMarker(MarkerOptions().position(latLng).title(getLastThreeElements(location)))
                 }
             }
-           // Log.d("equal location", init_location.value.toString())
+
+            val bounds = boundsBuilder.build()
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100)) // The second parameter is the padding
+
+            // Log.d("equal location", init_location.value.toString())
            // googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(init_location.value, 10f))
 
         })
