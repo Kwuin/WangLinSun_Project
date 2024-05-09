@@ -29,7 +29,8 @@ import kotlinx.coroutines.flow.asStateFlow
 @Composable
 fun MapPage(navController: NavController, locationviewModel: LocationViewModel) {
     val context = LocalContext.current
-    val map: GoogleMap? by remember { mutableStateOf(null) }
+    //val map: GoogleMap? by remember { mutableStateOf(null) }
+    val init_location = locationviewModel.init_location.collectAsState()
     val location = locationviewModel.location.collectAsState()
     val geocoder = Geocoder(context)
     val addresses = geocoder.getFromLocation(location.value.latitude, location.value.longitude, 1)
@@ -37,9 +38,19 @@ fun MapPage(navController: NavController, locationviewModel: LocationViewModel) 
     val id = locationviewModel.UUID.collectAsState()
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(id.value))
 
-    MapViewComposable(modifier = Modifier, onMapReady = { googleMap ->
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location.value, 10f))
-        googleMap.addMarker(MarkerOptions().position(location.value).title(address))
+
+
+
+    MapViewComposable(modifier = Modifier,
+
+        onMapReady = { googleMap ->
+            Log.d("initial location", init_location.value.toString())
+            Log.d("location", location.value.toString())
+            if (areLatLngsEqual(init_location.value, location.value)){
+                Log.d("equal location", init_location.value.toString())
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(init_location.value, 10f))
+                googleMap.addMarker(MarkerOptions().position(init_location.value).title(address))
+            }
 
 
         googleMap.setOnMapClickListener { latLng ->
@@ -69,6 +80,11 @@ fun MapPage(navController: NavController, locationviewModel: LocationViewModel) 
     ) {
         Text("Confirm Location")
     }
+}
+
+fun areLatLngsEqual(first: LatLng, second: LatLng, tolerance: Double = 0.00001): Boolean {
+    return Math.abs(first.latitude - second.latitude) < tolerance &&
+            Math.abs(first.longitude - second.longitude) < tolerance
 }
 
 @Composable

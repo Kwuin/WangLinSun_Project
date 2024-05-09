@@ -52,6 +52,10 @@ class BlogDetailViewModel(blogId: UUID) : ViewModel() {
         return blog.value?.date.toString()
     }
 
+    fun getLocation(): String? {
+        return blog.value?.location
+    }
+
 }
 
 class BlogDetailViewModelFactory(

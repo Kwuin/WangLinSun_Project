@@ -158,11 +158,12 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
                                 if (addressList != null && addressList.size > 0) {
                                     val address = addressList[0]
                                     val latLng = LatLng(address.latitude, address.longitude)
+                                    viewModel.setInitLocation(latLng)
                                     viewModel.setLocation(latLng)
                                     viewModel.setUUID(blog.id)
                                 }
                             }else{
-                                viewModel.setLocation(LatLng(42.0,-71.0))
+                                viewModel.setInitLocation(LatLng(42.0,-71.0))
                                 viewModel.setUUID(blog.id)
                             }
 
