@@ -105,8 +105,6 @@ fun MapPage(navController: NavController, locationviewModel: LocationViewModel) 
                     location.let {
                         locationviewModel.confirmLocation("Location confirmed with description")
                         locationviewModel.setLocation(it.value)
-                        val newAddresses =
-                            geocoder.getFromLocation(it.value.latitude, it.value.longitude, 1)
                         val newAddress =
                             addresses?.firstOrNull()?.getAddressLine(0) ?: "Unknown location"
 

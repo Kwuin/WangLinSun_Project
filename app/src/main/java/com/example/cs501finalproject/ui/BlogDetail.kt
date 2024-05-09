@@ -66,7 +66,6 @@ fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewMode
     val blogListViewModel = BlogListViewModel()
     val blogState = remember { mutableStateOf<Blog?>(null) }
     val colors = ThemeManager.getAppThemeColors()
-    val imageViewModel: ImageViewModel = viewModel()
     LaunchedEffect(id) {
         blogState.value = blogListViewModel.getBlog(id)
     }
@@ -99,7 +98,6 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
     var text by remember { mutableStateOf(blog.title) }
     val context = LocalContext.current
-    val activity = context as? Activity  // Cast context to Activity
     val geocoder = Geocoder(context)
     val colors = ThemeManager.getAppThemeColors()
 

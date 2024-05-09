@@ -92,7 +92,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
 
 //        val boston = LatLng(42.3, -71.0)
 //        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(boston, 10f))
@@ -134,7 +133,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val geocoder = Geocoder(this)
         try {
             if(addressString.isNullOrEmpty()){
-                val latLng = LatLng(42.5, -71.0 )
+                val latLng = LatLng(42.35, -71.0 )
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
             }
             val addressList = geocoder.getFromLocationName(addressString, 1)

@@ -178,7 +178,7 @@ fun HomePictureCarousel(navController: NavController, modifier: Modifier = Modif
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.fillMaxHeight().background(color = colors.background),
+        modifier = modifier.fillMaxHeight().background(color = Color.White),
     ) {
         items(blogs.value) { item ->
 
@@ -215,7 +215,10 @@ fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.fillMaxHeight().background(color = colors.background),
+        modifier = modifier.
+        fillMaxHeight().
+        background(color = colors.background),
+
     ) {
         items(blogs.value) { blog ->
             CalendarBlogListItem(blog){

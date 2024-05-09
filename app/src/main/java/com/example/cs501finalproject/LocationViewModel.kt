@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.UUID
 
 class LocationViewModel : ViewModel() {
-    private val _location = MutableStateFlow(LatLng(42.35, -71.10))
+    val init_loc = LatLng(42.35, -71.10)
+    private val _location = MutableStateFlow(init_loc)
     val location: MutableStateFlow<LatLng> = _location
     private val _UUID = MutableStateFlow(java.util.UUID.randomUUID())
     val UUID: MutableStateFlow<UUID> = _UUID
-    private val _init_location = MutableStateFlow(LatLng(42.35, -71.10))
+    private val _init_location = MutableStateFlow(init_loc)
     val init_location: MutableStateFlow<LatLng> = _init_location
 
     fun setLocation(location: LatLng) {
