@@ -299,7 +299,7 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
 @Composable
 fun Day(day: CalendarDay, blogDateVIewModel: BlogDateVIewModel, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
     val colors = ThemeManager.getAppThemeColors()
-    val adressmap  = blogDateVIewModel.addresses.collectAsState(initial = mutableMapOf())
+    val addressMap  = blogDateVIewModel.addresses.collectAsState(initial = mutableMapOf())
     Box(
         modifier = Modifier
             .clip(CircleShape)
@@ -320,8 +320,8 @@ fun Day(day: CalendarDay, blogDateVIewModel: BlogDateVIewModel, isSelected: Bool
                 modifier = Modifier
                     .size(3.dp)
                     .clip(CircleShape)
-                    .background(Color.Red)
                     .align(Alignment.CenterHorizontally) // Align horizontally
+                    .background(color = if (addressMap.value[day.date] == true)  colors.secondaryVariant else Color.Transparent)
             )
         }
     }

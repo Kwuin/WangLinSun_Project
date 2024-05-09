@@ -7,19 +7,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.UUID
 
 class BlogDateVIewModel : ViewModel() {
     private val blogRepository = BlogRepository.get()
 
-    private val _addresses: MutableStateFlow<Map<Blog, Boolean>> = MutableStateFlow(mutableMapOf())
+    private val _addresses: MutableStateFlow<Map<LocalDate, Boolean>> = MutableStateFlow(mutableMapOf())
 
-    val addresses: StateFlow<Map<Blog, Boolean>>
+    val addresses: StateFlow<Map<LocalDate, Boolean>>
         get() = _addresses.asStateFlow()
 
     init {
         viewModelScope.launch {
-            blogRepository.getBlogs().collect {
+            blogRepository.getDates().collect {
                 _addresses.value = it.associateWith { true }
             }
         }
