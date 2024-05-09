@@ -75,25 +75,35 @@ fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewMode
     blogState.value?.let { blog ->
         Column(){
             BlogTop(blog, navController, Modifier, viewModel)
-            Box(
+            Row(
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .background(color = Color.Transparent)
-            ) {
-                Button(
-                    modifier = Modifier
-                        .background(color = Color.Transparent)
-                        .align(Alignment.TopCenter),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = colors.secondaryVariant,  // Background color of the button
-                        contentColor = colors.onPrimary     // Color of the content (text/icon) inside the button
-                    ),
-                    onClick = {
-                        blogListViewModel.deleteBlog(blog.id)
-                        navController.navigateUp()
-                    },
+                    .padding(16.dp)
+                    .fillMaxSize()
+                ,
+
                 ) {
-                    Text("Delete Blog")
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .background(color = Color.Transparent)
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .background(color = Color.Transparent)
+                            .align(Alignment.TopCenter),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = colors.secondaryVariant,  // Background color of the button
+                            contentColor = colors.onPrimary     // Color of the content (text/icon) inside the button
+                        ),
+                        onClick = {
+                            blogListViewModel.deleteBlog(blog.id)
+                            navController.navigateUp()
+                        },
+                    ) {
+                        Text("Delete Blog")
+                    }
                 }
             }
             BlogBody(blog, Modifier)
