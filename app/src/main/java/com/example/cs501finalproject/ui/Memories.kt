@@ -106,7 +106,7 @@ fun MemoriesPictureCarousel(modifier: Modifier = Modifier, colors: Colors) {
     ) {
         items(combinedBlogs.value) { item ->
             if (item.photoFileName != ""){
-                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors)
             }
         }
     }

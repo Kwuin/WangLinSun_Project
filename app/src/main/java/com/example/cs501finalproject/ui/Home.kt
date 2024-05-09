@@ -177,7 +177,7 @@ fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: State<LocalDat
     ) {
         items(blogs.value) { item ->
             if (item.photoFileName != "") {
-                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors)
             }
         }
     }
