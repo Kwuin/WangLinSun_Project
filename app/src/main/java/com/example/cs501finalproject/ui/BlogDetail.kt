@@ -41,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.ImageViewModel
 import android.graphics.Bitmap
+import android.location.Geocoder
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.KeyboardOptions
 
@@ -51,6 +52,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.cs501finalproject.LocationViewModel
+import com.google.android.gms.maps.model.LatLng
 
 import java.io.File
 import java.io.FileOutputStream
@@ -58,7 +61,7 @@ import java.util.Properties
 
 
 @Composable
-fun BlogView(navController: NavController, id: UUID) {
+fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewModel) {
     val blogListViewModel = BlogListViewModel()
     val blogState = remember { mutableStateOf<Blog?>(null) }
     val imageViewModel: ImageViewModel = viewModel()
@@ -69,7 +72,7 @@ fun BlogView(navController: NavController, id: UUID) {
     // Using the blog data to build the UI
     blogState.value?.let { blog ->
         Column(){
-            BlogTop(blog, navController, Modifier)
+            BlogTop(blog, navController, Modifier, viewModel)
             BlogBody(blog, Modifier)
 //            //NavigationBar(navController)
         }
@@ -89,11 +92,12 @@ fun BlogView(navController: NavController, id: UUID) {
 }
 
 @Composable
-fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
+fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewModel: LocationViewModel) {
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
     var text by remember { mutableStateOf(blog.title) }
     val context = LocalContext.current
     val activity = context as? Activity  // Cast context to Activity
+    val geocoder = Geocoder(context)
 
     Box(
         modifier = Modifier
@@ -149,19 +153,17 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
                         .padding(6.dp)  // Add padding around the icon for easier touching
                         .width(50.dp)
                         .clickable {
-                            activity?.let {
-                                val intent = Intent(it, MapsActivity::class.java)
-                                intent.putExtra("last location", blog.location)
-                                Log.d("id before intent", blog.id.toString())
-                                intent.putExtra("date", blog.date.toString())
-                                intent.putExtra("blog_id", blog.id.toString())
-                                Log.d("last location", blog.location)
-
-                                it.startActivityForResult(
-                                    intent,
-                                    123
-                                )  // Use a request code to identify your request
+                            val addressList = geocoder.getFromLocationName(blog.location, 1)
+                            if (addressList != null && addressList.size > 0) {
+                                val address = addressList[0]
+                                val latLng = LatLng(address.latitude, address.longitude)
+                                viewModel.setLocation(latLng)
+                                viewModel.setUUID(blog.id)
                             }
+                            navController.navigate("map",)
+
+                            // Use a request code to identify your request
+
                         },
                     tint = Color.Red  // You can set the icon color
                 )

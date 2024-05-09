@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -21,6 +22,7 @@ import androidx.navigation.navArgument
 import com.example.cs501finalproject.ui.BlogView
 import com.example.cs501finalproject.ui.CalendarPage
 import com.example.cs501finalproject.ui.HomePage
+import com.example.cs501finalproject.ui.MapPage
 import com.example.cs501finalproject.ui.MemoriesPage
 import com.example.cs501finalproject.ui.NavigationBar
 import com.example.cs501finalproject.ui.Profile
@@ -61,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     fun MainApp(languageManager: LanguageManager) {
+        val locationViewModel = LocationViewModel()
         val navController = rememberNavController()
         Scaffold(
             bottomBar = { NavigationBar(navController, Modifier, languageManager) }
@@ -75,6 +78,7 @@ class MainActivity : AppCompatActivity() {
                 composable("calendar") { CalendarScreen(navController) }
                 composable("memories") { MemoriesScreen(navController) }
                 composable("settings") { SettingsScreen(navController) }
+                composable("map"){ MapScreen(navController, locationViewModel)}
                 composable("settingsLanguage") {
                     val languageManager = remember { LanguageManager }
                     SettingsLanguageScreen(navController, languageManager)
@@ -91,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                     val blogId = UUID.fromString(blogIdString)
                     // Pass the blogId to your BlogView
                     Log.d("Navigation Bar in", "new/${blogId}")
-                    BlogView(navController, blogId)
+                    BlogView(navController, blogId, locationViewModel)
                 }
             }
         }
@@ -132,6 +136,10 @@ class MainActivity : AppCompatActivity() {
         SettingsNotificationsPage(navController)
     }
 
+    @Composable
+    fun MapScreen(navController: NavController, locationViewModel: LocationViewModel){
+        MapPage(navController, locationViewModel)
+    }
     @Composable
     fun SettingsAboutScreen(navController: NavController) {
         SettingsAboutPage(navController)
