@@ -36,6 +36,10 @@ class BlogListViewModel : ViewModel() {
         return blogRepository.getBlog(id)
     }
 
+    fun deleteBlog(id: UUID){
+        return blogRepository.deleteBlog(id)
+    }
+
     val locations: StateFlow<List<String>> = _blogs
         .map { blogs -> blogs.map { it.location }.filter { it.isNotBlank() } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())

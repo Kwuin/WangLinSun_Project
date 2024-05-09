@@ -27,6 +27,8 @@ interface BlogDao {
     @Update
     suspend fun updateBlog(blog: Blog)
 
+    @Query("DELETE FROM blog WHERE id = :id")
+    suspend fun deleteBlog(id: UUID)
     @Insert
     suspend fun addBlog(blog: Blog)
     @Query("SELECT * FROM Blog WHERE date>=(:startDate) and date<=(:endDate) ORDER BY date DESC")

@@ -65,6 +65,7 @@ import java.util.Properties
 fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewModel) {
     val blogListViewModel = BlogListViewModel()
     val blogState = remember { mutableStateOf<Blog?>(null) }
+    val colors = ThemeManager.getAppThemeColors()
     val imageViewModel: ImageViewModel = viewModel()
     LaunchedEffect(id) {
         blogState.value = blogListViewModel.getBlog(id)
@@ -74,6 +75,27 @@ fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewMode
     blogState.value?.let { blog ->
         Column(){
             BlogTop(blog, navController, Modifier, viewModel)
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .background(color = Color.Transparent)
+            ) {
+                Button(
+                    modifier = Modifier
+                        .background(color = Color.Transparent)
+                        .align(Alignment.Center),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = colors.secondaryVariant,  // Background color of the button
+                        contentColor = colors.onPrimary     // Color of the content (text/icon) inside the button
+                    ),
+                    onClick = {
+                        blogListViewModel.deleteBlog(blog.id)
+                        navController.navigateUp()
+                    },
+                ) {
+                    Text("Delete Blog")
+                }
+            }
             BlogBody(blog, Modifier)
 //            //NavigationBar(navController)
         }

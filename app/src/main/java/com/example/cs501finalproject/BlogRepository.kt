@@ -44,6 +44,11 @@ class BlogRepository private constructor(
         }
     }
 
+    fun deleteBlog(id: UUID){
+        coroutineScope.launch {
+            database.blogDao().deleteBlog(id)
+        }
+    }
     suspend fun addBlog(blog: Blog) {
         database.blogDao().addBlog(blog)
     }
