@@ -75,36 +75,8 @@ fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewMode
     blogState.value?.let { blog ->
         Column(){
             BlogTop(blog, navController, Modifier, viewModel)
-            Row(
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .padding(16.dp)
-                ,
-                ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .background(color = Color.Transparent)
-                ) {
-                    Button(
-                        modifier = Modifier
-                            .background(color = Color.Transparent)
-                            .align(Alignment.TopCenter),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = colors.secondaryVariant,  // Background color of the button
-                            contentColor = colors.onPrimary     // Color of the content (text/icon) inside the button
-                        ),
-                        onClick = {
-                            blogListViewModel.deleteBlog(blog.id)
-                            navController.navigateUp()
-                        },
-                    ) {
-                        Text("Delete Blog")
-                    }
-                }
-            }
             BlogBody(blog, Modifier)
+
 //            //NavigationBar(navController)
         }
     }
@@ -138,8 +110,9 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
             .background(
                 brush = Brush.linearGradient(
                     0f to colors.primary,
-                    1f to colors.primaryVariant)
+                    1f to colors.primaryVariant
                 )
+            )
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -172,19 +145,20 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                ImagePickerButton(blogDetailViewModel, blog)
-                Spacer(modifier = Modifier.width(5.dp))
                 EmojiTextField(blogDetailViewModel, blog, Modifier)
-                Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.width(1.dp))
+                ImagePickerButton(blogDetailViewModel, blog)
+                Spacer(modifier = Modifier.width(1.dp))
+
                 //MapButtonIcon(blogDetailViewModel, blog)
                 Icon(
                     imageVector = Icons.Filled.Place,  // This is the material icon for a location
                     contentDescription = "Open Map",
                     modifier = Modifier
                         .padding(6.dp)  // Add padding around the icon for easier touching
-                        .width(50.dp)
+                        .width(20.dp)
                         .clickable {
-                            if(blog.location != ""){
+                            if (blog.location != "") {
                                 val addressList = geocoder.getFromLocationName(blog.location, 1)
                                 if (addressList != null && addressList.size > 0) {
                                     val address = addressList[0]
@@ -193,7 +167,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
                                     viewModel.setLocation(latLng)
                                     viewModel.setUUID(blog.id)
                                 }
-                            }else{
+                            } else {
                                 viewModel.setInitLocation(LatLng(42.35, -71.10))
                                 viewModel.setUUID(blog.id)
                             }
@@ -205,6 +179,9 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
                         },
                     tint = colors.secondaryVariant  // You can set the icon color
                 )
+                Spacer(modifier = Modifier.width(1.dp))
+
+                DeleteButton(navController = navController, blog = blog)
             }
         }
     }
@@ -338,6 +315,22 @@ fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
 //
 //}
 
+@Composable
+fun DeleteButton(navController: NavController, blog:Blog){
+    val blogListViewModel = BlogListViewModel()
+    val colors = ThemeManager.getAppThemeColors()
+    Icon(
+        painter = painterResource(id = R.drawable.ic_delete),
+        contentDescription = "Select Image",
+        modifier = Modifier
+            .width(50.dp)
+            .clickable {
+                blogListViewModel.deleteBlog(blog.id)
+                navController.navigateUp()
+            },
+        tint = colors.secondaryVariant
+    )
+}
 
 @Composable
 fun ImagePickerButton(blogDetailViewModel: BlogDetailViewModel, blog:Blog) {
