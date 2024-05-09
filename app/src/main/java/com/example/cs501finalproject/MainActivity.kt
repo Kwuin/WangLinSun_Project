@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.cs501finalproject.ui.AtlasPage
 import com.example.cs501finalproject.ui.BlogView
 import com.example.cs501finalproject.ui.CalendarPage
 import com.example.cs501finalproject.ui.HomePage
@@ -81,6 +82,7 @@ class MainActivity : AppCompatActivity() {
                 composable("memories") { MemoriesScreen(navController) }
                 composable("settings") { SettingsScreen(navController) }
                 composable("map"){ MapScreen(navController, locationViewModel)}
+                composable("atlas"){ AtlasPage(navController)}
                 composable("settingsLanguage") {
                     val languageManager = remember { LanguageManager }
                     SettingsLanguageScreen(navController, languageManager)

@@ -37,7 +37,7 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
             .background(color = colors.primary)
     ) {
         HomeNavigation(
-            modifier = Modifier.weight(weight = 0.25f),
+            modifier = Modifier.weight(weight = 0.2f),
             selected = selectedTab.value == 0,
             colorTheme = colors,
             onClick = {
@@ -46,7 +46,7 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
             }
         )
         CalendarNavigation(
-            modifier = Modifier.weight(weight = 0.25f),
+            modifier = Modifier.weight(weight = 0.2f),
             selected = selectedTab.value == 1,
             colorTheme = colors,
             onClick = {
@@ -54,7 +54,7 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
                 navController.navigate("calendar")
             })
         MemoriesNavigation(
-            modifier = Modifier.weight(weight = 0.25f),
+            modifier = Modifier.weight(weight = 0.2f),
             selected = selectedTab.value == 2,
             colorTheme = colors,
             onClick = {
@@ -62,13 +62,23 @@ fun NavigationBar(navController: NavController, modifier: Modifier = Modifier, l
                 navController.navigate("memories")
             })
         SettingsNavigation(
-            modifier = Modifier.weight(weight = 0.25f),
+            modifier = Modifier.weight(weight = 0.2f),
             selected = selectedTab.value == 3,
             colorTheme = colors,
             onClick = {
                 selectedTab.value = 3
                 navController.navigate("settings")
             })
+
+        AtlasNavigation(
+            modifier = Modifier.weight(weight = 0.2f),
+            selected = selectedTab.value == 4,
+            colorTheme = colors,
+            onClick = {
+                selectedTab.value = 4
+                navController.navigate("atlas")
+            })
+
     }
 }
 
@@ -92,6 +102,11 @@ fun SettingsNavigation(modifier: Modifier = Modifier, selected: Boolean, colorTh
     NavigationItem(modifier, selected, onClick, R.drawable.ic_settings, stringResource(R.string.NavigationBar_Settings), colorTheme)
 }
 
+
+@Composable
+fun AtlasNavigation(modifier: Modifier = Modifier, selected: Boolean, colorTheme: Colors, onClick: () -> Unit) {
+    NavigationItem(modifier, selected, onClick, R.drawable.ic_settings, stringResource(R.string.NavigationBar_Settings), colorTheme)
+}
 @Composable
 fun NavigationItem(modifier: Modifier, isSelected: Boolean, onClick: () -> Unit, iconId: Int, title: String, colorTheme: Colors) {
     Column(

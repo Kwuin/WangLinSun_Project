@@ -33,6 +33,4 @@ class LocationViewModel : ViewModel() {
         // Logic to handle location confirmation
         // This might involve updating the database or navigating to another screen
     }
-
-
 }
