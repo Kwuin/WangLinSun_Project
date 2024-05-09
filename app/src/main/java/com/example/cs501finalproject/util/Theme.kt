@@ -78,11 +78,11 @@ val GreenThemeColors = lightColors(
 )
 
 val BlueThemeColors = lightColors(
-    primary = Color(0xFFE3F2FD),
+    primary = Color(0xFFE3F2FD),//0xFFE3F2FD
     primaryVariant = Color(0xFFBBDEFB),
     secondary = Color(0xFF90CAF9),
     secondaryVariant = Color(0xFF64B5F6),
-    background = Color(0xFFDFFDFA),
+    background = Color(0xFFE9F8FC),//0xFFDFFDFA
     surface = Color(0xFFFFFFFF),
     error = Color(0xFFB00020),
     onPrimary = Color(0xFF000000),

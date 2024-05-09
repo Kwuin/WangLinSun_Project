@@ -28,7 +28,7 @@ fun Profile(navController: NavController) {
 
     Column(){
         TopSection(colors)
-        AccountSection(navController, colors)
+//        AccountSection(navController, colors)
         GeneralSection(navController, colors)
         AboutSection(navController, colors)
         Box(
@@ -64,9 +64,9 @@ fun TopSection(colors: Colors) {
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Welcome, Tom",  // Assume the name is hardcoded, or could be fetched from a ViewModel
+                text = "Welcome back!",
                 style = TextStyle(
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                 )
             )
@@ -110,7 +110,7 @@ fun GeneralSection(navController: NavController, colors: Colors) {
             Divider(color = Color.Gray.copy(alpha = 0.4f), thickness = 1.dp)
 
             // Cloud Sync
-            SectionItem(navController, colors, R.string.Settings_Cloud_Sync)
+            //SectionItem(navController, colors, R.string.Settings_Cloud_Sync)
 
             // Divider Line
             Divider(color = Color.Gray.copy(alpha = 0.4f), thickness = 1.dp)
@@ -143,7 +143,7 @@ fun SectionHeader(title: Int, colors: Colors) {
         Modifier
             .fillMaxWidth()
             .height(20.dp)
-            .background(color = colors.secondary),
+            .background(color = colors.primaryVariant),
         contentAlignment = Alignment.Center
     ) {
         Text(
