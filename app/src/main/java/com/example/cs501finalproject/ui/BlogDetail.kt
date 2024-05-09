@@ -1,6 +1,5 @@
 package com.example.cs501finalproject.ui
 import com.example.cs501finalproject.MapsActivity
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -8,13 +7,9 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,25 +36,21 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.graphics.asImageBitmap
 import android.net.Uri
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.core.net.toUri
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.ImageViewModel
-import java.io.FileNotFoundException
-import java.io.InputStream
 import android.graphics.Bitmap
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.KeyboardOptions
 
 import androidx.compose.material.Button
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import com.google.android.gms.maps.model.LatLng
+import androidx.compose.ui.unit.sp
 
 import java.io.File
 import java.io.FileOutputStream
@@ -79,7 +70,7 @@ fun BlogView(navController: NavController, id: UUID) {
     blogState.value?.let { blog ->
         Column(){
             BlogTop(blog, navController, Modifier)
-            BlogBody(blog)
+            BlogBody(blog, Modifier)
 //            //NavigationBar(navController)
         }
     }
@@ -162,11 +153,14 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
                                 val intent = Intent(it, MapsActivity::class.java)
                                 intent.putExtra("last location", blog.location)
                                 Log.d("id before intent", blog.id.toString())
-                                intent.putExtra("date",blog.date.toString())
+                                intent.putExtra("date", blog.date.toString())
                                 intent.putExtra("blog_id", blog.id.toString())
-                                Log.d("last location",blog.location)
+                                Log.d("last location", blog.location)
 
-                                it.startActivityForResult(intent, 123)  // Use a request code to identify your request
+                                it.startActivityForResult(
+                                    intent,
+                                    123
+                                )  // Use a request code to identify your request
                             }
                         },
                     tint = Color.Red  // You can set the icon color
@@ -225,13 +219,31 @@ fun BackButton(navController: NavController) {
 
 
 @Composable
-fun BlogBody(blog: Blog
+fun BlogBody(blog: Blog, modifier: Modifier
 ) {
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
 
     SimpleFilledTextFieldSample(blog, Modifier)
-
+    DisplayText(blog, modifier)
     ImageDisplay(blogDetailViewModel)
+}
+
+
+@Composable
+fun DisplayText(blog : Blog, modifier: Modifier) {
+    Log.d("blog address", blog.location)
+
+
+    blog.location.let { locationName ->
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(14.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = locationName, style = TextStyle(fontSize = 12.sp))
+        }
+    }
 }
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {

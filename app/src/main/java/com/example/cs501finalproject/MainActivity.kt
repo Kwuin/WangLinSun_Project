@@ -57,6 +57,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     @Composable
     fun MainApp(languageManager: LanguageManager) {
         val navController = rememberNavController()
@@ -141,19 +143,16 @@ class MainActivity : AppCompatActivity() {
         window.navigationBarColor = colors.secondary.toArgb()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == 123 && resultCode == Activity.RESULT_OK) {
-            val latitude = data?.getDoubleExtra("latitude", 0.0) ?: 0.0
-            val longitude = data?.getDoubleExtra("longitude", 0.0) ?: 0.0
-
-
-            // Do something with the location, e.g., update your ViewModel
-            //blogDetailViewModel.updateLocation(latitude, longitude)
-        }
-    }
-
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        val languageManager = LanguageManager
+//        languageManager.initLanguage(this)
+//        val uuid = UUID.fromString(intent.getStringExtra("blog_id"))
+//        setContent {
+//            MainApp(languageManager)
+//        }
+//
+//    }
 
 
 }

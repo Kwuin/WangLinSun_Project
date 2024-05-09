@@ -8,13 +8,9 @@ import android.util.Log
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.collectAsState
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cs501finalproject.R.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,7 +18,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.example.cs501finalproject.BlogDetailViewModelFactory
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.UUID
@@ -87,6 +82,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val returnIntent = Intent()
 
                 returnIntent.putExtra("location_name", address)
+                returnIntent.putExtra("blog_id", blogId)
                 setResult(Activity.RESULT_OK, returnIntent)
                 finish()
             }

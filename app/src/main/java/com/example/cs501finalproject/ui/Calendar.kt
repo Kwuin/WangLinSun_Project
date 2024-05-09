@@ -342,8 +342,8 @@ fun CalendarBlogListItem(item: Blog, onClick: () -> Unit) {
                 textAlign = TextAlign.Center
             )
             Text(
-                text = item.location,
-                fontSize = 14.sp,
+                text = getLastThreeElements(item.location),
+                fontSize = 10.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Center
             )
