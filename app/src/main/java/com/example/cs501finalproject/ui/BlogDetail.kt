@@ -1,17 +1,15 @@
 package com.example.cs501finalproject.ui
-import android.Manifest
+import com.example.cs501finalproject.MapsActivity
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,27 +36,32 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.graphics.asImageBitmap
 import android.net.Uri
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.core.net.toUri
 import com.example.cs501finalproject.R
 import com.example.cs501finalproject.util.ImageViewModel
-import java.io.FileNotFoundException
-import java.io.InputStream
 import android.graphics.Bitmap
+import android.location.Geocoder
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.KeyboardOptions
 
 import androidx.compose.material.Button
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import com.example.cs501finalproject.LocationViewModel
+import com.google.android.gms.maps.model.LatLng
 
 import java.io.File
 import java.io.FileOutputStream
+import java.util.Properties
+
 
 @Composable
-fun BlogView(navController: NavController, id: UUID) {
+fun BlogView(navController: NavController, id: UUID, viewModel: LocationViewModel) {
     val blogListViewModel = BlogListViewModel()
     val blogState = remember { mutableStateOf<Blog?>(null) }
     val imageViewModel: ImageViewModel = viewModel()
@@ -69,8 +72,8 @@ fun BlogView(navController: NavController, id: UUID) {
     // Using the blog data to build the UI
     blogState.value?.let { blog ->
         Column(){
-            BlogTop(blog, navController, Modifier)
-            BlogBody(blog)
+            BlogTop(blog, navController, Modifier, viewModel)
+            BlogBody(blog, Modifier)
 //            //NavigationBar(navController)
         }
     }
@@ -89,10 +92,13 @@ fun BlogView(navController: NavController, id: UUID) {
 }
 
 @Composable
-fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
+fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewModel: LocationViewModel) {
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
-    val imageViewModel: ImageViewModel = viewModel()
     var text by remember { mutableStateOf(blog.title) }
+    val context = LocalContext.current
+    val activity = context as? Activity  // Cast context to Activity
+    val geocoder = Geocoder(context)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -113,7 +119,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
             TextField(
                 value = text,
                 modifier = modifier
-                    .width(200.dp)
+                    .width(150.dp)
                     .background(Color.Transparent),
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent, // Transparent background
@@ -136,22 +142,77 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ImagePickerButton(blogDetailViewModel, blog)
-                Spacer(modifier = Modifier.width(16.dp))
-                EmojiTextField(blogDetailViewModel, blog)
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(5.dp))
+                EmojiTextField(blogDetailViewModel, blog, Modifier)
+                Spacer(modifier = Modifier.width(5.dp))
+                //MapButtonIcon(blogDetailViewModel, blog)
                 Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Settings",
-                    modifier = Modifier.size(24.dp)
+                    imageVector = Icons.Filled.Place,  // This is the material icon for a location
+                    contentDescription = "Open Map",
+                    modifier = Modifier
+                        .padding(6.dp)  // Add padding around the icon for easier touching
+                        .width(50.dp)
+                        .clickable {
+                            if(blog.location != ""){
+                                val addressList = geocoder.getFromLocationName(blog.location, 1)
+                                if (addressList != null && addressList.size > 0) {
+                                    val address = addressList[0]
+                                    val latLng = LatLng(address.latitude, address.longitude)
+                                    viewModel.setLocation(latLng)
+                                    viewModel.setUUID(blog.id)
+                                }
+                            }else{
+                                viewModel.setLocation(LatLng(42.0,-71.0))
+                                viewModel.setUUID(blog.id)
+                            }
+
+                            navController.navigate("map",)
+
+                            // Use a request code to identify your request
+
+                        },
+                    tint = Color.Red  // You can set the icon color
                 )
             }
         }
     }
 }
 
+// Define a function to load properties
+fun loadProperties(fileName: String): Properties {
+    val props = Properties()
+    val propFile = File(fileName)
+    if (propFile.exists()) {
+        propFile.inputStream().use {
+            props.load(it)
+        }
+    }
+    return props
+}
+
+@Composable
+@Preview
+fun check(){
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Icon(
+            imageVector = Icons.Filled.Place,  // This is the material icon for a location
+            contentDescription = "Open Map",
+            modifier = Modifier
+                .padding(6.dp)  // Add padding around the icon for easier touching
+                .width(30.dp)
+            ,
+            tint = Color.Red  // You can set the icon color
+        )
+    }
+}
+
 
 @Composable
 fun BackButton(navController: NavController) {
+
     IconButton(
         onClick = { navController.navigateUp() },
         modifier = Modifier.padding(start = 16.dp)
@@ -166,14 +227,31 @@ fun BackButton(navController: NavController) {
 
 
 @Composable
-fun BlogBody(blog: Blog
+fun BlogBody(blog: Blog, modifier: Modifier
 ) {
-    val imageViewModel: ImageViewModel = viewModel()
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
 
     SimpleFilledTextFieldSample(blog, Modifier)
-
+    DisplayText(blog, modifier)
     ImageDisplay(blogDetailViewModel)
+}
+
+
+@Composable
+fun DisplayText(blog : Blog, modifier: Modifier) {
+    Log.d("blog address", blog.location)
+
+
+    blog.location.let { locationName ->
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(14.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = locationName, style = TextStyle(fontSize = 12.sp))
+        }
+    }
 }
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
@@ -250,6 +328,47 @@ fun ImagePickerButton(blogDetailViewModel: BlogDetailViewModel, blog:Blog) {
     }
 }
 
+@Composable
+fun MapButton(blogDetailViewModel: BlogDetailViewModel, blog: Blog){
+    // Load your secrets
+    val secrets = loadProperties("secrets.properties")
+
+// Accessing a property
+    val googleMapsApiKey = secrets.getProperty("GOOGLE_MAPS_API_KEY", "")
+    val context = LocalContext.current
+    val activity = context as? Activity  // Cast context to Activity
+
+    val intent = Intent(activity, MapsActivity::class.java)
+    activity?.startActivityForResult(intent, 123) // Use a request code to identify your request
+
+
+}
+
+@Composable
+fun MapButtonIcon(blogDetailViewModel: BlogDetailViewModel, blog: Blog) {
+    // Obtain the current activity context from the LocalContext
+    val context = LocalContext.current
+    val activity = context as? Activity  // Cast context to Activity
+
+    Icon(
+        imageVector = Icons.Filled.Place,  // This is the material icon for a location
+        contentDescription = "Open Map",
+        modifier = Modifier
+            .padding(16.dp)  // Add padding around the icon for easier touching
+            .clickable {
+                // Ensure activity is not null
+                activity?.let {
+                    val intent = Intent(it, MapsActivity::class.java)
+                    it.startActivityForResult(
+                        intent,
+                        123
+                    )  // Use a request code to identify your request
+                }
+            },
+        tint = Color.Red  // You can set the icon color
+    )
+}
+
 fun saveImageToLocalFile(uri: Uri, context: Context, fileName: String): File? {
     val inputStream = context.contentResolver.openInputStream(uri)
     val bitmap = BitmapFactory.decodeStream(inputStream)
@@ -279,11 +398,14 @@ fun ImageDisplay(blogDetailViewModel: BlogDetailViewModel) {
 
 
 @Composable
-fun EmojiTextField(blogDetailViewModel: BlogDetailViewModel, blog: Blog) {
+fun EmojiTextField(blogDetailViewModel: BlogDetailViewModel, blog: Blog, modifier: Modifier) {
     var text by remember { mutableStateOf("\uD83D\uDE04") }
 
     TextField(
         value = text,
+        modifier = modifier
+            .width(50.dp)
+            .background(Color.Transparent),
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = Color.Transparent, // Transparent background
             cursorColor = Color.Black, // Customize the cursor color if needed

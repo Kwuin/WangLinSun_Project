@@ -176,6 +176,7 @@ fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: State<LocalDat
         modifier = modifier.fillMaxHeight().background(color = colors.background),
     ) {
         items(blogs.value) { item ->
+
             if (item.photoFileName != "") {
                 MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors)
             }
@@ -183,6 +184,20 @@ fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: State<LocalDat
     }
 }
 
+
+fun getLastThreeElements(address: String): String {
+    val parts = address.split(",").map { it.trim() }  // Split by comma and trim spaces
+    val size = parts.size
+    Log.d("getLastThreeElements", address)
+
+    // Retrieve the last three elements, handling cases where there may be fewer than three elements
+    val last = if (size >= 1) parts[size - 1].replace(Regex("[0-9 ]"), "") else ""
+    val secondLast = if (size >= 2) parts[size - 2].split(" ")[0].replace(Regex("[0-9 ]"), "") + ", " else ""
+    val thirdLast = if (size >= 3) parts[size - 3].replace(Regex("[0-9 ]"), "") + ", " else ""
+//    return listOf(secondLast, last).joinToString(separator = ",")
+
+    return listOf(thirdLast, secondLast, last).joinToString(separator = "")
+}
 
 @Composable
 fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate: State<LocalDate>, endDate: State<LocalDate>) {

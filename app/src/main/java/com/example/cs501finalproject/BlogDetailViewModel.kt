@@ -1,9 +1,12 @@
 package com.example.cs501finalproject
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,6 +42,16 @@ class BlogDetailViewModel(blogId: UUID) : ViewModel() {
         super.onCleared()
         Log.d("updateBlog in view model", "updated")
     }
+
+    fun getId(): String {
+        return blog.value?.id.toString()
+    }
+
+
+    fun getDate(): String {
+        return blog.value?.date.toString()
+    }
+
 }
 
 class BlogDetailViewModelFactory(
@@ -48,4 +61,5 @@ class BlogDetailViewModelFactory(
         return BlogDetailViewModel(blogId) as T
     }
 }
+
 
