@@ -36,4 +36,5 @@
     <string name="Home_Date">Date</string>
     <string name="Home_From">From</string>
     <string name="Home_To">To</string>
+    <string name="NavigationBar_Locations">Locations</string>
 </resources>

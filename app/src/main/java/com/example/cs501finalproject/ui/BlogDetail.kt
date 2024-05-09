@@ -53,6 +53,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.cs501finalproject.LocationViewModel
+import com.example.cs501finalproject.util.ThemeManager
 import com.google.android.gms.maps.model.LatLng
 
 import java.io.File
@@ -98,6 +99,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
     val context = LocalContext.current
     val activity = context as? Activity  // Cast context to Activity
     val geocoder = Geocoder(context)
+    val colors = ThemeManager.getAppThemeColors()
 
     Box(
         modifier = Modifier
@@ -105,10 +107,9 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
             .requiredHeight(120.dp)
             .background(
                 brush = Brush.linearGradient(
-                    0f to Color(0xffe6d6f0),
-                    1f to Color(0xff9f88ae),
+                    0f to colors.primary,
+                    1f to colors.primaryVariant)
                 )
-            )
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -172,7 +173,7 @@ fun BlogTop(blog: Blog, navController:NavController, modifier: Modifier, viewMod
                             // Use a request code to identify your request
 
                         },
-                    tint = Color.Red  // You can set the icon color
+                    tint = colors.secondaryVariant  // You can set the icon color
                 )
             }
         }
@@ -254,6 +255,7 @@ fun DisplayText(blog : Blog, modifier: Modifier) {
         }
     }
 }
+
 @Composable
 fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
     val blogDetailViewModel : BlogDetailViewModel = viewModel(factory = BlogDetailViewModelFactory(blog.id))
@@ -310,6 +312,7 @@ fun SimpleFilledTextFieldSample(blog: Blog, modifier: Modifier) {
 @Composable
 fun ImagePickerButton(blogDetailViewModel: BlogDetailViewModel, blog:Blog) {
     val context = LocalContext.current
+    val colors = ThemeManager.getAppThemeColors()
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
@@ -321,54 +324,19 @@ fun ImagePickerButton(blogDetailViewModel: BlogDetailViewModel, blog:Blog) {
         }
     )
 
-    Button(onClick = { pickImageLauncher.launch("image/*") }) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_camera),
-            contentDescription = "Select Image"
-        )
-    }
-}
-
-@Composable
-fun MapButton(blogDetailViewModel: BlogDetailViewModel, blog: Blog){
-    // Load your secrets
-    val secrets = loadProperties("secrets.properties")
-
-// Accessing a property
-    val googleMapsApiKey = secrets.getProperty("GOOGLE_MAPS_API_KEY", "")
-    val context = LocalContext.current
-    val activity = context as? Activity  // Cast context to Activity
-
-    val intent = Intent(activity, MapsActivity::class.java)
-    activity?.startActivityForResult(intent, 123) // Use a request code to identify your request
-
-
-}
-
-@Composable
-fun MapButtonIcon(blogDetailViewModel: BlogDetailViewModel, blog: Blog) {
-    // Obtain the current activity context from the LocalContext
-    val context = LocalContext.current
-    val activity = context as? Activity  // Cast context to Activity
-
     Icon(
-        imageVector = Icons.Filled.Place,  // This is the material icon for a location
-        contentDescription = "Open Map",
+        painter = painterResource(id = R.drawable.ic_camera),
+        contentDescription = "Select Image",
         modifier = Modifier
-            .padding(16.dp)  // Add padding around the icon for easier touching
+            .width(50.dp)
             .clickable {
-                // Ensure activity is not null
-                activity?.let {
-                    val intent = Intent(it, MapsActivity::class.java)
-                    it.startActivityForResult(
-                        intent,
-                        123
-                    )  // Use a request code to identify your request
-                }
+                pickImageLauncher.launch("image/*")
             },
-        tint = Color.Red  // You can set the icon color
+        tint = colors.secondaryVariant
     )
+
 }
+
 
 fun saveImageToLocalFile(uri: Uri, context: Context, fileName: String): File? {
     val inputStream = context.contentResolver.openInputStream(uri)

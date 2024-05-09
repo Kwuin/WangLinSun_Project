@@ -105,7 +105,7 @@ fun SettingsNavigation(modifier: Modifier = Modifier, selected: Boolean, colorTh
 
 @Composable
 fun AtlasNavigation(modifier: Modifier = Modifier, selected: Boolean, colorTheme: Colors, onClick: () -> Unit) {
-    NavigationItem(modifier, selected, onClick, R.drawable.ic_settings, stringResource(R.string.NavigationBar_Settings), colorTheme)
+    NavigationItem(modifier, selected, onClick, R.drawable.ic_atlas, stringResource(R.string.NavigationBar_Locations), colorTheme)
 }
 @Composable
 fun NavigationItem(modifier: Modifier, isSelected: Boolean, onClick: () -> Unit, iconId: Int, title: String, colorTheme: Colors) {
