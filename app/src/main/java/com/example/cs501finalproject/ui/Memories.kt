@@ -40,6 +40,7 @@ import com.example.cs501finalproject.util.ThemeManager
 import java.io.File
 import java.util.UUID
 
+
 @Composable
 fun MemoriesPage(navController: NavController){
     val colors = ThemeManager.getAppThemeColors()
@@ -104,8 +105,8 @@ fun MemoriesPictureCarousel(modifier: Modifier = Modifier, colors: Colors) {
         modifier = modifier.fillMaxHeight().background(colors.background)
     ) {
         items(combinedBlogs.value) { item ->
-            if (item.photoFileName != null){
-                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors)
+            if (item.photoFileName != ""){
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp))
             }
         }
     }
