@@ -171,9 +171,9 @@ fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: State<LocalDat
     val blogs = homeBlogListViewModel.blogs.collectAsState(initial = emptyList())
     val colors = ThemeManager.getAppThemeColors()
     LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.fillMaxHeight().background(color = colors.primary),
+        modifier = modifier.fillMaxHeight().background(color = colors.background),
     ) {
         items(blogs.value) { item ->
             if (item.photoFileName != "") {
@@ -193,7 +193,7 @@ fun HomeListCarousel(navController: NavController, modifier: Modifier, startDate
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.fillMaxHeight().background(color = colors.primary),
+        modifier = modifier.fillMaxHeight().background(color = colors.background),
     ) {
         items(blogs.value) { blog ->
             CalendarBlogListItem(blog){
