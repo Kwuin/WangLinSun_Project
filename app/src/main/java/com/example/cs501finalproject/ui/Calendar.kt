@@ -318,7 +318,7 @@ fun Day(day: CalendarDay, blogDateVIewModel: BlogDateVIewModel, isSelected: Bool
             )
             Box(
                 modifier = Modifier
-                    .size(3.dp)
+                    .size(5.dp)
                     .clip(CircleShape)
                     .align(Alignment.CenterHorizontally) // Align horizontally
                     .background(color = if (addressMap.value[day.date] == true)  colors.secondaryVariant else Color.Transparent)
