@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.Blog
+import com.example.cs501finalproject.BlogDateVIewModel
 import com.example.cs501finalproject.BlogListViewModel
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
@@ -83,7 +86,7 @@ fun CalendarPage(navController: NavController){
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
-
+    val blogDateVIewModel = BlogDateVIewModel()
 
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -153,7 +156,7 @@ fun CalendarPage(navController: NavController){
             HorizontalCalendar(
                 state = state,
                 dayContent = {  day ->
-                    Day(day, isSelected = selectedDate == day.date) { day ->
+                    Day(day, blogDateVIewModel, isSelected = selectedDate == day.date) { day ->
                         selectedDate = day.date
                         dayClicked = "${selectedDate?.dayOfWeek?.getDisplayName(TextStyle.FULL, Locale.getDefault())}"
                         monthClicked = day.date.month.name
@@ -294,8 +297,9 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
     }
 }
 @Composable
-fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
+fun Day(day: CalendarDay, blogDateVIewModel: BlogDateVIewModel, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
     val colors = ThemeManager.getAppThemeColors()
+    val adressmap  = blogDateVIewModel.addresses.collectAsState(initial = mutableMapOf())
     Box(
         modifier = Modifier
             .clip(CircleShape)
@@ -307,10 +311,19 @@ fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = day.date.dayOfMonth.toString(),
-            color = if (day.position == DayPosition.MonthDate) Color.Black else Color.Gray
-        )
+        Column(){
+            Text(
+                text = day.date.dayOfMonth.toString(),
+                color = if (day.position == DayPosition.MonthDate) Color.Black else Color.Gray
+            )
+            Box(
+                modifier = Modifier
+                    .size(3.dp)
+                    .clip(CircleShape)
+                    .background(Color.Red)
+                    .align(Alignment.CenterHorizontally) // Align horizontally
+            )
+        }
     }
 }
 
@@ -319,8 +332,28 @@ fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
 @Composable
 fun Checkcalendar() {
 //    GradientBackground()
-    CalendarPage(rememberNavController())
-}
+    Box(
+        modifier = Modifier
+            .clip(CircleShape)
+            .aspectRatio(1f)
+            ,
+        contentAlignment = Alignment.Center
+    ) {
+        Column(){
+            Text(
+                text = "10",
+                color = Color.Gray
+            )
+            Box(
+                modifier = Modifier
+                    .size(3.dp)
+                    .clip(CircleShape)
+                    .background(Color.Red)
+                    .align(Alignment.CenterHorizontally) // Align horizontally
+            )
+        }
+
+    }}
 
 
 @Composable
