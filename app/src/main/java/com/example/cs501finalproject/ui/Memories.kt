@@ -139,7 +139,7 @@ fun MemoryPictureItem(item: Blog, modifier: Modifier, colors: Colors, onClick: (
                 textAlign = TextAlign.Center
             )
             Text(
-                text = item.location,
+                text = getLastThreeElements(item.location),
                 fontSize = 14.sp,
                 color = Color.Gray,
                 modifier = Modifier
