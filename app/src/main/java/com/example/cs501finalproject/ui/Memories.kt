@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -51,7 +52,7 @@ fun MemoriesPage(navController: NavController){
             .fillMaxSize()
             .background(colors.background)
     ) {
-        MemoriesPictureCarousel(modifier = Modifier.weight(2.7f), colors = colors)
+        MemoriesPictureCarousel(navController, modifier = Modifier.weight(2.7f), colors = colors)
         Banner(stringResource(R.string.Memories_a_day_ago), colors = colors)
         MemoriesListCarouselDay(navController, modifier = Modifier.weight(1f), colors = colors)
         Banner(stringResource(R.string.Memories_a_week_ago), colors = colors)
@@ -87,7 +88,7 @@ fun Banner(title: String, colors: Colors){
 }
 
 @Composable
-fun MemoriesPictureCarousel(modifier: Modifier = Modifier, colors: Colors) {
+fun MemoriesPictureCarousel(navController: NavController, modifier: Modifier = Modifier, colors: Colors) {
     val memoryBlogListDayAgoViewModel = MemoryBlogListDayAgoViewModel()
     val memoryBlogListWeekAgoViewModel = MemoryBlogListWeekAgoViewModel()
     val memoryBlogListMonthAgoViewModel = MemoryBlogListMonthAgoViewModel()
@@ -111,16 +112,20 @@ fun MemoriesPictureCarousel(modifier: Modifier = Modifier, colors: Colors) {
     ) {
         items(combinedBlogs.value) { item ->
             if (item.photoFileName != ""){
-                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors)
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors){
+                    navController.navigate("blog/${item.id}")
+                }
             }
         }
     }
 }
 
 @Composable
-fun MemoryPictureItem(item: Blog, modifier: Modifier, colors: Colors) {
+fun MemoryPictureItem(item: Blog, modifier: Modifier, colors: Colors, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.width(230.dp),
+        modifier = Modifier.width(230.dp)
+            .clickable(onClick = onClick)
+        ,
         elevation = 4.dp
     ) {
         Column (modifier = Modifier.background(colors.background)) {

@@ -44,7 +44,7 @@ fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
         TopBanner()
         SearchFilter(onDateRangeSelected = { fromDate, toDate -> /* Your logic here */ },
             context = LocalContext.current, dateViewModel, startDate, endDate)
-        HomePictureCarousel(modifier = Modifier.weight(2f),startDate, endDate)
+        HomePictureCarousel(navController, modifier = Modifier.weight(2f),startDate, endDate)
         Divider(modifier = Modifier.fillMaxWidth(), alpha = 0.3f)
         HomeListCarousel(navController, modifier = Modifier.weight(3f), startDate, endDate)
     }
@@ -171,7 +171,7 @@ fun showDatePickerDialog(isFromDate: Boolean, fromDate: String, toDate: String, 
 
 
 @Composable
-fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: State<LocalDate>, endDate: State<LocalDate>) {
+fun HomePictureCarousel(navController: NavController, modifier: Modifier = Modifier, startDate: State<LocalDate>, endDate: State<LocalDate>) {
     val homeBlogListViewModel = HomeBlogListViewModel(startDate.value, endDate.value)
     val blogs = homeBlogListViewModel.blogs.collectAsState(initial = emptyList())
     val colors = ThemeManager.getAppThemeColors()
@@ -183,7 +183,9 @@ fun HomePictureCarousel(modifier: Modifier = Modifier, startDate: State<LocalDat
         items(blogs.value) { item ->
 
             if (item.photoFileName != "") {
-                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors)
+                MemoryPictureItem(item, Modifier.padding(vertical = 8.dp), colors = colors) {
+                    navController.navigate("blog/${item.id}")
+                }
             }
         }
     }
