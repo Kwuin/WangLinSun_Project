@@ -68,9 +68,6 @@ fun MapPage(navController: NavController, locationviewModel: LocationViewModel) 
                 Log.d("equal location", init_location.value.toString())
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(init_location.value, 10f))
                 googleMap.addMarker(MarkerOptions().position(init_location.value).title(address))
-            }else{
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(42.4, -71.1), 10f))
-
             }
 
 
