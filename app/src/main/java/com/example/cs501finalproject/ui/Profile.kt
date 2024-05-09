@@ -52,7 +52,9 @@ fun TopSection(colors: Colors) {
             .background(
                 brush = Brush.linearGradient(
                     0f to colors.primary,
-                    1f to colors.secondaryVariant))
+                    1f to colors.secondaryVariant
+                )
+            )
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -64,7 +66,7 @@ fun TopSection(colors: Colors) {
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Welcome back!",
+                text = stringResource(R.string.Home_welcome_back),
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,

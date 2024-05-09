@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.TextStyle
@@ -46,16 +47,18 @@ fun MemoriesPage(navController: NavController){
     val colors = ThemeManager.getAppThemeColors()
 
     Column(
-        modifier = Modifier.fillMaxSize().background(colors.background)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colors.background)
     ) {
         MemoriesPictureCarousel(modifier = Modifier.weight(2.7f), colors = colors)
-        Banner("A day Ago", colors = colors)
+        Banner(stringResource(R.string.Memories_a_day_ago), colors = colors)
         MemoriesListCarouselDay(navController, modifier = Modifier.weight(1f), colors = colors)
-        Banner("A Week Ago", colors = colors)
+        Banner(stringResource(R.string.Memories_a_week_ago), colors = colors)
         MemoriesListCarouselWeek(navController, modifier = Modifier.weight(1f), colors = colors)
-        Banner("A Month Ago", colors = colors)
+        Banner(stringResource(R.string.Memories_a_month_ago), colors = colors)
         MemoriesListCarouselMonth(navController, modifier = Modifier.weight(1f), colors = colors)
-        Banner("A Year Ago", colors = colors)
+        Banner(stringResource(R.string.Memories_a_year_ago), colors = colors)
         MemoriesListCarouselYear(navController, modifier = Modifier.weight(1f), colors = colors)
     }
 }
@@ -102,7 +105,9 @@ fun MemoriesPictureCarousel(modifier: Modifier = Modifier, colors: Colors) {
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.fillMaxHeight().background(colors.background)
+        modifier = modifier
+            .fillMaxHeight()
+            .background(colors.background)
     ) {
         items(combinedBlogs.value) { item ->
             if (item.photoFileName != ""){
@@ -145,7 +150,8 @@ fun MemoryPictureItem(item: Blog, modifier: Modifier, colors: Colors) {
                     Image(
                         bitmap = bitmap,
                         contentDescription = "Selected Image",
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .height(180.dp)
                     )
                 } else {

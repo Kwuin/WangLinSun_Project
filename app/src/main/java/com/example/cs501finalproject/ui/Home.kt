@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cs501finalproject.DateViewModel
 import com.example.cs501finalproject.HomeBlogListViewModel
 import com.example.cs501finalproject.R
+import com.example.cs501finalproject.util.LanguageManager
 import com.example.cs501finalproject.util.ThemeManager
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -51,7 +53,10 @@ fun HomePage(navController: NavController, dateViewModel: DateViewModel) {
 
 @Composable
 fun TopBanner() {
+    // get current theme settings
     val colors = ThemeManager.getAppThemeColors()
+    // get current language settings
+    val locale = LanguageManager.getCurrentLocale()
 
     Box(
         modifier = Modifier
@@ -71,7 +76,7 @@ fun TopBanner() {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "Welcome back!",
+                    text = stringResource(R.string.Home_welcome_back),
                     color = colors.onPrimary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
@@ -79,7 +84,7 @@ fun TopBanner() {
             }
             // display current date
             Text(
-                LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE, MMMM dd")),
+                LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE, MMMM dd", locale)),
                 color = colors.onPrimary,
                 fontSize = 20.sp,
                 modifier = Modifier.align(Alignment.CenterVertically)
@@ -108,7 +113,7 @@ fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-        Text("From", modifier = Modifier.padding(end = 8.dp), fontWeight = FontWeight.Bold, color = colors.onPrimary)
+        Text(text = stringResource(R.string.Home_From), modifier = Modifier.padding(end = 8.dp), fontWeight = FontWeight.Bold, color = colors.onPrimary)
         Button(
             onClick = { showDatePickerDialog(true, fromDateState.value, toDateState.value, onDateRangeSelected, context, fromDateState, toDateState, dateViewModel) },
             modifier = Modifier
@@ -118,7 +123,7 @@ fun SearchFilter(onDateRangeSelected: (fromDate: String, toDate: String) -> Unit
         ) {
             Text(startDate.value.toString(), color = Color.Black)
         }
-        Text("To", modifier = Modifier.padding(end = 8.dp), fontWeight = FontWeight.Bold, color = colors.onPrimary)
+        Text(text = stringResource(R.string.Home_To), modifier = Modifier.padding(end = 8.dp), fontWeight = FontWeight.Bold, color = colors.onPrimary)
         Button(
             onClick = { showDatePickerDialog(false, fromDateState.value, toDateState.value, onDateRangeSelected, context, fromDateState, toDateState, dateViewModel) },
             modifier = Modifier

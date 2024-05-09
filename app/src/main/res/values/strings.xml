@@ -36,4 +36,13 @@
     <string name="Home_Date">Date</string>
     <string name="Home_From">From</string>
     <string name="Home_To">To</string>
+    <string name="Home_welcome_back">Welcome back!</string>
+
+    <string name="Memories_a_day_ago">A day Ago</string>
+    <string name="Memories_a_week_ago">A Week Ago</string>
+    <string name="Memories_a_month_ago">A Month Ago</string>
+    <string name="Memories_a_year_ago">A Year Ago</string>
+
+    <string name="Calendar_date_selected">Date Selected</string>
+    <string name="Calendar_add">Add</string>
 </resources>

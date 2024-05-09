@@ -35,4 +35,14 @@
     <string name="Home_Date">תאריך</string>
     <string name="Home_From">מ</string>
     <string name="Home_To">אל</string>
+    <string name="Home_welcome_back">ברוך שובך!</string>
+
+    <string name="Memories_a_day_ago">לפני יום</string>
+    <string name="Memories_a_week_ago">לפני שבוע</string>
+    <string name="Memories_a_month_ago">לפני חודש</string>
+    <string name="Memories_a_year_ago">לפני שנה</string>
+
+    <string name="Calendar_date_selected">תאריך נבחר</string>
+    <string name="Calendar_add">הוסף</string>
+
 </resources>
